@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
     private bool m_GameRunning;
     public bool GameRunning { get => m_GameRunning; }
     public void EndGame() { m_GameRunning = false; }
+    public void StartGame() { m_GameRunning = true; }
 
     // Start is called before the first frame update
     void Start()

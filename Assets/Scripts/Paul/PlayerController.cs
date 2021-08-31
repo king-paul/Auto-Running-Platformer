@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(Animator))]
@@ -29,7 +30,7 @@ public class PlayerController : MonoBehaviour
 
     // audio objects
     public AudioClip jumpSound;
-    public AudioClip crashSound;
+    public AudioClip deathSound;
     public AudioClip landSound;
     private AudioSource playerAudio;
 
@@ -50,9 +51,11 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         if (!gameManager.GameRunning)
-            return;
+        {
+            return;                       
+        }
 
-        playerAnim.enabled = true;
+        //playerAnim.enabled = true;
         playerAnim.SetFloat("Speed", 1);
         playerAnim.SetFloat("Y_Velocity", playerRb.velocity.y);
 
@@ -83,6 +86,15 @@ public class PlayerController : MonoBehaviour
                 timesJumped++;
             }
         }
+
+        // check if the character has fallen off the building
+        if(transform.position.y < -10)
+        {
+            gameManager.EndGame();
+            playerAnim.enabled = false;
+            SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        }
+
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -98,10 +110,8 @@ public class PlayerController : MonoBehaviour
             playerAnim.SetBool("Grounded", true);
         } 
         // check if there is a collision with an obstacle
-        else if (collision.gameObject.CompareTag("Obstacle"))
+        else if (collision.gameObject.CompareTag("Obstacle") && gameManager.GameRunning)
         {
-            gameManager.EndGame();           
-
             // play death animation once
             playerAnim.SetBool("Death", true);
             playerAnim.SetInteger("DeathType", 1);
@@ -109,8 +119,10 @@ public class PlayerController : MonoBehaviour
             if(explosionParticle != null)
                 explosionParticle.Play();
 
-            playerAudio.PlayOneShot(crashSound, 1.0f);
+            playerAudio.PlayOneShot(deathSound, 1.0f);
             Debug.Log("Game Over!");
+
+            gameManager.EndGame();
         }
 
     }
