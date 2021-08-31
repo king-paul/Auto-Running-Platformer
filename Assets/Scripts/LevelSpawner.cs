@@ -18,11 +18,20 @@ public class LevelSpawner : MonoBehaviour
     public bool m_CanSpawnGround;
 
     [Space(10)]
+    [Header("Building Settings")]
+    private Vector3 m_BuildingStartPos; // Where the ground tiles will start
+    private Vector3 m_NextBuildingPos; // Where the next tower will go
+    public float m_BuildingDistance;
+    public float m_BuildingSpacing;
+
+    [Space(10)]
     [Header("Tower Settings")]
     private Vector3 m_TowerStartPos; // Where the ground tiles will start
     private Vector3 m_NextTowerPos; // Where the next tower will go
     public float m_TowerDistance;
     public float m_TowerSpacing;
+
+    
 
     void Start()
     { 
@@ -35,10 +44,12 @@ public class LevelSpawner : MonoBehaviour
         // Initialize next to start
         m_NextPos = m_StartPos;
 
-        // Do the same for towers
+        // Do the same for towers and buildings 
         m_TowerStartPos = m_StartPos + new Vector3(0f, 0f, m_TowerDistance);
         m_NextTowerPos = m_TowerStartPos;
 
+        m_BuildingStartPos = m_StartPos + new Vector3(0f, 0f, m_BuildingDistance);
+        m_NextBuildingPos = m_BuildingStartPos;
         m_CanSpawnGround = true;
     }
 
@@ -54,6 +65,7 @@ public class LevelSpawner : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.Space))
         {
             SpawnTower();
+            SpawnBuilding();
         }
 
         if (Vector3.Distance(m_NextPos, m_Player.transform.position) < m_SpawnDistance)
@@ -71,10 +83,18 @@ public class LevelSpawner : MonoBehaviour
         m_CanSpawnGround = false;
     }
 
+    void SpawnBuilding()
+    {
+        GameObject building = m_ObjectPooler.SpawnFromPool("Building", m_NextBuildingPos, Quaternion.identity);
+        m_NextBuildingPos += new Vector3(m_BuildingSpacing, 0.0f, 0.0f);
+        building.SetActive(true);
+    }
+
     void SpawnTower()
     {
         GameObject tower = m_ObjectPooler.SpawnFromPool("Tower", m_NextTowerPos, Quaternion.identity);
         m_NextTowerPos += new Vector3(m_TowerSpacing, 0.0f, 0.0f);
         tower.SetActive(true);
     }
+
 }
