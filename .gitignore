@@ -58,3 +58,11 @@ sysinfo.txt
 # Crashlytics generated file
 crashlytics-build.properties
 
+# Asset folders to ignore
+Assets/Library/FBX
+Assets/8BitSounds
+Assets/Free Pack
+Assets/CasualGameSounds
+Assets/8BitSounds.meta
+Assets/CasualGameSounds.meta
+Assets/Free Pack.meta
