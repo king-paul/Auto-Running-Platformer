@@ -14,6 +14,7 @@ public class LevelSpawner : MonoBehaviour
     private Vector3 m_NextPos; // Where the next tile will go
     //public float m_TileOffsetX;
     public float m_TileOffsetY;
+    public float m_TileOffsetZ;
     public float m_TileSpawnDistance;
     public bool m_CanSpawnTile;
 
@@ -40,7 +41,7 @@ public class LevelSpawner : MonoBehaviour
 
         m_Player = GameObject.FindGameObjectWithTag("Player");
         // Set start pos to this gamobject's pos
-        m_StartPos = m_Player.transform.position + Vector3.down;
+        m_StartPos = m_Player.transform.position + (Vector3.up * m_TileOffsetY) + (Vector3.forward * m_TileOffsetZ);
         // Initialize next to start
         m_NextPos = m_StartPos;
         // Do the same for towers and buildings 
@@ -59,9 +60,9 @@ public class LevelSpawner : MonoBehaviour
         {
             SpawnLevelSegment();
         }
-
+        float dist = Mathf.Abs(m_NextPos.x - m_Player.transform.position.x);
         // Check distance to next floor node and spawn a segment when within set range
-        if (Vector3.Distance(m_Player.transform.position, m_NextPos) < m_TileSpawnDistance)
+        if(dist < m_TileSpawnDistance)
         {
             SpawnLevelSegment();
         }
@@ -75,14 +76,11 @@ public class LevelSpawner : MonoBehaviour
 
     void SpawnLevelSegment()
     {
-
         // Spawn ground tiles
         GameObject groundTile = m_ObjectPooler.SpawnFromPool("Ground", m_NextPos, Quaternion.identity);
         float offsetX = groundTile.GetComponent<MeshCollider>().bounds.size.x;
-        m_NextPos += new Vector3(offsetX, m_TileOffsetY, 0.0f);
+        m_NextPos += new Vector3(offsetX, 0, 0);
         groundTile.SetActive(true);
-
-
 
 
         // Spawn buildings
