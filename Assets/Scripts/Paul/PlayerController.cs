@@ -10,24 +10,22 @@ public class PlayerController : MonoBehaviour
     // public variables
     public float jumpForce;
     public float gravityModifier;
-    
-    public float waitTime = 2.0f;
     public float runSpeed = 10.0f;
 
     public bool moveCharacter = true;
 
-    // private variabels
-    private bool isWalking;
-    private float timeLeft;
+    // private variabels    
     private int timesJumped = 0;
     private bool isOnGround = true;
-    private bool gameOver = false;
 
-    // annimation obkects
+    // Controllers/Managers
+    CharacterController controller;
+    GameManager gameManager;
+
+    // animation objects
     private Rigidbody playerRb;
     private Animator playerAnim;
     public ParticleSystem explosionParticle;
-    public ParticleSystem dirtParticle;
 
     // audio objects
     public AudioClip jumpSound;
@@ -35,92 +33,25 @@ public class PlayerController : MonoBehaviour
     public AudioClip landSound;
     private AudioSource playerAudio;
 
-    // Game State
-    public enum State { standing, walking, waiting, running, gameOver};
-    private State gameState;
-
-    // Properties
-    public bool GameOver { get => gameOver; }
-    public State GameState { get => gameState; }
-
     // Start is called before the first frame update
     void Start()
     {
+        controller = GetComponent<CharacterController>();
         playerRb = GetComponent<Rigidbody>();
         playerAnim = GetComponent<Animator>();
         playerAudio = GetComponent<AudioSource>();
 
         Physics.gravity *= gravityModifier;
-        timeLeft = waitTime;
-        gameState = State.running;
+
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        // call appropriate method based on the state the game is in
-        switch(gameState)
-        {
-            case State.standing: Stand();
-                break;
-            case State.walking: Walk();
-                break;
-            case State.waiting: Wait();
-                break;
-            case State.running: Run();
-                break;
-        }
-    }
+        if (!gameManager.GameRunning)
+            return;
 
-    private void OnCollisionEnter(Collision collision)
-    {
-        // check if there is a collision with the ground
-        if (collision.gameObject.CompareTag("Ground") && gameState == State.running) { 
-            isOnGround = true;
-            timesJumped = 0;
-
-            if (dirtParticle != null)
-                dirtParticle.Play();
-
-            if(landSound != null)
-                playerAudio.PlayOneShot(landSound, 1.5f);
-
-            playerAnim.SetBool("Grounded", true);
-        } 
-        // check if there is a collision with an obstacle
-        else if (collision.gameObject.CompareTag("Obstacle"))
-        {
-            gameOver = true;            
-
-            // play death animation once
-            playerAnim.SetBool("Death", true);
-            playerAnim.SetInteger("DeathType", 1);
-
-            // change the particle system to the explosion
-            if (dirtParticle != null)
-                dirtParticle.Stop();
-
-            if(explosionParticle != null)
-                explosionParticle.Play();
-
-            playerAudio.PlayOneShot(crashSound, 1.0f);
-            Debug.Log("Game Over!");
-        }
-
-    }
-
-    private void Walk()
-    {
-        playerAnim.enabled = true;
-
-        if (transform.position.x < 0)
-            transform.Translate(0, 0, 0.1f);
-        else
-            gameState = State.waiting;
-    }
-
-    private void Run()
-    {
         playerAnim.enabled = true;
         playerAnim.SetFloat("Speed", 1);
         playerAnim.SetFloat("Y_Velocity", playerRb.velocity.y);
@@ -128,16 +59,16 @@ public class PlayerController : MonoBehaviour
         // if move character is turned onmove object to the right
         if (moveCharacter)
         {
-            //playerRb.velocity = Vector3.right * runSpeed;
-            //playerRb.AddForce(Vector3.right * runSpeed, ForceMode.Force);
-            //Debug.Log("Velocity" + playerRb.velocity);
             transform.position += Vector3.right * runSpeed * Time.deltaTime;
+            //controller.Move(Vector3.right * runSpeed * Time.deltaTime);
         }
 
-        if (Input.GetKeyDown(KeyCode.Space) && !gameOver)
-        { 
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
             if (isOnGround || timesJumped < 2)
-            {          
+            {
+                //controller.Move(Vector3.up * jumpForce * Time.deltaTime);
+
                 playerRb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
                 isOnGround = false;
 
@@ -147,50 +78,41 @@ public class PlayerController : MonoBehaviour
                     playerAnim.SetTrigger("Double_Jump");
 
                 playerAnim.SetBool("Grounded", false);
-
-                if (dirtParticle != null)
-                    dirtParticle.Stop();
-
                 playerAudio.PlayOneShot(jumpSound, 1.0f);
 
-                timesJumped++;      
+                timesJumped++;
             }
         }
-
     }
 
-    private void Stand()
+    private void OnCollisionEnter(Collision collision)
     {
-        playerAnim.enabled = false;
+        // check if there is a collision with the ground
+        if (collision.gameObject.CompareTag("Ground") && gameManager.GameRunning) { 
+            isOnGround = true;
+            timesJumped = 0;
 
-        if(dirtParticle != null)
-            dirtParticle.Stop();
+            if(landSound != null)
+                playerAudio.PlayOneShot(landSound, 1.5f);
 
-        if (timeLeft > 0)
-            timeLeft -= Time.deltaTime;
-        else
+            playerAnim.SetBool("Grounded", true);
+        } 
+        // check if there is a collision with an obstacle
+        else if (collision.gameObject.CompareTag("Obstacle"))
         {
-            gameState = State.walking;
-            timeLeft = waitTime;
-        }
-    }
+            gameManager.EndGame();           
 
-    private void Wait ()
-    {
-        playerAnim.enabled = false;
+            // play death animation once
+            playerAnim.SetBool("Death", true);
+            playerAnim.SetInteger("DeathType", 1);
 
-        if (timeLeft > 0)
-        {
-            timeLeft -= Time.deltaTime;
-        }
-        else
-        {
-            gameState = State.running;
-            timeLeft = waitTime;
+            if(explosionParticle != null)
+                explosionParticle.Play();
 
-            if (dirtParticle != null)
-                dirtParticle.Play();
+            playerAudio.PlayOneShot(crashSound, 1.0f);
+            Debug.Log("Game Over!");
         }
+
     }
 
 }
