@@ -37,22 +37,15 @@ public class PlayerController : MonoBehaviour
 
     // Game State
     public enum State { standing, walking, waiting, running, gameOver};
-    public State gameState;
+    private State gameState;
 
     // Properties
     public bool GameOver { get => gameOver; }
     public State GameState { get => gameState; }
 
-    public void PauseAnimation()
-    {
-        //playerAnim.enabled = false;
-    }
-
     // Start is called before the first frame update
     void Start()
     {
-        //transform.position = new Vector3(-7, 0, 0);
-
         playerRb = GetComponent<Rigidbody>();
         playerAnim = GetComponent<Animator>();
         playerAudio = GetComponent<AudioSource>();
@@ -97,7 +90,6 @@ public class PlayerController : MonoBehaviour
         // check if there is a collision with an obstacle
         else if (collision.gameObject.CompareTag("Obstacle"))
         {
-            //Debug.Log("Times jumped: " + timesJumped);
             gameOver = true;            
 
             // play death animation once
@@ -119,8 +111,6 @@ public class PlayerController : MonoBehaviour
 
     private void Walk()
     {
-        //Debug.Log("Walking");
-
         playerAnim.enabled = true;
 
         if (transform.position.x < 0)
@@ -131,8 +121,6 @@ public class PlayerController : MonoBehaviour
 
     private void Run()
     {
-        //Debug.Log("Running");
-
         playerAnim.enabled = true;
         playerAnim.SetFloat("Speed", 1);
         playerAnim.SetFloat("Y_Velocity", playerRb.velocity.y);
@@ -143,10 +131,7 @@ public class PlayerController : MonoBehaviour
             //playerRb.velocity = Vector3.right * runSpeed;
             //playerRb.AddForce(Vector3.right * runSpeed, ForceMode.Force);
             //Debug.Log("Velocity" + playerRb.velocity);
-            if(isOnGround)
-                transform.position += Vector3.right * runSpeed * Time.deltaTime;
-            else
-                transform.position += Vector3.right * runSpeed/2 * Time.deltaTime;
+            transform.position += Vector3.right * runSpeed * Time.deltaTime;
         }
 
         if (Input.GetKeyDown(KeyCode.Space) && !gameOver)
@@ -192,14 +177,11 @@ public class PlayerController : MonoBehaviour
 
     private void Wait ()
     {
-        //Debug.Log("Waiting");
-
         playerAnim.enabled = false;
 
         if (timeLeft > 0)
         {
             timeLeft -= Time.deltaTime;
-            //Debug.Log("Time Left: " + timeLeft);
         }
         else
         {
