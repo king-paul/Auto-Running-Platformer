@@ -59,10 +59,17 @@ sysinfo.txt
 crashlytics-build.properties
 
 # Asset folders to ignore
-Assets/Library/FBX
-Assets/8BitSounds
-Assets/Free Pack
-Assets/CasualGameSounds
-Assets/8BitSounds.meta
-Assets/CasualGameSounds.meta
-Assets/Free Pack.meta
+
+# Audio
+Assets/Audio/Library/FBX
+Assets/Audio/8BitSounds
+Assets/Audio/Free Pack
+Assets/Audio/CasualGameSounds
+Assets/Audio/8BitSounds.meta
+Assets/Audio/CasualGameSounds.meta
+Assets/Audio/Free Pack.meta
+Assets/Audio/AsiaTensionBGM
+Assets/Audio/AsiaTensionBGM.meta
+
+# Models
+Assets/Models/Cartoon_Weapon_Pack

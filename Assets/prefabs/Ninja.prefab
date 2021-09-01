@@ -1149,13 +1149,12 @@ GameObject:
   m_Component:
   - component: {fileID: 6936069405537073879}
   - component: {fileID: 3936694406807036077}
-  - component: {fileID: 7712993583389581408}
-  - component: {fileID: 8723297034040645232}
   - component: {fileID: 7712993583389581411}
   - component: {fileID: 7712993583389581410}
+  - component: {fileID: 1727126622}
   m_Layer: 0
   m_Name: Ninja
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1186,7 +1185,7 @@ Animator:
   m_GameObject: {fileID: 7712993583389581421}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: a6e1b293f7ed5584fa548ddde966e03e, type: 3}
-  m_Controller: {fileID: 9100000, guid: ad123e1ba476280478bcc7e8e5a0ff92, type: 2}
+  m_Controller: {fileID: 9100000, guid: 58486b7b15c1ddd428dbb2ac4aa10d87, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 1
@@ -1195,35 +1194,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!54 &7712993583389581408
-Rigidbody:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7712993583389581421}
-  serializedVersion: 2
-  m_Mass: 1
-  m_Drag: 0
-  m_AngularDrag: 0.05
-  m_UseGravity: 1
-  m_IsKinematic: 0
-  m_Interpolate: 0
-  m_Constraints: 0
-  m_CollisionDetection: 0
---- !u!65 &8723297034040645232
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7712993583389581421}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1.2439868, y: 3.0953119, z: 1.1139802}
-  m_Center: {x: -0.000000089406974, y: 1.5285631, z: -0.064588666}
 --- !u!82 &7712993583389581411
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1332,18 +1302,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df75ad4d9ec2b574b9e0b59b2ef653ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpForce: 7
-  gravityModifier: 1
-  isOnGround: 1
-  gameOver: 0
-  waitTime: 2
-  runSpeed: 1
+  jumpForce: 9
+  runSpeed: 10
+  moveCharacter: 1
   explosionParticle: {fileID: 0}
-  dirtParticle: {fileID: 0}
-  jumpSound: {fileID: 0}
-  crashSound: {fileID: 0}
-  landSound: {fileID: 0}
-  gameState: 0
+  jumpSound: {fileID: 8300000, guid: 7b912e9d1aecc5b44a7ba426c6c2499b, type: 3}
+  deathSound: {fileID: 0}
+  landSound: {fileID: 8300000, guid: cdee2cfea2df6d74994c15060db56e97, type: 3}
+--- !u!143 &1727126622
+CharacterController:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7712993583389581421}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Height: 3.27
+  m_Radius: 0.56
+  m_SlopeLimit: 45
+  m_StepOffset: 0.3
+  m_SkinWidth: 0.08
+  m_MinMoveDistance: 0.001
+  m_Center: {x: 0, y: 1.53, z: 0}
 --- !u!1 &7981151660532249469
 GameObject:
   m_ObjectHideFlags: 0
