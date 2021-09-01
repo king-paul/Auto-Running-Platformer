@@ -17,6 +17,7 @@ public class ArrowSpawner : MonoBehaviour
     public float m_FireRate = 10.0f;
     public float m_Accuracy = 0.0f;
     private float m_ShotTimer = 0.0f;
+    public bool m_Shooting = false;
 
     [Space(10)]
     [Header("Projectile Settings")]
@@ -36,7 +37,8 @@ public class ArrowSpawner : MonoBehaviour
     {
         // Store how long since last shot to regulate fire-rate
         m_ShotTimer += Time.deltaTime;
-        if (Input.GetMouseButton(0) && m_ShotTimer >= 1 / m_FireRate)
+
+        if (m_Shooting && m_ShotTimer >= 1 / m_FireRate)
         {
             Shoot();
         }
@@ -63,6 +65,9 @@ public class ArrowSpawner : MonoBehaviour
 
     private void OnDrawGizmos()
     {
+        Gizmos.color = Color.blue;
+        Gizmos.DrawWireCube(transform.position, Vector3.one);
+
         Gizmos.color = Color.red;
         if (m_Transform != null)
         {
