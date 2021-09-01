@@ -3,21 +3,21 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-[RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(CharacterController))]
 [RequireComponent(typeof(Animator))]
 [RequireComponent(typeof(AudioSource))]
 public class PlayerController : MonoBehaviour
 {
     // public variables
     public float jumpForce;
-    public float gravityModifier;
+    //public float gravityModifier;
     public float runSpeed = 10.0f;
 
     public bool moveCharacter = true;
 
     // private variabels    
     private int timesJumped = 0;
-    private bool isOnGround = true;
+    private Vector3 moveVelocity;
 
     // Controllers/Managers
     CharacterController controller;
@@ -40,10 +40,7 @@ public class PlayerController : MonoBehaviour
         controller = GetComponent<CharacterController>();
         playerRb = GetComponent<Rigidbody>();
         playerAnim = GetComponent<Animator>();
-        playerAudio = GetComponent<AudioSource>();
-
-        Physics.gravity *= gravityModifier;
-
+        playerAudio = GetComponent<AudioSource>();      
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
 
@@ -52,28 +49,29 @@ public class PlayerController : MonoBehaviour
     {
         if (!gameManager.GameRunning)
         {
-            return;                       
+            return;
         }
 
-        //playerAnim.enabled = true;
-        playerAnim.SetFloat("Speed", 1);
-        playerAnim.SetFloat("Y_Velocity", playerRb.velocity.y);
+        if (controller.isGrounded && moveVelocity.y < 0f)
+        {
+            moveVelocity.y = 0f;
+        }
 
         // if move character is turned onmove object to the right
         if (moveCharacter)
         {
-            transform.position += Vector3.right * runSpeed * Time.deltaTime;
-            //controller.Move(Vector3.right * runSpeed * Time.deltaTime);
+            //transform.position += Vector3.right * runSpeed * Time.deltaTime;
+            moveVelocity.x = Vector3.right.x * runSpeed;            
         }
 
         if (Input.GetKeyDown(KeyCode.Space))
         {
-            if (isOnGround || timesJumped < 2)
+            if (controller.isGrounded || timesJumped < 2)
             {
                 //controller.Move(Vector3.up * jumpForce * Time.deltaTime);
-
-                playerRb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-                isOnGround = false;
+                //playerRb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+                // move character up
+                moveVelocity.y += Mathf.Sqrt(jumpForce * -3.0f * gameManager.Gravity);
 
                 if (timesJumped == 0)
                     playerAnim.SetTrigger("Jump");
@@ -95,13 +93,23 @@ public class PlayerController : MonoBehaviour
             SceneManager.LoadScene(SceneManager.GetActiveScene().name);
         }
 
+        // make character fall when off ground
+        moveVelocity.y += gameManager.Gravity * Time.deltaTime;
+
+        // move the character
+        controller.Move(moveVelocity * Time.deltaTime);
+
+        playerAnim.SetFloat("Y_Velocity", moveVelocity.y + gameManager.Gravity);
+
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnControllerColliderHit(ControllerColliderHit hit)
     {
+        if (!gameManager.GameRunning)
+            return;
+
         // check if there is a collision with the ground
-        if (collision.gameObject.CompareTag("Ground") && gameManager.GameRunning) { 
-            isOnGround = true;
+        if (hit.gameObject.CompareTag("Ground") && timesJumped > 0) { 
             timesJumped = 0;
 
             if(landSound != null)
@@ -110,7 +118,7 @@ public class PlayerController : MonoBehaviour
             playerAnim.SetBool("Grounded", true);
         } 
         // check if there is a collision with an obstacle
-        else if (collision.gameObject.CompareTag("Obstacle") && gameManager.GameRunning)
+        else if (hit.gameObject.CompareTag("Obstacle"))
         {
             // play death animation once
             playerAnim.SetBool("Death", true);
