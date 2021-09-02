@@ -8,21 +8,21 @@ using UnityEngine;
 
 public class NPCInspector : Editor
 {
-    SerializedProperty velocity;
-    bool open = false;
+    //SerializedProperty velocity;
+    //bool open = false;
 
     private void OnEnable()
     {
-        velocity = serializedObject.FindProperty("m_MoveVelocity");
+        //velocity = serializedObject.FindProperty("m_MoveVelocity");
     }
     
     public override void OnInspectorGUI()
     {
         base.OnInspectorGUI();
 
-        serializedObject.Update();
-        EditorGUILayout.PropertyField(velocity);
-        serializedObject.ApplyModifiedProperties();
+        //serializedObject.Update();
+        //EditorGUILayout.PropertyField(velocity);
+        //serializedObject.ApplyModifiedProperties();
 
         //Vector3 vel = ((Player)target).m_MoveVelocity;
 

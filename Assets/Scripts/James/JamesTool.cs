@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
-
+/*
 public class JamesTool : Editor
 {
     [MenuItem("James' Tools")]
@@ -58,3 +58,4 @@ public class JamesTool : Editor
     }
 }
 
+*/
