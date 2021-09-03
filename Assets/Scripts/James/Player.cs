@@ -6,24 +6,30 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    [SerializeField] private LayerMask m_GroundLayers;
+    [SerializeField] private Transform[] m_GroundChecks;
+    [SerializeField] private Transform[] m_WallChecks;
     private CharacterController m_Controller;
-    private Transform m_Transform = null;
-    private Vector3 m_MoveVelocity;
 
     [Header("Player Settings")]
     //public GameObject m_GroundCheckNode;
     public float m_MoveSpeed = 10.0f;
-    public float m_Gravity = -9.81f;
-    public float m_GroundCheckDist = 0.5f;
-    public float m_JumpVelocity = 5.0f;
+    public float m_JumpHeight = 5.0f;
     public float m_FallMultiplier = 2.5f;
     public float m_LowJumpMultiplier = 2f;
-    
-    public bool m_IsGrounded;
-    public bool m_IsRunning;
-    public bool m_IsAlive;
+    public float m_Gravity = -9.81f;
+    private Vector3 m_Velocity;
+    private float m_HorizontalInput;
+    //private float m_LastY;
+    //private bool falling;
 
-    private float m_GroundedTimer;
+    public bool m_IsGrounded;
+    public bool m_Blocked;
+    public bool m_IsAlive;
+    private bool m_IsRunning;
+    private bool m_JumpPressed;
+    private float m_JumpTimer;
+    private float m_JumpGracePeriod = 0.2f;
 
     public void OnAwake()
     {
@@ -38,7 +44,7 @@ public class Player : MonoBehaviour
     private void GameManagerOnGameStateChanged(GameState _state)
     {
         m_IsRunning = (_state == GameState.Running);
-
+        //m_LastY = transform.position.y;
         Debug.Log(_state);
 
     }
@@ -46,82 +52,103 @@ public class Player : MonoBehaviour
     public void Start()
     {
         m_Controller = GetComponent<CharacterController>();
-        m_Transform = GetComponentInChildren<Transform>();
         m_IsAlive = true;
     }
 
     public void Update()
     {
+        /*
+        float distSinceLastFrame = (transform.position.y - m_LastY) * Time.deltaTime;
+        m_LastY = transform.position.y;
+        if (distSinceLastFrame < -0.01f)
+        {
+            falling = true;
+        }
+        else
+        {
+            falling = false;
+        }
+        */
+        
         m_IsRunning = (TestGameManager.m_Instance.m_State == GameState.Running);
-
         if (m_IsRunning)
         {
-            m_IsGrounded = m_Controller.isGrounded;
+            m_HorizontalInput = 1;
 
-            if (m_IsGrounded)
+            transform.forward = new Vector3(m_HorizontalInput, 0, Mathf.Abs(m_HorizontalInput) - 1);
+
+            m_IsGrounded = false;
+            foreach (var groundCheck in m_GroundChecks)
             {
-                m_GroundedTimer = 0.2f;
-            }
-            if (m_GroundedTimer > 0)
-            {
-                m_GroundedTimer -= Time.deltaTime;
-            }
-
-            if (m_IsGrounded && m_MoveVelocity.y < 0)
-            {
-                m_MoveVelocity.y = 0f;
-            }
-
-            m_MoveVelocity.y += m_Gravity * Time.deltaTime;
-
-            //Vector3 move = Vector3.right;
-            // X and Y controls for testing
-            Vector3 move = new Vector3(Input.GetAxis("Horizontal"), 0, Input.GetAxis("Vertical"));
-            move *= m_MoveSpeed;
-
-            if (Input.GetButtonDown("Jump"))
-            {
-                if(m_GroundedTimer > 0)
+                if(Physics.CheckSphere(groundCheck.position, 0.1f, m_GroundLayers, QueryTriggerInteraction.Ignore))
                 {
-                    m_GroundedTimer = 0;
-                    m_MoveVelocity += Vector3.up * m_JumpVelocity;
-
+                    m_IsGrounded = true;
+                    break;
                 }
             }
+
+            if (m_IsGrounded && m_Velocity.y < 0)
+            {
+                m_Velocity.y = 0f;
+            }
+            else
+            {
+                //Add Gravity
+                m_Velocity.y += m_Gravity * Time.deltaTime;
+            }
+
+            m_Blocked = false;
+            foreach (var wallCheck in m_WallChecks)
+            {
+                if (Physics.CheckSphere(wallCheck.position, 0.1f, m_GroundLayers, QueryTriggerInteraction.Ignore))
+                {
+                    m_Blocked = true;
+                    break;
+                }
+            }
+
+            if( !m_Blocked)
+            {
+                // Horizontal movement
+                m_Controller.Move(new Vector3(m_HorizontalInput * m_MoveSpeed, 0, 0) * Time.deltaTime);
+            }
+
+            //Jumping
+            m_JumpPressed = Input.GetButtonDown("Jump");
+
+            if(m_JumpPressed)
+            {
+                m_JumpTimer = Time.time;
+            }
+
+            if (m_IsGrounded && (m_JumpPressed || (m_JumpTimer > 0 && Time.time < m_JumpTimer + m_JumpGracePeriod)))
+            {
+                
+                m_Velocity.y += Mathf.Sqrt(m_JumpHeight * -2.0f * m_Gravity);
+                m_JumpTimer = -1;
+
+            }
+
             // Jump handling
-            if (m_Controller.velocity.y < 0)
-            {
-                // If falling
-                m_MoveVelocity += (Vector3.up * m_Gravity * (m_FallMultiplier - 1) * Time.deltaTime);
-                Debug.Log("Falling");
-            }
-            else if (m_Controller.velocity.y > 0 && !Input.GetButton("Jump"))
-            {
-                //Low jump multiplier
-                m_MoveVelocity += (Vector3.up * m_Gravity * (m_LowJumpMultiplier - 1) * Time.deltaTime);
-                Debug.Log("LowJump");
-            }
-
-            m_Controller.Move(move * Time.deltaTime);
-
-            //if (move != Vector3.zero)
+            //if (m_Controller.velocity.y < 0)
             //{
-            //    gameObject.transform.forward = move;
+            //    // If falling
+            //    m_Velocity.y += m_Gravity * (m_FallMultiplier - 1);
+            //    //m_Velocity += (Vector3.up * m_Gravity * (m_FallMultiplier - 1) * Time.deltaTime);
+            //    Debug.Log("Falling");
             //}
-            //
-            //// Changes the height position of the player..
-            //if (Input.GetButtonDown("Jump") && m_IsGrounded)
+            //else if (m_Controller.velocity.y > 0 && !Input.GetButton("Jump"))
             //{
-            //    m_MoveVelocity.y += Mathf.Sqrt(m_JumpHeight * -3.0f * m_Gravity);
+            //    //Low jump multiplier
+            //    m_Velocity.y += m_Gravity * (m_LowJumpMultiplier - 1);
+            //    //m_Velocity += (Vector3.up * m_Gravity * (m_LowJumpMultiplier - 1) * Time.deltaTime);
+            //    Debug.Log("LowJump");
             //}
 
-            
-
-            m_MoveVelocity.y += m_Gravity * Time.deltaTime;
-            m_Controller.Move(m_MoveVelocity * Time.deltaTime);
+            // Vertical velocity
+            m_Controller.Move(m_Velocity * Time.deltaTime);
         }
 
-        
     }
 
     public void OnTriggerEnter(Collider other)
@@ -160,10 +187,18 @@ public class Player : MonoBehaviour
         //}
     }
 
-    private void OnDrawGizmos()
+    public void OnDrawGizmos()
     {
         Gizmos.color = Color.magenta;
-        //Gizmos.DrawWireSphere(m_GroundCheckNode.transform.position, m_GroundCheckDist);
-        
+        foreach(var checks in m_GroundChecks)
+        {
+            Gizmos.DrawWireSphere(checks.transform.position,  0.1f);
+        }
+        Gizmos.color = Color.green;
+        foreach (var checks in m_WallChecks)
+        {
+            Gizmos.DrawWireSphere(checks.transform.position, 0.1f);
+        }
+
     }
 }

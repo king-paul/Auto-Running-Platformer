@@ -32,8 +32,6 @@ public class LevelSpawner : MonoBehaviour
     public float m_TowerDistance;
     public float m_TowerSpacing;
 
-    
-
     void Start()
     { 
         // Get the pool instance and find the player

@@ -29,12 +29,13 @@ public class Arrow : MonoBehaviour, IPooledObject
 
     private void OnCollisionEnter(Collision collision)
     {
+
         if (collision.collider.tag != "Arrow")
         {
             // freeze rigidbody constraints and set the new parent
             m_HasHit = true;
             m_rb.constraints = RigidbodyConstraints.FreezeAll;
-            transform.SetParent(collision.transform, true);
+            //transform.SetParent(collision.transform, false);
         }
     }
 }

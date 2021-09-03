@@ -54,7 +54,6 @@ public class ArrowSpawner : MonoBehaviour
 
         // Spawn object from pool at the starting pos
         GameObject pooledObj = m_ObjectPooler.SpawnFromPool("Arrow", shotPos, Quaternion.identity);
-
         // Get the object rigidbody and apply a force in the target direction
         Rigidbody rb = pooledObj.GetComponent<Rigidbody>();
         rb.velocity = direction * m_LaunchSpeed;
