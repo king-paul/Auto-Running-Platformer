@@ -20,8 +20,6 @@ public class Player : MonoBehaviour
     public float m_Gravity = -9.81f;
     private Vector3 m_Velocity;
     private float m_HorizontalInput;
-    //private float m_LastY;
-    //private bool falling;
 
     public bool m_IsGrounded;
     public bool m_Blocked;
@@ -31,24 +29,37 @@ public class Player : MonoBehaviour
     private float m_JumpTimer;
     private float m_JumpGracePeriod = 0.2f;
 
+    /// <summary>
+    /// Subscribe the player to the GM state change event on awake
+    /// </summary>
     public void OnAwake()
     {
         TestGameManager.OnGameStateChanged += GameManagerOnGameStateChanged;
     }
 
+    /// <summary>
+    /// Unsubscribe when player is destroyed
+    /// </summary>
     public void OnDestroy()
     {
         TestGameManager.OnGameStateChanged -= GameManagerOnGameStateChanged;
     }
 
+    /// <summary>
+    /// Update the player's current state when it changes in the Game Manager
+    /// </summary>
+    /// <param name="_state"> The current game state </param>
     private void GameManagerOnGameStateChanged(GameState _state)
     {
         m_IsRunning = (_state == GameState.Running);
-        //m_LastY = transform.position.y;
+
         Debug.Log(_state);
 
     }
 
+    /// <summary>
+    /// 
+    /// </summary>
     public void Start()
     {
         m_Controller = GetComponent<CharacterController>();
@@ -57,19 +68,6 @@ public class Player : MonoBehaviour
 
     public void Update()
     {
-        /*
-        float distSinceLastFrame = (transform.position.y - m_LastY) * Time.deltaTime;
-        m_LastY = transform.position.y;
-        if (distSinceLastFrame < -0.01f)
-        {
-            falling = true;
-        }
-        else
-        {
-            falling = false;
-        }
-        */
-        
         m_IsRunning = (TestGameManager.m_Instance.m_State == GameState.Running);
         if (m_IsRunning)
         {
