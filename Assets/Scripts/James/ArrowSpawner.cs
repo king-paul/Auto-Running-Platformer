@@ -24,6 +24,34 @@ public class ArrowSpawner : MonoBehaviour
     public float m_LaunchSpeed = 20.0f;
     public float m_DespawnTime = 2.0f;
 
+    /// <summary>
+    /// Subscribe the player to the GM state change event on awake
+    /// </summary>
+    public void OnAwake()
+    {
+        TestGameManager.OnGameStateChanged += GameManagerOnGameStateChanged;
+    }
+
+    /// <summary>
+    /// Unsubscribe when player is destroyed
+    /// </summary>
+    public void OnDestroy()
+    {
+        TestGameManager.OnGameStateChanged -= GameManagerOnGameStateChanged;
+    }
+
+    /// <summary>
+    /// Update the player's current state when it changes in the Game Manager
+    /// </summary>
+    /// <param name="_state"> The current game state </param>
+    private void GameManagerOnGameStateChanged(GameState _state)
+    {
+        m_Shooting = (_state == GameState.Running);
+
+        Debug.Log("Spawner Spawning");
+
+    }
+
     void Start()
     {
         m_ObjectPooler = PoolManager.m_Instance;

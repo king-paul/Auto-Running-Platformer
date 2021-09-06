@@ -10,14 +10,12 @@ public enum GameState
     Running,
     StageComplete,
     Dead
-
 }
 
 public class TestGameManager : MonoBehaviour
 {
     public static TestGameManager m_Instance;
     public GameState m_State;
-
     public static event Action<GameState> OnGameStateChanged;
 
     [Header("Game Objects")]
@@ -25,6 +23,7 @@ public class TestGameManager : MonoBehaviour
     public GameObject m_PlayerText;
     public GameObject m_SpawnNode;
     public GameObject m_Arrows;
+    public Vector3 m_LastCheckpointPos;
     private Player m_Player;
 
     [Space(10)]
@@ -32,23 +31,24 @@ public class TestGameManager : MonoBehaviour
     public int m_Score = 0;
     //public bool m_GameRunning = false;
 
-    private void Awake()
+    void Awake()
     {
         m_Instance = this;
+        m_LastCheckpointPos = m_SpawnNode.transform.position;
     }
 
     void Start()
     {
         m_Player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
-
+        
         UpdateGameState(GameState.Idle);
     }
 
 
     public void UpdateGameState(GameState _newState)
     {
-        Debug.Log(_newState);
         m_State = _newState;
+        
 
         switch (_newState)
         {
@@ -66,7 +66,6 @@ public class TestGameManager : MonoBehaviour
         OnGameStateChanged?.Invoke(_newState);
     }
 
-
     void Update()
     {
         if(Input.GetKeyDown(KeyCode.Space))
@@ -78,13 +77,13 @@ public class TestGameManager : MonoBehaviour
 
             m_PlayerText.SetActive(false);
             //m_Canvas.gameObject.SetActive(false);
-            m_Arrows.GetComponent<ArrowSpawner>().m_Shooting = true;
+           // 
         }
 
         if(!m_Player.m_IsAlive)
         {
-            m_Arrows.GetComponent<ArrowSpawner>().m_Shooting = false;
-            m_Player.transform.position = m_SpawnNode.transform.position;
+
+            m_Player.transform.position = m_LastCheckpointPos;
             m_Player.m_IsAlive = true;
         }
 
