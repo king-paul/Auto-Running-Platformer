@@ -10,6 +10,9 @@ TagManager:
   - Tower
   - KillBox
   - KillZone
+  - Coin
+  - Platform
+  - Hazard
   layers:
   - Default
   - TransparentFX
