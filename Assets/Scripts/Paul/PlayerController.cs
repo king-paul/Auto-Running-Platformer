@@ -39,6 +39,7 @@ public class PlayerController : MonoBehaviour
     public AudioClip fallSound;    
     private AudioSource playerAudio;
     private AudioSource footsteps;
+    private bool alive;
 
     // Start is called before the first frame update
     void Start()
@@ -61,7 +62,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (!gameManager.GameRunning)
+        if (gameManager.State != GameState.Running)
         {
             if (footsteps.isPlaying)
                 footsteps.Stop();
@@ -84,20 +85,17 @@ public class PlayerController : MonoBehaviour
         // check if the character has fallen below the boundary
         if (transform.position.y < bottomBoundary)
         {
-            gameManager.EndGame();
             playerAnim.enabled = false;
             playerAudio.PlayOneShot(fallSound);
-            //SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+            gameManager.UpdateGameState(GameState.Dead);
         }
 
         // update animation parameters
         playerAnim.SetFloat("Y_Velocity", moveVelocity.y + gameManager.Gravity);
         playerAnim.SetBool("Grounded", controller.isGrounded);
 
-        gameManager.SetJumpMeter(jumpForce, maxJumpForce);
-       
+        gameManager.SetJumpMeter(jumpForce, maxJumpForce);       
     }
-
 
     private void UpdatePosition()
     {
@@ -124,13 +122,6 @@ public class PlayerController : MonoBehaviour
         if(Input.touchCount > 0)
             touchInput = Input.GetTouch(0);
 
-        // peform down attack while in air
-        //if (!onGround && (Input.GetKeyDown(KeyCode.Space)))// || touchInput.phase == TouchPhase.Began))
-        //{
-        //    // perform jump atttack
-        //    moveVelocity.y += 3.0f * gameManager.Gravity * Time.deltaTime;
-        //}
-
         // build up jump force while jump is held down
         if ((Input.GetKey(KeyCode.Space) || touchInput.phase == TouchPhase.Stationary) &&
             onGround)
@@ -141,7 +132,7 @@ public class PlayerController : MonoBehaviour
             }
 
              if (jumpForce > maxJumpForce)
-                jumpForce = maxJumpForce;
+                jumpForce = maxJumpForce;   
         }
 
         // make the chatacter jump when jump is released
@@ -154,38 +145,51 @@ public class PlayerController : MonoBehaviour
             // Update animation
             playerAnim.SetFloat("JumpPower", jumpForce);
             playerAnim.SetTrigger("Jump");
+            // Turn off wall collision
+            playerAnim.SetBool("WallCollision", false);
 
             if (jumpForce > (maxJumpForce+1) / 2)
                 playerAudio.PlayOneShot(highJumpSound, 1.0f);
             else
                 playerAudio.PlayOneShot(jumpSound, 1.0f);
 
-            onGround = false;
+              onGround = false;
         }
 
     }
 
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
-        if (!gameManager.GameRunning)
+        if (gameManager.State != GameState.Running)
             return;
 
         // check if there is a collision with the ground
         if (!onGround && (hit.gameObject.CompareTag("Ground") || 
             hit.gameObject.CompareTag("Platform")))
-        { 
-            onGround = true;
-            jumpForce = 0;
-            moveVelocity.y = 0;
+        {
+            // player lands on top of object
+            //if (transform.position.y > hit.transform.position.y)
+            //{
+                onGround = true;                
+                moveVelocity.y = 0;
+                jumpForce = 0;
 
-            if (landSound != null && !playerAudio.isPlaying)
-                playerAudio.PlayOneShot(landSound, 1.5f);
+                if (landSound != null && !playerAudio.isPlaying)
+                    playerAudio.PlayOneShot(landSound, 1.5f);
 
-            footsteps.PlayScheduled(2);
-            playerAnim.SetBool("Grounded", true);
-        } 
+                footsteps.PlayScheduled(2);
+                playerAnim.SetBool("Grounded", true);
+            //}
+        }
+
+        // player hits side of object
+        if (hit.gameObject.CompareTag("Wall"))
+        {
+            playerAnim.SetBool("WallCollision", true);
+        }
+
         // check if there is a collision with an obstacle
-        else if (hit.gameObject.CompareTag("Obstacle") || hit.gameObject.CompareTag("Hazard") ||
+        if (hit.gameObject.CompareTag("Obstacle") || hit.gameObject.CompareTag("Hazard") ||
             hit.gameObject.CompareTag("Arrow"))
         {
             // play death animation once
@@ -195,7 +199,8 @@ public class PlayerController : MonoBehaviour
             playerAudio.PlayOneShot(collideSound, 1.0f);
             Debug.Log("Game Over!");
 
-            gameManager.EndGame();
+            //gameManager.EndGame();
+            gameManager.UpdateGameState(GameState.Dead);
         }
 
     }

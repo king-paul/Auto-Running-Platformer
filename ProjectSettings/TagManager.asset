@@ -13,6 +13,7 @@ TagManager:
   - Coin
   - Platform
   - Hazard
+  - Wall
   layers:
   - Default
   - TransparentFX
