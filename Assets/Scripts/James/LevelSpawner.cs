@@ -6,63 +6,47 @@ using UnityEngine;
 
 public class LevelSpawner : MonoBehaviour
 {
+    private const float PLAYER_DIST_SPAWN_LEVEL_PART = 100f;
+
     private PoolManager m_ObjectPooler;
     private GameObject m_Player;
 
-    [Header("Level Settings")]
-    private Vector3 m_StartPos; // Where the ground tiles will start
-    private Vector3 m_NextPos; // Where the next tile will go
-    //public float m_TileOffsetX;
-    public float m_TileOffsetY;
-    public float m_TileOffsetZ;
-    public float m_TileSpawnDistance;
-    public bool m_CanSpawnTile;
+    [Header("Level Parts")]
+    [SerializeField] private Transform m_LevelPart_Start;
+    [SerializeField] private List<string> m_LevelPartList;
 
     [Space(10)]
-    [Header("Building Settings")]
-    private Vector3 m_BuildingStartPos; // Where the ground tiles will start
-    private Vector3 m_NextBuildingPos; // Where the next tower will go
-    public float m_BuildingDistance;
-    public float m_BuildingSpacing;
+    [Header("Level Settings")]
+    private Vector3 m_LastEndPos;
 
     [Space(10)]
     [Header("Tower Settings")]
-    private Vector3 m_TowerStartPos; // Where the ground tiles will start
     private Vector3 m_NextTowerPos; // Where the next tower will go
     public float m_TowerDistance;
     public float m_TowerSpacing;
 
     void Start()
-    { 
+    {
         // Get the pool instance and find the player
         m_ObjectPooler = PoolManager.m_Instance;
-
         m_Player = GameObject.FindGameObjectWithTag("Player");
-        // Set start pos to this gamobject's pos
-        m_StartPos = m_Player.transform.position + (Vector3.up * m_TileOffsetY) + (Vector3.forward * m_TileOffsetZ);
-        // Initialize next to start
-        m_NextPos = m_StartPos;
-        // Do the same for towers and buildings 
-        m_TowerStartPos = m_StartPos + new Vector3(0f, 0f, m_TowerDistance);
-        m_NextTowerPos = m_TowerStartPos;
-        m_BuildingStartPos = m_StartPos + new Vector3(0f, 0f, m_BuildingDistance);
-        m_NextBuildingPos = m_BuildingStartPos;
 
-        m_CanSpawnTile = true;
+        m_LastEndPos = m_LevelPart_Start.Find("EndPosition").position;
+        SpawnLevelPart();
+        int startingSpawnLevelParts = 5;
+        for (int i = 0; i < startingSpawnLevelParts; i++)
+        {
+            SpawnLevelPart();
+        }
+
+        m_NextTowerPos = new Vector3(m_TowerSpacing, 0f, m_TowerDistance);
     }
 
     void Update()
     {
-        //Initialize start ground segment
-        if (m_CanSpawnTile)
+        if(Vector3.Distance(m_Player.transform.position, m_LastEndPos) < PLAYER_DIST_SPAWN_LEVEL_PART)
         {
-            SpawnLevelSegment();
-        }
-        float dist = Mathf.Abs(m_NextPos.x - m_Player.transform.position.x);
-        // Check distance to next floor node and spawn a segment when within set range
-        if(dist < m_TileSpawnDistance)
-        {
-            SpawnLevelSegment();
+            SpawnLevelPart();
         }
 
         // ** Tower Testing **
@@ -72,28 +56,26 @@ public class LevelSpawner : MonoBehaviour
         }
     }
 
-    void SpawnLevelSegment()
+    private void SpawnLevelPart()
     {
-        // Spawn ground tiles
-        GameObject groundTile = m_ObjectPooler.SpawnFromPool("Ground", m_NextPos, Quaternion.identity);
-        float offsetX = groundTile.GetComponent<MeshCollider>().bounds.size.x;
-        m_NextPos += new Vector3(offsetX, 0, 0);
-        groundTile.SetActive(true);
+        string chosenLevelPart = m_LevelPartList[Random.Range(0, m_LevelPartList.Count)];
 
+        Transform lastPartPos = SpawnLevelPart(chosenLevelPart, m_LastEndPos);
+        m_LastEndPos = lastPartPos.Find("EndPosition").position;
+    }
 
-        // Spawn buildings
-        //GameObject building = m_ObjectPooler.SpawnFromPool("Building", m_NextBuildingPos, Quaternion.identity);
-        //m_NextBuildingPos += new Vector3(m_BuildingSpacing, 0.0f, 0.0f);
-        //building.SetActive(true);
-
-        m_CanSpawnTile = false;
+    private Transform SpawnLevelPart(string _tag, Vector3 _spawnPos)
+    {
+        // Spawn level parts
+        GameObject levelPart = m_ObjectPooler.SpawnFromPool(_tag, _spawnPos, Quaternion.identity);
+        return levelPart.transform;
     }
 
     void SpawnTower()
     {
         GameObject tower = m_ObjectPooler.SpawnFromPool("Tower", m_NextTowerPos, Quaternion.identity);
         m_NextTowerPos += new Vector3(m_TowerSpacing, 0.0f, 0.0f);
-        tower.SetActive(true);
+        //tower.SetActive(true);
     }
 
 }

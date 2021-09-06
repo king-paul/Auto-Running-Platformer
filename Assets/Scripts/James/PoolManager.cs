@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Author: James Kemeny
 
 public class PoolManager : MonoBehaviour
 {
@@ -28,7 +29,7 @@ public class PoolManager : MonoBehaviour
     public List<Pool> m_Pools;
     public Dictionary<string, Queue<GameObject>> m_PoolDictionary;
 
-    void Start()
+    private void Start()
     {
         // Create a new dictionary of game objects
         m_PoolDictionary = new Dictionary<string, Queue<GameObject>>();
@@ -47,7 +48,6 @@ public class PoolManager : MonoBehaviour
             }
 
             m_PoolDictionary.Add(pool.tag, objectPool);
-
         }
     }
 

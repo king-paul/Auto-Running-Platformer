@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 
+// Author: James Kemeny
+
 public enum GameState
 {
     Idle,

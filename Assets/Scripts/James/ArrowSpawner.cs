@@ -54,6 +54,7 @@ public class ArrowSpawner : MonoBehaviour
 
     void Start()
     {
+        
         m_ObjectPooler = PoolManager.m_Instance;
         m_Transform = GetComponent<Transform>();
         if(m_Target == null)
@@ -63,9 +64,9 @@ public class ArrowSpawner : MonoBehaviour
     
     void Update()
     {
+        m_Shooting = (TestGameManager.m_Instance.m_State == GameState.Running);
         // Store how long since last shot to regulate fire-rate
         m_ShotTimer += Time.deltaTime;
-
         if (m_Shooting && m_ShotTimer >= 1 / m_FireRate)
         {
             Shoot();

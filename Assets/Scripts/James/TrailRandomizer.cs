@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Author: James Kemeny
+
 public class TrailRandomizer : MonoBehaviour
 {
     private TrailRenderer m_TrailRenderer;

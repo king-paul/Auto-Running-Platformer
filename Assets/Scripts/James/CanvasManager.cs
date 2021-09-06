@@ -3,6 +3,8 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+// Author: James Kemeny
+
 public class CanvasManager : MonoBehaviour
 {
     public GameObject m_TitleText;

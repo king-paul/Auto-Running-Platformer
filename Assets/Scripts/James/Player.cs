@@ -10,7 +10,6 @@ public class Player : MonoBehaviour
     [SerializeField] private Transform[] m_GroundChecks;
     [SerializeField] private Transform[] m_WallChecks;
     private CharacterController m_Controller;
-    TestGameManager m_GM;
 
     [Header("Player Settings")]
     //public GameObject m_GroundCheckNode;
@@ -20,6 +19,9 @@ public class Player : MonoBehaviour
     public float m_LowJumpMultiplier = 2f;
     public float m_Gravity = -9.81f;
     private Vector3 m_Velocity;
+
+    private Vector3 m_Prev;
+    private Vector3 m_CurrentVel;
     private float m_HorizontalInput;
 
     public bool m_IsGrounded;
@@ -59,7 +61,8 @@ public class Player : MonoBehaviour
     }
 
     /// <summary>
-    /// 
+    /// Get the character controller and 
+    /// set the player's current position to the game manager's last checkpoint
     /// </summary>
     public void Start()
     {
@@ -68,9 +71,13 @@ public class Player : MonoBehaviour
         m_IsAlive = true;
     }
 
+    /// <summary>
+    /// Calculate player movement and accept input for jumping
+    /// </summary>
     public void Update()
     {
         m_IsRunning = (TestGameManager.m_Instance.m_State == GameState.Running);
+
         if (m_IsRunning)
         {
             m_HorizontalInput = 1;
@@ -127,28 +134,37 @@ public class Player : MonoBehaviour
                 m_JumpTimer = -1;
             }
 
-            // Vertical velocity
-            m_Controller.Move(m_Velocity * Time.deltaTime);
+
+            // Calculate current player velocity
+            m_CurrentVel = (transform.position - m_Prev) / Time.deltaTime;
+            m_Prev = transform.position;
 
             // Jump handling
-            //if (m_Controller.velocity.y < 0)
-            //{
-            //    // If falling
-            //    m_Velocity.y += m_Gravity * (m_FallMultiplier - 1);
-            //    //m_Velocity += (Vector3.up * m_Gravity * (m_FallMultiplier - 1) * Time.deltaTime);
-            //    Debug.Log("Falling");
-            //}
-            //else if (m_Controller.velocity.y > 0 && !Input.GetButton("Jump"))
-            //{
-            //    //Low jump multiplier
-            //    m_Velocity.y += m_Gravity * (m_LowJumpMultiplier - 1);
-            //    //m_Velocity += (Vector3.up * m_Gravity * (m_LowJumpMultiplier - 1) * Time.deltaTime);
-            //    Debug.Log("LowJump");
-            //}
+            if (m_CurrentVel.y < 0)
+            {
+                // If falling
+                //m_Velocity.y += m_Gravity * (m_FallMultiplier - 1);
+                m_Velocity += (Vector3.up * m_Gravity * (m_FallMultiplier - 1) * Time.deltaTime);
+                Debug.Log("Falling");
+            }
+            else if (m_CurrentVel.y > 0 && !Input.GetButton("Jump"))
+            {
+                //Low jump multiplier
+                //m_Velocity.y += m_Gravity * (m_LowJumpMultiplier - 1);
+                m_Velocity += (Vector3.up * m_Gravity * (m_LowJumpMultiplier - 1) * Time.deltaTime);
+                Debug.Log("LowJump");
+            }
+
+            // Vertical velocity
+            m_Controller.Move(m_Velocity * Time.deltaTime);
         }
 
     }
 
+    /// <summary>
+    /// Execute when the player collides with a trigger volume
+    /// </summary>
+    /// <param name="other"></param>
     public void OnTriggerEnter(Collider other)
     {
         if(other.gameObject.tag == "KillBox")
@@ -162,6 +178,10 @@ public class Player : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Execute when the player collides with an arrow
+    /// </summary>
+    /// <param name="collision"></param>
     public void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.tag == "Arrow")
@@ -176,15 +196,9 @@ public class Player : MonoBehaviour
         }
     }
 
-    public void OnCollisionStay(Collision collision)
-    {
-  
-        //if (collision.contacts[0].normal.y > 0.7f)
-        //{//check if ground is walkable, in this case 45 degrees and lower
-        //    m_GroundNormal = collision.contacts[0].normal;//set up direction
-        //}
-    }
-
+    /// <summary>
+    /// Debug Gizmo drawing
+    /// </summary>
     public void OnDrawGizmos()
     {
         Gizmos.color = Color.magenta;
