@@ -10,6 +10,7 @@ public class Player : MonoBehaviour
     [SerializeField] private Transform[] m_GroundChecks;
     [SerializeField] private Transform[] m_WallChecks;
     private CharacterController m_Controller;
+    TestGameManager m_GM;
 
     [Header("Player Settings")]
     //public GameObject m_GroundCheckNode;
@@ -53,7 +54,7 @@ public class Player : MonoBehaviour
     {
         m_IsRunning = (_state == GameState.Running);
 
-        Debug.Log(_state);
+        //Debug.Log(_state);
 
     }
 
@@ -63,6 +64,7 @@ public class Player : MonoBehaviour
     public void Start()
     {
         m_Controller = GetComponent<CharacterController>();
+        transform.position = TestGameManager.m_Instance.m_LastCheckpointPos;
         m_IsAlive = true;
     }
 
@@ -121,11 +123,12 @@ public class Player : MonoBehaviour
 
             if (m_IsGrounded && (m_JumpPressed || (m_JumpTimer > 0 && Time.time < m_JumpTimer + m_JumpGracePeriod)))
             {
-                
                 m_Velocity.y += Mathf.Sqrt(m_JumpHeight * -2.0f * m_Gravity);
                 m_JumpTimer = -1;
-
             }
+
+            // Vertical velocity
+            m_Controller.Move(m_Velocity * Time.deltaTime);
 
             // Jump handling
             //if (m_Controller.velocity.y < 0)
@@ -142,9 +145,6 @@ public class Player : MonoBehaviour
             //    //m_Velocity += (Vector3.up * m_Gravity * (m_LowJumpMultiplier - 1) * Time.deltaTime);
             //    Debug.Log("LowJump");
             //}
-
-            // Vertical velocity
-            m_Controller.Move(m_Velocity * Time.deltaTime);
         }
 
     }
