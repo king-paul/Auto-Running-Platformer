@@ -6,24 +6,33 @@ using UnityEngine;
 
 public class LevelSpawner : MonoBehaviour
 {
-    private const float PLAYER_DIST_SPAWN_LEVEL_PART = 100f;
 
-    private PoolManager m_ObjectPooler;
-    private GameObject m_Player;
+    private const float PLAYER_DIST_SPAWN_LEVEL_CHUNK = 100f; // How far away level parts spawn from the player
+
+    private PoolManager m_ObjectPooler; // Pool manager instance
+    private GameObject m_Player; // Player
+
+    //
+    // Level Spawner Requirements:
+    // - Spawned chunks need an end position node with the name EndPosition
+    // - This is updated each time one is spawned, so that every chunk is sure to follow on from the last.
+    //
 
     [Header("Level Parts")]
-    [SerializeField] private Transform m_LevelPart_Start;
-    [SerializeField] private List<string> m_LevelPartList;
+    [SerializeField] private Transform m_Start_Chunk; // Starting level part
+    [SerializeField] private List<string> m_ChunkList; // SCUFFED List of chunk names 
+    private Vector3 m_LastEndPos;
 
     [Space(10)]
     [Header("Level Settings")]
-    private Vector3 m_LastEndPos;
 
     [Space(10)]
     [Header("Tower Settings")]
     private Vector3 m_NextTowerPos; // Where the next tower will go
     public float m_TowerDistance;
     public float m_TowerSpacing;
+    public int m_TowerSpawnRate = 5;
+    private int m_ChunkCount = 0;
 
     void Start()
     {
@@ -31,12 +40,16 @@ public class LevelSpawner : MonoBehaviour
         m_ObjectPooler = PoolManager.m_Instance;
         m_Player = GameObject.FindGameObjectWithTag("Player");
 
-        m_LastEndPos = m_LevelPart_Start.Find("EndPosition").position;
-        SpawnLevelPart();
-        int startingSpawnLevelParts = 5;
-        for (int i = 0; i < startingSpawnLevelParts; i++)
+        // If theres no starting chunk set, setup a new one
+        if (!m_Start_Chunk)
         {
-            SpawnLevelPart();
+            m_LastEndPos = SpawnChunk().Find("EndPosition").position;
+
+        }
+        else
+        {
+            // Set the last end pos to the start chunk's end pos
+            m_LastEndPos = m_Start_Chunk.Find("EndPosition").position;
         }
 
         m_NextTowerPos = new Vector3(m_TowerSpacing, 0f, m_TowerDistance);
@@ -44,30 +57,35 @@ public class LevelSpawner : MonoBehaviour
 
     void Update()
     {
-        if(Vector3.Distance(m_Player.transform.position, m_LastEndPos) < PLAYER_DIST_SPAWN_LEVEL_PART)
+        // Check the players distance for object spawning
+        if(Vector3.Distance(m_Player.transform.position, m_LastEndPos) < PLAYER_DIST_SPAWN_LEVEL_CHUNK)
         {
-            SpawnLevelPart();
-        }
-
-        // ** Tower Testing **
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
-            SpawnTower();
+            SpawnChunk();
+            // Spawn a tower after 'spawn rate' number of chunks have been spawned
+            if(m_ChunkCount == m_TowerSpawnRate)
+            {
+                SpawnTower();
+                m_ChunkCount = 0;
+               
+            }
+            else
+            {
+                m_ChunkCount++;
+            }
         }
     }
 
-    private void SpawnLevelPart()
+    /// <summary>
+    /// Randomly spawns a chunk object from a pool using the names of the objects you'd like to spawn
+    /// Chunks must have an end position node, and lastLevelPos stores the last one and is updated each time one is spawned
+    /// </summary>
+    /// <returns></returns>
+    private Transform SpawnChunk()
     {
-        string chosenLevelPart = m_LevelPartList[Random.Range(0, m_LevelPartList.Count)];
+        string chosenLevelPart = m_ChunkList[Random.Range(0, m_ChunkList.Count)];
 
-        Transform lastPartPos = SpawnLevelPart(chosenLevelPart, m_LastEndPos);
-        m_LastEndPos = lastPartPos.Find("EndPosition").position;
-    }
-
-    private Transform SpawnLevelPart(string _tag, Vector3 _spawnPos)
-    {
-        // Spawn level parts
-        GameObject levelPart = m_ObjectPooler.SpawnFromPool(_tag, _spawnPos, Quaternion.identity);
+        GameObject levelPart = m_ObjectPooler.SpawnFromPool(chosenLevelPart, m_LastEndPos, Quaternion.identity);
+        m_LastEndPos = levelPart.transform.Find("EndPosition").position;
         return levelPart.transform;
     }
 
@@ -75,7 +93,6 @@ public class LevelSpawner : MonoBehaviour
     {
         GameObject tower = m_ObjectPooler.SpawnFromPool("Tower", m_NextTowerPos, Quaternion.identity);
         m_NextTowerPos += new Vector3(m_TowerSpacing, 0.0f, 0.0f);
-        //tower.SetActive(true);
     }
 
 }
