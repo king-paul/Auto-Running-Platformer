@@ -25,11 +25,11 @@ public class GameManager : MonoBehaviour
     private int m_coins;
     private float maxBarHeight;
     private Transform m_Player;
+    private PlayerController playerController;
 
     private AudioSource m_MusicSource;
 
     public GameState m_State;
-    public static event Action<GameState> OnGameStateChanged;
 
     // properties
     /// <summary>
@@ -45,8 +45,8 @@ public class GameManager : MonoBehaviour
     public GameState State { get => m_State; }
 
     // functions / methods
-    public void EndGame() { m_GameRunning = false; }
-    public void StartGame() { m_GameRunning = true; }
+    public void EndGame() { UpdateGameState(GameState.Dead); }
+    public void StartGame() { UpdateGameState(GameState.Running); }
 
     /// <summary>
     /// Increases the number of coins collected by 1
@@ -57,6 +57,7 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         m_Player = GameObject.FindWithTag("Player").transform;
+        playerController = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
         m_MusicSource = GameObject.FindWithTag("MainCamera").GetComponent<AudioSource>();
         m_GameRunning = true;
         m_coins = 0;
@@ -86,8 +87,9 @@ public class GameManager : MonoBehaviour
 
             m_State = GameState.Idle;
 
-            // restart the scene
-            SceneManager.LoadScene(0);
+            // restart the scene when a key is pressed
+            if(Input.anyKey)
+                SceneManager.LoadScene(0);
         }
 
         if (Input.anyKey && m_State == GameState.Idle)
@@ -117,20 +119,28 @@ public class GameManager : MonoBehaviour
     /// <param name="_newState">Takes GameState enumerator as a parameter</param>
     public void UpdateGameState(GameState _newState)
     {
-        Debug.Log(_newState);
+        //Debug.Log(_newState);
         m_State = _newState;
 
-        Animator playerAnim = m_Player.gameObject.GetComponent<Animator>();
+        //Animator playerAnim = m_Player.gameObject.GetComponent<Animator>();
 
         switch (_newState)
         {
-            case GameState.Running: playerAnim.SetBool("GameRunning", true);
+            case GameState.Running:
+                m_MusicSource.Play();
+                playerController.onBegin.Invoke();
+                //playerAnim.SetBool("GameRunning", true);
                 break;
-            default: playerAnim.SetBool("GameRunning", false);
+
+            case GameState.Dead: m_MusicSource.Stop();
+                break;
+
+            default: 
+                //playerAnim.SetBool("GameRunning", false);
                 break;
         }
         
-        //OnGameStateChanged?.Invoke(_newState);
+        
     }
 
 }

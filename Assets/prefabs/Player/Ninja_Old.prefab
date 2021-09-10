@@ -184,6 +184,50 @@ Transform:
   m_Father: {fileID: 6615538537083749410}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1553755095409002243
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2047044485622415395}
+  - component: {fileID: 7380484127999348711}
+  m_Layer: 0
+  m_Name: Ninja
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2047044485622415395
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1553755095409002243}
+  m_LocalRotation: {x: -0, y: -0.7071068, z: -0, w: 0.7071068}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 6936069405537073879}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &7380484127999348711
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1553755095409002243}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.0605993, y: 3.1119213, z: 1.2273738}
+  m_Center: {x: -0.05154367, y: 0.5669806, z: 0}
 --- !u!1 &1725609767753255242
 GameObject:
   m_ObjectHideFlags: 0
@@ -238,15 +282,15 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2159478598572307949}
-  m_LocalRotation: {x: -0.0000033289514, y: 1, z: -1.3298913e-12, w: -0.00000039947417}
-  m_LocalPosition: {x: -0.00000047226385, y: 0.9469246, z: -0.0013303655}
+  m_LocalRotation: {x: -0.0000033289514, y: 1, z: -1.3642417e-12, w: -0.0000003874301}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
   - {fileID: 6110516610893501033}
   - {fileID: 7434239921125241545}
   - {fileID: 2157572400961805933}
   m_Father: {fileID: 6936069405537073879}
-  m_RootOrder: 0
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2597288408229357205
 GameObject:
@@ -414,7 +458,7 @@ GameObject:
   - component: {fileID: 4111053085005790268}
   - component: {fileID: 9056665098249991722}
   m_Layer: 0
-  m_Name: Ninja
+  m_Name: Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -427,12 +471,12 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3727884175134151334}
-  m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0, y: 0, z: 0}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 6936069405537073879}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!137 &9056665098249991722
 SkinnedMeshRenderer:
@@ -1172,6 +1216,7 @@ Transform:
   m_LocalPosition: {x: 2, y: 0, z: -4}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
+  - {fileID: 2047044485622415395}
   - {fileID: 6933643251569507806}
   - {fileID: 4111053085005790268}
   m_Father: {fileID: 0}
@@ -1208,7 +1253,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 8300000, guid: 3b5d5f3338d69b841b3de31c54e721a2, type: 3}
   m_PlayOnAwake: 0
-  m_Volume: 1
+  m_Volume: 0.681
   m_Pitch: 1
   Loop: 1
   Mute: 0
@@ -1405,7 +1450,7 @@ CharacterController:
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 1.53, z: -0.07}
+  m_Center: {x: 0, y: 0.52, z: -0.07}
 --- !u!114 &7712993583389581410
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1418,11 +1463,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: df75ad4d9ec2b574b9e0b59b2ef653ba, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  jumpForce: 7
   runSpeed: 10
   moveCharacter: 1
-  jumpBar: {fileID: 0}
+  maxJumpForce: 15
+  forceIncrement: 0.4
   jumpSound: {fileID: 8300000, guid: 58b516498cd13964e96bb142a628d9b2, type: 3}
+  highJumpSound: {fileID: 8300000, guid: b03d7b977f2d4474ebf3da01552ccde6, type: 3}
   landSound: {fileID: 8300000, guid: ec8854c2c3796be4ea0b406165b657a7, type: 3}
   collideSound: {fileID: 8300000, guid: dca04573f33a7864e9d18f697b470eea, type: 3}
   fallSound: {fileID: 8300000, guid: 791c6d4d002da15498328075585d3389, type: 3}
