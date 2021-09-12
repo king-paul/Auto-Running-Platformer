@@ -10,7 +10,7 @@ public class CanvasManager : MonoBehaviour
     public GameObject m_TitleText;
     private NewGameManager m_GameManager;
 
-    void Awake()
+    private void Start()
     {
         m_GameManager = NewGameManager.m_Instance;
     }
