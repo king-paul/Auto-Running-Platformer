@@ -28,8 +28,7 @@ public class GameManager : MonoBehaviour
     private PlayerController playerController;
 
     private AudioSource m_MusicSource;
-
-    public GameState m_State;
+        private GameState m_State;
 
     // properties
     /// <summary>

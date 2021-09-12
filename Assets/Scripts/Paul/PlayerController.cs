@@ -151,6 +151,8 @@ public class PlayerController : MonoBehaviour
         // player hits side a wall
         if (state == PlayerState.Running && hit.gameObject.CompareTag("Wall"))
         {
+            //Debug.Log("Collision with wall");
+
             state = PlayerState.Idle;
             onCollisionWithWall.Invoke();
         }
@@ -160,7 +162,7 @@ public class PlayerController : MonoBehaviour
             && (hit.gameObject.CompareTag("Ground") ||
             hit.gameObject.CompareTag("Platform")))
         {
-            Debug.Log("Collision with ground");
+            //Debug.Log("Collision with ground");
 
             //onGround = true;
             moveVelocity.y = 0;
