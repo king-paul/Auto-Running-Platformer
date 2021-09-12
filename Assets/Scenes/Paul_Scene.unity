@@ -5566,6 +5566,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Start_Chunk: {fileID: 0}
   m_ChunkList: []
+  m_KillboxHeight: -30
   m_TowerDistance: 20
   m_TowerSpacing: 80
   m_TowerSpawnRate: 5
@@ -6623,22 +6624,6 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 487383033}
-    - target: {fileID: 735596631, guid: 85cccd1a95c462943acbcd3710dfc088, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: StartGame
-      objectReference: {fileID: 0}
-    - target: {fileID: 5104193468280717337, guid: 85cccd1a95c462943acbcd3710dfc088, type: 3}
-      propertyPath: m_UiScaleMode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5104193468280717337, guid: 85cccd1a95c462943acbcd3710dfc088, type: 3}
-      propertyPath: m_ScreenMatchMode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5104193468280717337, guid: 85cccd1a95c462943acbcd3710dfc088, type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 5104193468280717339, guid: 85cccd1a95c462943acbcd3710dfc088, type: 3}
       propertyPath: m_Name
       value: GUI

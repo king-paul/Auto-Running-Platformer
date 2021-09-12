@@ -103,8 +103,6 @@ public class NewGameManager : MonoBehaviour
        
     }
 
-
-
     // Sets the current state of the game. Can be Idls, Running, StageComplete or Dead
     // Takes GameState enumerator as a parameter
     public void UpdateGameState(GameState _newState)
