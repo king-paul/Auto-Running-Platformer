@@ -7,7 +7,7 @@ using UnityEngine;
 public class LevelSpawner : MonoBehaviour
 {
 
-    private const float PLAYER_DIST_SPAWN_LEVEL_CHUNK = 100f; // How far away level parts spawn from the player
+    private const float PLAYER_DIST_SPAWN_LEVEL_CHUNK = 70f; // How far away level parts spawn from the player
 
     private PoolManager m_ObjectPooler; // Pool manager instance
     private GameObject m_Player; // Player
