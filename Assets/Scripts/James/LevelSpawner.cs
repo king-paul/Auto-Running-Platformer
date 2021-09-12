@@ -25,6 +25,7 @@ public class LevelSpawner : MonoBehaviour
 
     [Space(10)]
     [Header("Level Settings")]
+    [SerializeField] private float m_KillboxHeight = -30;
 
     [Space(10)]
     [Header("Tower Settings")]
@@ -86,6 +87,16 @@ public class LevelSpawner : MonoBehaviour
 
         GameObject levelPart = m_ObjectPooler.SpawnFromPool(chosenLevelPart, m_LastEndPos, Quaternion.identity);
         m_LastEndPos = levelPart.transform.Find("EndPosition").position;
+
+        //Spawn killbox below chunk
+        GameObject killbox = new GameObject("KillBox");
+        killbox.tag = "KillBox";
+
+        killbox.transform.position = ((levelPart.transform.position + m_LastEndPos) / 2) + (transform.position + (Vector3.up * m_KillboxHeight));
+        killbox.AddComponent<BoxCollider>().size = new Vector3(120, 20, 10);
+        killbox.GetComponent<BoxCollider>().isTrigger = true;
+        killbox.transform.SetParent(levelPart.transform);
+
         return levelPart.transform;
     }
 

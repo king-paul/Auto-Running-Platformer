@@ -11,7 +11,6 @@ public class NewGameManager : MonoBehaviour
     [Header("Game Objects")]
     //public Canvas m_Canvas;
     public GameObject m_PlayerText;
-    public GameObject m_SpawnNode;
     public GameObject m_Arrows;
     [SerializeField] private float m_Gravity = -9.8f;
     private Transform m_Player;

@@ -64,7 +64,7 @@ public class ArrowSpawner : MonoBehaviour
     
     void Update()
     {
-        m_Shooting = (TestGameManager.m_Instance.m_State == GameState.Running);
+        m_Shooting = (NewGameManager.m_Instance.State == GameState.Running);
         // Store how long since last shot to regulate fire-rate
         m_ShotTimer += Time.deltaTime;
         if (m_Shooting && m_ShotTimer >= 1 / m_FireRate)

@@ -9,7 +9,6 @@ enum NewPlayerState { Idle, Running, Jumping, Falling }
 [RequireComponent(typeof(CharacterController))]
 public class NewPlayerController : MonoBehaviour
 {
-    // public variables
     [Header("Movement Variables")]
     public float runSpeed = 10.0f;
     public float maxJumpForce = 10;
@@ -161,8 +160,6 @@ public class NewPlayerController : MonoBehaviour
             Debug.Log("Start running");
             state = NewPlayerState.Running;
         }
-
-
         // running -> Falling
         if (state == NewPlayerState.Running && !controller.isGrounded && moveVelocity.y < 0)
         {
@@ -233,7 +230,9 @@ public class NewPlayerController : MonoBehaviour
 
             case "KillBox": case "KillZone":
                 onFallOffLevel.Invoke();
+                gameManager.UpdateGameState(GameState.Dead);
                 break;
+
         }
 
     }

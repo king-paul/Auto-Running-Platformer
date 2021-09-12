@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 6372724351284985209}
   - component: {fileID: 6372724351284985208}
   m_Layer: 0
-  m_Name: ArrowSpawner 2
+  m_Name: ArrowSpawner
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
