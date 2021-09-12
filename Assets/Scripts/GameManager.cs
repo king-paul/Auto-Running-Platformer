@@ -8,14 +8,16 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     [Header("GUI")]
-    
+
+    public GameObject m_HUD;
     public TextMeshProUGUI distanceText;
+    public TextMeshProUGUI gameOverDistanceText;
     public TextMeshProUGUI coinText;
     public RectTransform jumpMeter;
+    public GameObject m_TitleText;
+    public GameObject m_GameOverUI;
 
-    [Header("Game Objects")]
-    //public Canvas m_Canvas;
-    public GameObject m_PlayerText;
+    [Header("Game Objects")]    
     public GameObject m_SpawnNode;
     public GameObject m_Arrows;
 
@@ -26,9 +28,10 @@ public class GameManager : MonoBehaviour
     private float maxBarHeight;
     private Transform m_Player;
     private PlayerController playerController;
+    Vector3 m_LastCheckpointPos;
 
     private AudioSource m_MusicSource;
-        private GameState m_State;
+    private GameState m_State;
 
     // properties
     /// <summary>
@@ -40,8 +43,11 @@ public class GameManager : MonoBehaviour
     /// Returns the gravity being used in the scene (read only)
     /// </summary>
     public float Gravity { get => m_Gravity; }
-
     public GameState State { get => m_State; }
+    public Vector3 LastCheckpointPos { 
+        get => m_LastCheckpointPos; 
+        set => LastCheckpointPos = value; 
+    }
 
     // functions / methods
     public void EndGame() { UpdateGameState(GameState.Dead); }
@@ -58,6 +64,9 @@ public class GameManager : MonoBehaviour
         m_Player = GameObject.FindWithTag("Player").transform;
         playerController = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
         m_MusicSource = GameObject.FindWithTag("MainCamera").GetComponent<AudioSource>();
+        m_GameOverUI.SetActive(false);
+
+        m_LastCheckpointPos = m_SpawnNode.transform.position;
         m_GameRunning = true;
         m_coins = 0;
 
@@ -65,6 +74,8 @@ public class GameManager : MonoBehaviour
         jumpMeter.sizeDelta = new Vector2(jumpMeter.rect.width, 0);
 
         UpdateGameState(GameState.Idle);
+
+        m_Player.position = m_LastCheckpointPos;
     }
 
     // Update is called once per frame
@@ -82,21 +93,21 @@ public class GameManager : MonoBehaviour
         if (m_State == GameState.Dead)
         {
             m_Arrows.GetComponent<ArrowSpawner>().m_Shooting = false;
-            m_Player.position = m_SpawnNode.transform.position;
+            //m_Player.position = m_SpawnNode.transform.position;
 
-            m_State = GameState.Idle;
+            //m_State = GameState.Idle;
 
             // restart the scene when a key is pressed
-            if(Input.anyKey)
-                SceneManager.LoadScene(0);
+            //if(Input.anyKey)
+                //SceneManager.LoadScene(0);
+                
         }
 
-        if (Input.anyKey && m_State == GameState.Idle)
+        if (m_State == GameState.Idle && Input.anyKey)
         {
             UpdateGameState(GameState.Running);
-
-            m_PlayerText.SetActive(false);
-            m_Arrows.GetComponent<ArrowSpawner>().m_Shooting = true;
+            m_TitleText.SetActive(false);
+           
         }
 
     }
@@ -121,24 +132,27 @@ public class GameManager : MonoBehaviour
         //Debug.Log(_newState);
         m_State = _newState;
 
-        //Animator playerAnim = m_Player.gameObject.GetComponent<Animator>();
-
         switch (_newState)
         {
             case GameState.Running:
+                m_GameOverUI.SetActive(false);
+                m_HUD.SetActive(true);
+                m_Player.position = m_LastCheckpointPos;
+                m_Arrows.GetComponent<ArrowSpawner>().m_Shooting = true;
                 m_MusicSource.Play();
                 playerController.onBegin.Invoke();
-                //playerAnim.SetBool("GameRunning", true);
                 break;
 
-            case GameState.Dead: m_MusicSource.Stop();
+            case GameState.Dead: 
+                m_MusicSource.Stop();
+                m_HUD.SetActive(false);
+                m_GameOverUI.SetActive(true);
+                gameOverDistanceText.text = distanceText.text;
                 break;
 
             default: 
-                //playerAnim.SetBool("GameRunning", false);
                 break;
-        }
-        
+        }        
         
     }
 

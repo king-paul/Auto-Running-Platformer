@@ -51,7 +51,14 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         if (gameManager.State != GameState.Running)
+        {
+            controller.enabled = false;
             return;
+        }
+        else if(!controller.enabled)
+        {
+            controller.enabled = true;
+        }
 
         HandleInput();
         UpdatePosition();
