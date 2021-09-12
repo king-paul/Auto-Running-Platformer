@@ -13,7 +13,7 @@ public class NewGameManager : MonoBehaviour
     public GameObject m_PlayerText;
     public GameObject m_Arrows;
     [SerializeField] private float m_Gravity = -9.8f;
-    private Transform m_Player;
+    private GameObject m_Player;
     private PlayerController playerController;
     public Vector3 m_LastCheckpointPos;
 
@@ -45,7 +45,7 @@ public class NewGameManager : MonoBehaviour
     void Start()
     {
         // Find gameobjects
-        m_Player = GameObject.FindWithTag("Player").transform;
+        m_Player = GameObject.FindWithTag("Player");
         playerController = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
         m_MusicSource = GameObject.FindWithTag("MainCamera").GetComponent<AudioSource>();
         m_LastCheckpointPos = transform.position;
@@ -79,15 +79,19 @@ public class NewGameManager : MonoBehaviour
         // Running
         if (m_State == GameState.Running)
         {
-            distanceText.text = ((int)m_Player.position.x).ToString();
+            distanceText.text = ((int)m_Player.transform.position.x).ToString();
             coinText.text = m_coins.ToString();
+        }
+
+        if(!m_Player.GetComponent<NewPlayerController>().m_IsAlive)
+        {
+            m_Player.transform.position = m_LastCheckpointPos;
         }
 
         // Dead
         if (m_State == GameState.Dead)
         {
-            m_Arrows.GetComponent<ArrowSpawner>().m_Shooting = false;
-            m_Player.position = m_LastCheckpointPos;
+            m_Arrows.GetComponentInChildren<ArrowSpawner>().m_Shooting = false;
 
             m_State = GameState.Idle;
 
@@ -119,6 +123,7 @@ public class NewGameManager : MonoBehaviour
                 break;
 
             case GameState.Dead:
+                m_Player.transform.position = m_LastCheckpointPos;
                 m_MusicSource.Stop();
                 break;
 

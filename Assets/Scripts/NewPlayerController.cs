@@ -23,6 +23,7 @@ public class NewPlayerController : MonoBehaviour
     private float m_HorizontalInput;
     public bool m_IsGrounded;
     public bool m_Blocked;
+    public bool m_IsAlive;
     private Vector3 moveVelocity;
     private Vector3 m_PrevPos;
     private Vector3 m_CurrentVel;
@@ -57,6 +58,7 @@ public class NewPlayerController : MonoBehaviour
         controller = GetComponent<CharacterController>();
         gameManager = NewGameManager.m_Instance;
         //onGround = true;
+        m_IsAlive = true;
 
         state = NewPlayerState.Idle;
     }
@@ -151,6 +153,7 @@ public class NewPlayerController : MonoBehaviour
 
         // Vertical velocity
         controller.Move(moveVelocity * Time.deltaTime);
+
     }
 
     private void UpdateState()
@@ -230,6 +233,7 @@ public class NewPlayerController : MonoBehaviour
 
             case "KillBox": case "KillZone":
                 onFallOffLevel.Invoke();
+                m_IsAlive = false;
                 gameManager.UpdateGameState(GameState.Dead);
                 break;
 
@@ -253,5 +257,6 @@ public class NewPlayerController : MonoBehaviour
             Gizmos.DrawWireSphere(checks.transform.position, 0.1f);
         }
     }
+
 
 }
