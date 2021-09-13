@@ -420,16 +420,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Pools:
   - tag: Chunk_01
-    prefab: {fileID: 8822709638290448454, guid: cbec65f23124fb94399accf328da1af4, type: 3}
+    prefab: {fileID: 2924830343231198435, guid: fa372cf2be63aee45ae312e2dd0782dc, type: 3}
     size: 10
   - tag: Chunk_02
-    prefab: {fileID: 2310609494156842921, guid: bb2985140b0097f478fe9615cdc88a7e, type: 3}
+    prefab: {fileID: 2310609494156842921, guid: 952f6bc9a47ece748a61f20327210e39, type: 3}
     size: 10
   - tag: Chunk_03
-    prefab: {fileID: 4951567275813332855, guid: 787951e139d62724ca9c8067b8c91d45, type: 3}
+    prefab: {fileID: 4951567275813332855, guid: 350a1d297bae35d498d103e4db9f1c98, type: 3}
     size: 10
   - tag: Chunk_Start
-    prefab: {fileID: 8946850497821744481, guid: 7f8f5cd0cc98e494eb0e227737e1f6d6, type: 3}
+    prefab: {fileID: 1884393785216635653, guid: c3af5c56d12662249a25cc23f89375fd, type: 3}
+    size: 10
+  - tag: Platform_01
+    prefab: {fileID: 8822709638290448454, guid: 04d5afc4c463a624cb5a1f2143d57ece, type: 3}
     size: 150
   - tag: Arrow
     prefab: {fileID: 8946850497821744481, guid: 7f8f5cd0cc98e494eb0e227737e1f6d6, type: 3}
@@ -554,7 +557,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1884393785216635652, guid: c3af5c56d12662249a25cc23f89375fd, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: -3.6
       objectReference: {fileID: 0}
     - target: {fileID: 1884393785216635652, guid: c3af5c56d12662249a25cc23f89375fd, type: 3}
       propertyPath: m_LocalPosition.y
@@ -640,11 +643,9 @@ MonoBehaviour:
   - Chunk_01
   - Chunk_02
   - Chunk_03
+  - Platform_01
   - Chunk_Start
   m_KillboxHeight: -60
-  m_TowerDistance: 0
-  m_TowerSpacing: 0
-  m_TowerSpawnRate: 5
 --- !u!4 &1345079595
 Transform:
   m_ObjectHideFlags: 0
