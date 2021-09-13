@@ -12,6 +12,7 @@ public class PlayerSound : MonoBehaviour
     public AudioClip highJumpSound;
     public AudioClip landSound;
     public AudioClip hazardSound;
+    public AudioClip collideSound;
     public AudioClip fallSound;
     public AudioClip collectSound;
 
@@ -55,6 +56,12 @@ public class PlayerSound : MonoBehaviour
     {
         footsteps.Stop();
         playerAudio.PlayOneShot(landSound, volumeScale);
+    }
+
+    public void PlayCollideSound(float volumeScale = 1.0f)
+    {
+        footsteps.Stop();
+        playerAudio.PlayOneShot(collideSound, volumeScale);
     }
 
     public void PlayHazardSound(float volumeScale = 1.0f)

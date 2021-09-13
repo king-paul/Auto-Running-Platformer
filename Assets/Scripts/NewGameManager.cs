@@ -14,7 +14,7 @@ public class NewGameManager : MonoBehaviour
     public GameObject m_Arrows;
     [SerializeField] private float m_Gravity = -9.8f;
     private GameObject m_Player;
-    private PlayerController playerController;
+    private NewPlayerController playerController;
     public Vector3 m_LastCheckpointPos;
 
     [Header("GUI")]
@@ -46,7 +46,7 @@ public class NewGameManager : MonoBehaviour
     {
         // Find gameobjects
         m_Player = GameObject.FindWithTag("Player");
-        playerController = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
+        playerController = GameObject.FindWithTag("Player").GetComponent<NewPlayerController>();
         m_MusicSource = GameObject.FindWithTag("MainCamera").GetComponent<AudioSource>();
         m_LastCheckpointPos = transform.position;
         // Set ui values
