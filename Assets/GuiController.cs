@@ -12,7 +12,7 @@ public class GuiController : MonoBehaviour
     public RectTransform jumpMeter;
     public GameObject titleText;
     public GameObject gameOverUI;
-    private float maxBarHeight;
+    private float maxBarHeight = 0;
 
     // Start is called before the first frame update
     void Start()

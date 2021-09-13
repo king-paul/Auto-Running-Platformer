@@ -7,9 +7,9 @@ using UnityEngine.Events;
 public class PlayerControllerTest : MonoBehaviour
 {
     [Header("Collision Checks")]
-    [SerializeField] private LayerMask m_GroundLayers;
-    [SerializeField] private Transform[] m_GroundChecks;
-    [SerializeField] private Transform[] m_WallChecks;
+    [SerializeField] private LayerMask m_GroundLayers = default;
+    [SerializeField] private Transform[] m_GroundChecks = null;
+    [SerializeField] private Transform[] m_WallChecks = null;
     
     [Header("Player Settings")]
     //public GameObject m_GroundCheckNode;
@@ -33,9 +33,9 @@ public class PlayerControllerTest : MonoBehaviour
 
     private bool m_IsGrounded;
     private bool m_Blocked;
-    private bool m_IsAlive;
+    private bool m_IsAlive = false;
     private bool m_IsRunning;
-    private bool m_JumpPressed;
+    private bool m_JumpPressed = false;
     private float m_JumpTimer;
     private float m_JumpGracePeriod = 0.2f;
 

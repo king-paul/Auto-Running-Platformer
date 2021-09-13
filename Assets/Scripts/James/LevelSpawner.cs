@@ -19,10 +19,10 @@ public class LevelSpawner : MonoBehaviour
     //
 
     [Header("Level Parts")]
-    [SerializeField] private Transform m_Start_Chunk; // Starting level part
-    [SerializeField] private List<string> m_ChunkList; // SCUFFED List of chunk names 
+    [SerializeField] private Transform m_Start_Chunk = null; // Starting level part
+    [SerializeField] private List<string> m_ChunkList = null; // SCUFFED List of chunk names 
     private Vector3 m_LastEndPos;
-    private int m_ChunkCount = 0;
+    
     [Space(10)]
     [Header("Level Settings")]
     [SerializeField] private float m_KillboxHeight = -30;

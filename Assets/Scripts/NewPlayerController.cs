@@ -21,9 +21,9 @@ public class NewPlayerController : MonoBehaviour
 
     // serialized private values
     [Header("Collision Checkers")]
-    [SerializeField] private LayerMask m_GroundLayers;
-    [SerializeField] private Transform[] m_GroundChecks;
-    [SerializeField] private Transform[] m_WallChecks;
+    [SerializeField] private LayerMask m_GroundLayers = default;
+    [SerializeField] private Transform[] m_GroundChecks = null;
+    [SerializeField] private Transform[] m_WallChecks = null;
 
     // private variables
     private bool m_JumpPressed;

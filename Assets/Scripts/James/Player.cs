@@ -6,9 +6,9 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    [SerializeField] private LayerMask m_GroundLayers;
-    [SerializeField] private Transform[] m_GroundChecks;
-    [SerializeField] private Transform[] m_WallChecks;
+    [SerializeField] private LayerMask m_GroundLayers = default;
+    [SerializeField] private Transform[] m_GroundChecks = null;
+    [SerializeField] private Transform[] m_WallChecks = null;
     private CharacterController m_Controller;
 
     [Header("Player Settings")]

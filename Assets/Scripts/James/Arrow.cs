@@ -14,7 +14,7 @@ public class Arrow : MonoBehaviour, IPooledObject
     {   
         m_rb = GetComponent<Rigidbody>();
         m_rb.constraints = RigidbodyConstraints.None;
-        
+        this.GetComponent<BoxCollider>().enabled = true;
         m_HasHit = false;
     }
 
@@ -35,6 +35,7 @@ public class Arrow : MonoBehaviour, IPooledObject
             // freeze rigidbody constraints and set the new parent
             m_HasHit = true;
             m_rb.constraints = RigidbodyConstraints.FreezeAll;
+            this.GetComponent<BoxCollider>().enabled = false;
             //transform.SetParent(collision.transform, false);
         }
     }
