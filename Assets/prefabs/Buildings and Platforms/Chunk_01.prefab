@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4056017041252482249}
   m_Layer: 8
   m_Name: Collider
-  m_TagString: Untagged
+  m_TagString: Platform
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -58,7 +58,7 @@ GameObject:
   - component: {fileID: 1762081509248856114}
   m_Layer: 8
   m_Name: Box
-  m_TagString: Untagged
+  m_TagString: Platform
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -153,7 +153,7 @@ GameObject:
   - component: {fileID: 1789228062115001288}
   m_Layer: 8
   m_Name: Cube
-  m_TagString: Untagged
+  m_TagString: Platform
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -286,7 +286,7 @@ GameObject:
   - component: {fileID: 7932870520682134010}
   m_Layer: 8
   m_Name: Collider (2)
-  m_TagString: Untagged
+  m_TagString: Coin
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -330,7 +330,7 @@ GameObject:
   - component: {fileID: 57761336757619303}
   m_Layer: 8
   m_Name: Collider (1)
-  m_TagString: Untagged
+  m_TagString: Platform
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -609,6 +609,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: LevelPart01
       objectReference: {fileID: 0}
+    - target: {fileID: 8822709638290448454, guid: 04d5afc4c463a624cb5a1f2143d57ece, type: 3}
+      propertyPath: m_TagString
+      value: Platform
+      objectReference: {fileID: 0}
     - target: {fileID: 8822709638290448455, guid: 04d5afc4c463a624cb5a1f2143d57ece, type: 3}
       propertyPath: m_LocalPosition.x
       value: 33
@@ -801,6 +805,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: shrine
       objectReference: {fileID: 0}
+    - target: {fileID: 8475329302436655557, guid: cced6ed9ebdb1bd4cbe78582d2f41865, type: 3}
+      propertyPath: m_TagString
+      value: Platform
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: cced6ed9ebdb1bd4cbe78582d2f41865, type: 3}
 --- !u!4 &657743158686133770 stripped
@@ -892,6 +900,10 @@ PrefabInstance:
     - target: {fileID: 2759286004337282143, guid: d6a64548ebf89fc418baa34f9ce777ff, type: 3}
       propertyPath: m_Name
       value: Asian_Building
+      objectReference: {fileID: 0}
+    - target: {fileID: 2759286004337282143, guid: d6a64548ebf89fc418baa34f9ce777ff, type: 3}
+      propertyPath: m_TagString
+      value: Platform
       objectReference: {fileID: 0}
     - target: {fileID: 3242913531872106213, guid: d6a64548ebf89fc418baa34f9ce777ff, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1364,6 +1376,10 @@ PrefabInstance:
     - target: {fileID: 6431024761637671864, guid: 6970e2a1f499ae64fa3a6c7a786b3c7b, type: 3}
       propertyPath: m_Name
       value: Beam_Short
+      objectReference: {fileID: 0}
+    - target: {fileID: 6431024761637671864, guid: 6970e2a1f499ae64fa3a6c7a786b3c7b, type: 3}
+      propertyPath: m_TagString
+      value: Platform
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6970e2a1f499ae64fa3a6c7a786b3c7b, type: 3}

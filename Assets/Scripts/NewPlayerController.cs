@@ -68,7 +68,10 @@ public class NewPlayerController : MonoBehaviour
     void Update()
     {
         if (gameManager.State != GameState.Running)
+        {
+            transform.position = gameManager.LastCheckpointPos;
             return;
+        }
 
         UpdatePosition();
         UpdateState();

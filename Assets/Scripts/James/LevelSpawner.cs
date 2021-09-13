@@ -109,7 +109,7 @@ public class LevelSpawner : MonoBehaviour
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        Gizmos.DrawLine(m_Player.transform.position, m_LastEndPos);
+        //Gizmos.DrawLine(m_Player.transform.position, m_LastEndPos);
 
         Gizmos.color = Color.blue;
         Gizmos.DrawCube(m_LastEndPos, Vector3.one * 3);

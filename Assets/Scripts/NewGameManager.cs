@@ -17,19 +17,39 @@ public class NewGameManager : MonoBehaviour
     private NewPlayerController playerController;
     public Vector3 m_LastCheckpointPos;
 
-    [Header("GUI")]
-    public TextMeshProUGUI distanceText;
-    public TextMeshProUGUI coinText;
-    public RectTransform jumpMeter;
-    private float maxBarHeight;
+    //[Header("GUI")]
+    //public TextMeshProUGUI distanceText;
+    //public TextMeshProUGUI coinText;
+    //public RectTransform jumpMeter;
+    //private float maxBarHeight;
 
     private int m_coins;
     private bool m_GameRunning;
     private GameState m_State;
-   
+
+    private GuiController gui;
+
+    // properties
     public GameState State { get => m_State; }
-    public float Gravity { get => m_Gravity; } // Returns the gravity being used in the scene (read only)
-    public bool GameRunning { get => m_GameRunning; }  // Returns the current game state to check whether or not the game is
+    /// <summary>
+    /// Returns the gravity being used in the scene (read only)
+    /// </summary>
+    public float Gravity { get => m_Gravity; }
+
+    /// <summary>
+    /// Returns the current game state to check whether or not the game is
+    /// still running (read only)
+    /// </summary>
+    public bool GameRunning { get => m_GameRunning; }
+
+    /// <summary>
+    /// Used to access the last checkpoint position variable
+    /// </summary>
+    public Vector3 LastCheckpointPos
+    {
+        get => m_LastCheckpointPos;
+        set => LastCheckpointPos = value;
+    }
 
     // functions / methods
     public void StartGame() { UpdateGameState(GameState.Running); }
@@ -48,10 +68,13 @@ public class NewGameManager : MonoBehaviour
         m_Player = GameObject.FindWithTag("Player");
         playerController = GameObject.FindWithTag("Player").GetComponent<NewPlayerController>();
         m_MusicSource = GameObject.FindWithTag("MainCamera").GetComponent<AudioSource>();
+        gui = GameObject.FindWithTag("Canvas").GetComponent<GuiController>();
+        //m_GameOverUI.SetActive(false);
+
         m_LastCheckpointPos = transform.position;
+
         // Set ui values
-        maxBarHeight = jumpMeter.rect.height;
-        jumpMeter.sizeDelta = new Vector2(jumpMeter.rect.width, 0);
+        gui.SetJumpMeter(0, playerController.maxJumpForce);
 
         // Set game state
         UpdateGameState(GameState.Idle);
@@ -79,8 +102,8 @@ public class NewGameManager : MonoBehaviour
         // Running
         if (m_State == GameState.Running)
         {
-            distanceText.text = ((int)m_Player.transform.position.x).ToString();
-            coinText.text = m_coins.ToString();
+            gui.distanceText.text = ((int)m_Player.transform.position.x).ToString();
+            gui.coinText.text = m_coins.ToString();
         }
 
         if(!m_Player.GetComponent<NewPlayerController>().m_IsAlive)
@@ -94,10 +117,6 @@ public class NewGameManager : MonoBehaviour
             m_Arrows.GetComponentInChildren<ArrowSpawner>().m_Shooting = false;
 
             m_State = GameState.Idle;
-
-            // restart the scene when a key is pressed
-            if (Input.anyKey)
-                SceneManager.LoadScene(0);
         }
 
        
@@ -110,23 +129,31 @@ public class NewGameManager : MonoBehaviour
         Debug.Log("New game state: " + _newState);
         m_State = _newState;
 
-        //Animator playerAnim = m_Player.gameObject.GetComponent<Animator>();
-
         switch (_newState)
         {
             case GameState.Running:
+                m_Player.transform.position = m_LastCheckpointPos;
+
+                gui.titleText.SetActive(false);
+                gui.gameOverUI.SetActive(false);
+                gui.HUD.SetActive(true);
+
                 m_MusicSource.Play();
                 playerController.onBegin.Invoke();
-                //playerAnim.SetBool("GameRunning", true);
-                break;
+            break;
 
             case GameState.Dead:
-                m_Player.transform.position = m_LastCheckpointPos;
-                m_MusicSource.Stop();
-                break;
+                Debug.Log("Last Checkpoint" + m_LastCheckpointPos);
 
-            default:
-                //playerAnim.SetBool("GameRunning", false);
+                m_MusicSource.Stop();
+
+                gui.HUD.SetActive(false);
+                gui.gameOverUI.SetActive(true);                
+
+                gui.gameOverDistanceText.text = gui.distanceText.text;
+           break;
+
+            default:                
                 break;
         }
 
@@ -135,7 +162,6 @@ public class NewGameManager : MonoBehaviour
     // Updates the vertical jump meter on the gui to match the player's jump force.
     public void SetJumpMeter(float jumpForce, float maxJumpForce)
     {
-        float newHeight = maxBarHeight / maxJumpForce * jumpForce;
-        jumpMeter.sizeDelta = new Vector2(jumpMeter.rect.width, newHeight);
+        gui.SetJumpMeter(jumpForce, maxJumpForce);
     }
 }
