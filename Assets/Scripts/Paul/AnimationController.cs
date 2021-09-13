@@ -6,16 +6,16 @@ using UnityEngine;
 public class AnimationController : MonoBehaviour
 {
     private Animator animator;
-    private PlayerController player;
-    private GameManager gameManager;
+    private NewPlayerController player;
+    private NewGameManager gameManager;
     bool falling;
 
     // Start is called before the first frame update
     void Start()
     {
         animator = GetComponent<Animator>();
-        player = GetComponent<PlayerController>();
-        gameManager = GameObject.FindWithTag("GameController").GetComponent<GameManager>();
+        player = GetComponent<NewPlayerController>();
+        gameManager = GameObject.FindWithTag("GameController").GetComponent<NewGameManager>();
     }
 
     private void Update()

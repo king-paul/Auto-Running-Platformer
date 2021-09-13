@@ -143,7 +143,9 @@ public class PlayerController : MonoBehaviour
 
         // jumping -> falling
         if (state == PlayerState.Jumping && moveVelocity.y <= 0)
+        {
             state = PlayerState.Falling;
+        }
 
         // check if the character has fallen below the boundary
         if (transform.position.y < bottomBoundary)        

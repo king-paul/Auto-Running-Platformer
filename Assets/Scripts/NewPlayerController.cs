@@ -50,7 +50,7 @@ public class NewPlayerController : MonoBehaviour
 
     // Properties
     public bool Grounded { get => controller.isGrounded; }
-    public float Y_Velocity { get => moveVelocity.y; }
+    public float Y_Velocity { get => m_CurrentVel.y; }
 
     // Start is called before the first frame update
     void Start()
@@ -61,6 +61,7 @@ public class NewPlayerController : MonoBehaviour
         m_IsAlive = true;
 
         state = NewPlayerState.Idle;
+        
     }
 
     // Update is called once per frame
@@ -95,7 +96,7 @@ public class NewPlayerController : MonoBehaviour
         {
             moveVelocity.y = 0f;
         }
-        else
+        else if(m_IsAlive)
         {
             //Add Gravity
             moveVelocity.y += gameManager.Gravity * Time.deltaTime;
@@ -127,6 +128,10 @@ public class NewPlayerController : MonoBehaviour
 
         if (m_IsGrounded && (m_JumpPressed || (m_JumpTimer > 0 && Time.time < m_JumpTimer + m_JumpGracePeriod)))
         {
+            state = NewPlayerState.Jumping;
+            onJump.Invoke();
+
+            // add jump invoke here
             moveVelocity.y += Mathf.Sqrt(m_JumpHeight * -2.0f * gameManager.Gravity);
             m_JumpTimer = -1;
         }
@@ -139,21 +144,18 @@ public class NewPlayerController : MonoBehaviour
         if (m_CurrentVel.y < 0)
         {
             // If falling
-            //m_Velocity.y += m_Gravity * (m_FallMultiplier - 1);
             moveVelocity += (Vector3.up * gameManager.Gravity * (m_FallMultiplier - 1) * Time.deltaTime);
             Debug.Log("Falling");
         }
         else if (m_CurrentVel.y > 0 && !Input.GetButton("Jump"))
         {
             //Low jump multiplier
-            //m_Velocity.y += m_Gravity * (m_LowJumpMultiplier - 1);
             moveVelocity += (Vector3.up * gameManager.Gravity * (m_LowJumpMultiplier - 1) * Time.deltaTime);
             Debug.Log("LowJump");
         }
 
         // Vertical velocity
         controller.Move(moveVelocity * Time.deltaTime);
-
     }
 
     private void UpdateState()
@@ -163,20 +165,20 @@ public class NewPlayerController : MonoBehaviour
             Debug.Log("Start running");
             state = NewPlayerState.Running;
         }
+
         // running -> Falling
-        if (state == NewPlayerState.Running && !controller.isGrounded && moveVelocity.y < 0)
+        if (state == NewPlayerState.Running && !m_IsGrounded && m_CurrentVel.y < 0)
         {
             state = NewPlayerState.Falling;
             onFall.Invoke();
         }
 
         // jumping -> falling
-        if (state == NewPlayerState.Jumping && moveVelocity.y <= 0)
+        if (state == NewPlayerState.Jumping && m_CurrentVel.y <= 0)
+        {
             state = NewPlayerState.Falling;
-
-        // check if the character has fallen below the boundary
-        if (transform.position.y < bottomBoundary)        
-            onFallOffLevel.Invoke();   
+            onFall.Invoke();
+        }
     }
     
     private void OnControllerColliderHit(ControllerColliderHit hit)
@@ -224,6 +226,9 @@ public class NewPlayerController : MonoBehaviour
     // Trigger collisions
     private void OnTriggerEnter(Collider other)
     {
+        if (!m_IsAlive)
+            return;
+
         switch(other.tag)
         {
             case "Coin":
@@ -232,11 +237,10 @@ public class NewPlayerController : MonoBehaviour
                 break;
 
             case "KillBox": case "KillZone":
-                onFallOffLevel.Invoke();
                 m_IsAlive = false;
-                gameManager.UpdateGameState(GameState.Dead);
+                onFallOffLevel.Invoke();                
+                //gameManager.UpdateGameState(GameState.Dead);
                 break;
-
         }
 
     }
