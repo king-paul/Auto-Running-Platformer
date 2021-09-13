@@ -22,18 +22,11 @@ public class LevelSpawner : MonoBehaviour
     [SerializeField] private Transform m_Start_Chunk; // Starting level part
     [SerializeField] private List<string> m_ChunkList; // SCUFFED List of chunk names 
     private Vector3 m_LastEndPos;
-
+    private int m_ChunkCount = 0;
     [Space(10)]
     [Header("Level Settings")]
     [SerializeField] private float m_KillboxHeight = -30;
-
-    [Space(10)]
-    [Header("Tower Settings")]
-    private Vector3 m_NextTowerPos; // Where the next tower will go
-    public float m_TowerDistance;
-    public float m_TowerSpacing;
-    public int m_TowerSpawnRate = 5;
-    private int m_ChunkCount = 0;
+    
 
     void Start()
     {
@@ -53,7 +46,6 @@ public class LevelSpawner : MonoBehaviour
             m_LastEndPos = m_Start_Chunk.Find("EndPosition").position;
         }
 
-        m_NextTowerPos = new Vector3(m_TowerSpacing, 0f, m_TowerDistance);
     }
 
     void Update()
@@ -62,17 +54,7 @@ public class LevelSpawner : MonoBehaviour
         if(Vector3.Distance(m_Player.transform.position, m_LastEndPos) < PLAYER_DIST_SPAWN_LEVEL_CHUNK)
         {
             SpawnChunk();
-            // Spawn a tower after 'spawn rate' number of chunks have been spawned
-            if(m_ChunkCount == m_TowerSpawnRate)
-            {
-                SpawnTower();
-                m_ChunkCount = 0;
-               
-            }
-            else
-            {
-                m_ChunkCount++;
-            }
+            
         }
     }
 
@@ -86,7 +68,12 @@ public class LevelSpawner : MonoBehaviour
         string chosenLevelPart = m_ChunkList[Random.Range(0, m_ChunkList.Count - 1)];
 
         GameObject levelPart = m_ObjectPooler.SpawnFromPool(chosenLevelPart, m_LastEndPos, Quaternion.identity);
-        m_LastEndPos = levelPart.transform.Find("EndPosition").position;
+        
+        if(levelPart.transform.Find("EndPosition") != null)
+        {
+            m_LastEndPos = levelPart.transform.Find("EndPosition").position;
+
+        }
 
         //Spawn killbox below chunk
         GameObject killbox = new GameObject("KillBox");
@@ -100,18 +87,14 @@ public class LevelSpawner : MonoBehaviour
         return levelPart.transform;
     }
 
-    void SpawnTower()
-    {
-        GameObject tower = m_ObjectPooler.SpawnFromPool("Tower", m_NextTowerPos, Quaternion.identity);
-        m_NextTowerPos += new Vector3(m_TowerSpacing, 0.0f, 0.0f);
-    }
+    
 
     private void OnDrawGizmos()
     {
-        Gizmos.color = Color.red;
+        //Gizmos.color = Color.red;
         //Gizmos.DrawLine(m_Player.transform.position, m_LastEndPos);
-
-        Gizmos.color = Color.blue;
-        Gizmos.DrawCube(m_LastEndPos, Vector3.one * 3);
+        //
+        //Gizmos.color = Color.blue;
+        //Gizmos.DrawCube(m_LastEndPos, Vector3.one * 3);
     }
 }
