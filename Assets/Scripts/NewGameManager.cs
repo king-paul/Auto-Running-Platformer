@@ -17,12 +17,6 @@ public class NewGameManager : MonoBehaviour
     private NewPlayerController playerController;
     public Vector3 m_LastCheckpointPos;
 
-    //[Header("GUI")]
-    //public TextMeshProUGUI distanceText;
-    //public TextMeshProUGUI coinText;
-    //public RectTransform jumpMeter;
-    //private float maxBarHeight;
-
     private int m_coins;
     private bool m_GameRunning;
     private GameState m_State;
@@ -69,7 +63,6 @@ public class NewGameManager : MonoBehaviour
         playerController = GameObject.FindWithTag("Player").GetComponent<NewPlayerController>();
         m_MusicSource = GameObject.FindWithTag("MainCamera").GetComponent<AudioSource>();
         gui = GameObject.FindWithTag("Canvas").GetComponent<GuiController>();
-        //m_GameOverUI.SetActive(false);
 
         m_LastCheckpointPos = transform.position;
 
@@ -106,10 +99,10 @@ public class NewGameManager : MonoBehaviour
             gui.coinText.text = m_coins.ToString();
         }
 
-        if(!m_Player.GetComponent<NewPlayerController>().m_IsAlive)
-        {
-            m_Player.transform.position = m_LastCheckpointPos;
-        }
+        //if(!m_Player.GetComponent<NewPlayerController>().m_IsAlive)
+        //{
+        //    m_Player.transform.position = m_LastCheckpointPos;
+        //}
 
         // Dead
         if (m_State == GameState.Dead)
@@ -118,7 +111,6 @@ public class NewGameManager : MonoBehaviour
 
             m_State = GameState.Idle;
         }
-
        
     }
 
@@ -133,6 +125,7 @@ public class NewGameManager : MonoBehaviour
         {
             case GameState.Running:
                 m_Player.transform.position = m_LastCheckpointPos;
+                m_Player.GetComponent<CharacterController>().enabled = true;
 
                 gui.titleText.SetActive(false);
                 gui.gameOverUI.SetActive(false);
@@ -156,7 +149,6 @@ public class NewGameManager : MonoBehaviour
             default:                
                 break;
         }
-
 
     }
     // Updates the vertical jump meter on the gui to match the player's jump force.

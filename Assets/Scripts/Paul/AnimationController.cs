@@ -44,7 +44,9 @@ public class AnimationController : MonoBehaviour
     public void PlayDeadAnimation()
     {
         // play death animation once
-        animator.SetBool("Death", true);
+        animator.SetTrigger("Die");
+        //animator.SetBool("alive", false);
+        animator.SetBool("GameRunning", false);
         falling = false;
     }
 

@@ -69,7 +69,9 @@ public class NewPlayerController : MonoBehaviour
     {
         if (gameManager.State != GameState.Running)
         {
-            transform.position = gameManager.LastCheckpointPos;
+            if (controller.enabled)
+                controller.enabled = false;
+
             return;
         }
 
@@ -79,6 +81,16 @@ public class NewPlayerController : MonoBehaviour
         gameManager.SetJumpMeter(jumpForce, maxJumpForce);
 
         //Debug.Log("On Ground: " + onGround);
+    }
+
+    private void LateUpdate()
+    {
+        if(transform.position.z != 0)
+        {
+            controller.enabled = false;
+            transform.position = new Vector3(transform.position.x, transform.position.y, 0);
+            controller.enabled = true;
+        }
     }
 
     private void UpdatePosition()
