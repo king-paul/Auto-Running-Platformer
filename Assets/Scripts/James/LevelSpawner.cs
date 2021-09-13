@@ -83,7 +83,7 @@ public class LevelSpawner : MonoBehaviour
     /// <returns></returns>
     private Transform SpawnChunk()
     {
-        string chosenLevelPart = m_ChunkList[Random.Range(0, m_ChunkList.Count)];
+        string chosenLevelPart = m_ChunkList[Random.Range(0, m_ChunkList.Count - 1)];
 
         GameObject levelPart = m_ObjectPooler.SpawnFromPool(chosenLevelPart, m_LastEndPos, Quaternion.identity);
         m_LastEndPos = levelPart.transform.Find("EndPosition").position;
@@ -106,4 +106,12 @@ public class LevelSpawner : MonoBehaviour
         m_NextTowerPos += new Vector3(m_TowerSpacing, 0.0f, 0.0f);
     }
 
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Gizmos.DrawLine(m_Player.transform.position, m_LastEndPos);
+
+        Gizmos.color = Color.blue;
+        Gizmos.DrawCube(m_LastEndPos, Vector3.one * 3);
+    }
 }
