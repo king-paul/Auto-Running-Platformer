@@ -419,20 +419,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   m_Pools:
-  - tag: Chunk_01
+  - tag: Chunk1
     prefab: {fileID: 2924830343231198435, guid: fa372cf2be63aee45ae312e2dd0782dc, type: 3}
     size: 10
-  - tag: Chunk_02
+  - tag: Chunk2
     prefab: {fileID: 2310609494156842921, guid: 952f6bc9a47ece748a61f20327210e39, type: 3}
     size: 10
-  - tag: Chunk_03
+  - tag: Chunk3
     prefab: {fileID: 4951567275813332855, guid: 350a1d297bae35d498d103e4db9f1c98, type: 3}
     size: 10
-  - tag: Chunk_Start
-    prefab: {fileID: 1884393785216635653, guid: c3af5c56d12662249a25cc23f89375fd, type: 3}
+  - tag: Chunk4
+    prefab: {fileID: 8822709638290448454, guid: cbec65f23124fb94399accf328da1af4, type: 3}
     size: 10
-  - tag: Platform_01
-    prefab: {fileID: 8822709638290448454, guid: 04d5afc4c463a624cb5a1f2143d57ece, type: 3}
+  - tag: Checkpoint
+    prefab: {fileID: 4216733503204277878, guid: 2279699391b36674d970d41b3a371ede, type: 3}
     size: 150
   - tag: Arrow
     prefab: {fileID: 8946850497821744481, guid: 7f8f5cd0cc98e494eb0e227737e1f6d6, type: 3}
@@ -607,6 +607,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1884393785216635653, guid: c3af5c56d12662249a25cc23f89375fd, type: 3}
+      propertyPath: m_TagString
+      value: Platform
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: c3af5c56d12662249a25cc23f89375fd, type: 3}
 --- !u!1 &1345079593
@@ -640,11 +644,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Start_Chunk: {fileID: 258139539}
   m_ChunkList:
-  - Chunk_01
-  - Chunk_02
-  - Chunk_03
-  - Platform_01
-  - Chunk_Start
+  - Chunk1
+  - Chunk2
+  - Chunk3
+  - Chunk4
+  - Checkpoint
+  - Arrow
   m_KillboxHeight: -60
 --- !u!4 &1345079595
 Transform:

@@ -84,7 +84,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5974746161981160693}
   m_Layer: 0
-  m_Name: LevelPart_03 1
+  m_Name: LevelPart_03
   m_TagString: Platform
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -248,6 +248,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5974746161981160693}
     m_Modifications:
+    - target: {fileID: 1074421067152934522, guid: cced6ed9ebdb1bd4cbe78582d2f41865, type: 3}
+      propertyPath: m_RootOrder
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 3510608404586325609, guid: cced6ed9ebdb1bd4cbe78582d2f41865, type: 3}
       propertyPath: m_LocalPosition.x
       value: 1.4
