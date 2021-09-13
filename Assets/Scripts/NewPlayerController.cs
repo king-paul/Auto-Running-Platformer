@@ -9,14 +9,23 @@ enum NewPlayerState { Idle, Running, Jumping, Falling }
 [RequireComponent(typeof(CharacterController))]
 public class NewPlayerController : MonoBehaviour
 {
+    // public cariables
     [Header("Movement Variables")]
     public float runSpeed = 10.0f;
-    public float maxJumpForce = 10;
-    public float forceIncrement = 0.4f;
-
+    //public float maxJumpForce = 10;
+    //public float forceIncrement = 0.4f;
     public float m_JumpHeight = 5.0f;
     public float m_FallMultiplier = 2.5f;
-    public float m_LowJumpMultiplier = 2f;
+    public float m_JumpMultiplier = 2f;
+    public float m_AirJumpMultiplier = 4f;
+
+    // serialized private values
+    [Header("Collision Checkers")]
+    [SerializeField] private LayerMask m_GroundLayers;
+    [SerializeField] private Transform[] m_GroundChecks;
+    [SerializeField] private Transform[] m_WallChecks;
+
+    // private variables
     private bool m_JumpPressed;
     private float m_JumpTimer;
     private float m_JumpGracePeriod = 0.2f;
@@ -27,12 +36,7 @@ public class NewPlayerController : MonoBehaviour
     private Vector3 moveVelocity;
     private Vector3 m_PrevPos;
     private Vector3 m_CurrentVel;
-    [SerializeField] private LayerMask m_GroundLayers;
-    [SerializeField] private Transform[] m_GroundChecks;
-    [SerializeField] private Transform[] m_WallChecks;
-
-    // private variabels
-    private float jumpForce = 0;
+    //private float jumpForce = 0;
     const float bottomBoundary = -20;
     NewPlayerState state;
 
@@ -41,11 +45,11 @@ public class NewPlayerController : MonoBehaviour
     NewGameManager gameManager;
     Touch touchInput;
 
-    //bool onGround;
+    bool hasAirJumped;
 
     [Header("Events")]
     public UnityEvent onBegin;
-    public UnityEvent onJump, onHighJump, onFall, onLand, onCollisionWithWall, onCollisionWithHazard, 
+    public UnityEvent onJump, onAirJump, onFall, onLand, onCollisionWithWall, onCollisionWithHazard, 
         onFallOffLevel, onCoinCollect;
 
     // Properties
@@ -61,7 +65,7 @@ public class NewPlayerController : MonoBehaviour
         m_IsAlive = true;
 
         state = NewPlayerState.Idle;
-        
+        hasAirJumped = false;
     }
 
     // Update is called once per frame
@@ -78,7 +82,7 @@ public class NewPlayerController : MonoBehaviour
         UpdatePosition();
         UpdateState();
 
-        gameManager.SetJumpMeter(jumpForce, maxJumpForce);
+        gameManager.SetJumpMeter(m_JumpTimer, m_JumpTimer + m_JumpGracePeriod);
 
         //Debug.Log("On Ground: " + onGround);
     }
@@ -132,7 +136,6 @@ public class NewPlayerController : MonoBehaviour
             controller.Move(new Vector3(m_HorizontalInput * runSpeed, 0, 0) * Time.deltaTime);
         }
 
-
         //Jumping
         m_JumpPressed = Input.GetButtonDown("Jump");
 
@@ -141,14 +144,25 @@ public class NewPlayerController : MonoBehaviour
             m_JumpTimer = Time.time;
         }
 
-        if (m_IsGrounded && (m_JumpPressed || (m_JumpTimer > 0 && Time.time < m_JumpTimer + m_JumpGracePeriod)))
+        if (m_JumpPressed || (m_JumpTimer > 0 && Time.time < m_JumpTimer + m_JumpGracePeriod))
         {
-            state = NewPlayerState.Jumping;
-            onJump.Invoke();
-
-            // add jump invoke here
-            moveVelocity.y += Mathf.Sqrt(m_JumpHeight * -2.0f * gameManager.Gravity);
-            m_JumpTimer = -1;
+            // ground jump
+            if (m_IsGrounded || !hasAirJumped)
+            {
+                if (m_IsGrounded)
+                {
+                    state = NewPlayerState.Jumping;
+                    onJump.Invoke();
+                }
+                else
+                {
+                    onAirJump.Invoke();
+                    hasAirJumped = true;
+                }
+                
+                moveVelocity.y += Mathf.Sqrt(m_JumpHeight * -2.0f * gameManager.Gravity);
+                m_JumpTimer = -1;
+            }
         }
 
         // Calculate current player velocity
@@ -164,9 +178,15 @@ public class NewPlayerController : MonoBehaviour
         }
         else if (m_CurrentVel.y > 0 && !Input.GetButton("Jump"))
         {
-            //Low jump multiplier
-            moveVelocity += (Vector3.up * gameManager.Gravity * (m_LowJumpMultiplier - 1) * Time.deltaTime);
-            Debug.Log("LowJump");
+            //ground jump multiplier
+            if(!hasAirJumped)
+                moveVelocity += (Vector3.up * gameManager.Gravity * (m_JumpMultiplier - 1)
+                    * Time.deltaTime);
+            else // air jump
+                moveVelocity += (Vector3.up * gameManager.Gravity * (m_AirJumpMultiplier - 1)
+                    * Time.deltaTime);
+
+            //Debug.Log("LowJump");
         }
 
         // Vertical velocity
@@ -217,9 +237,8 @@ public class NewPlayerController : MonoBehaviour
         {
             //Debug.Log("Collision with ground");
 
-            //onGround = true;
             moveVelocity.y = 0;
-            jumpForce = 0;
+            hasAirJumped = false;
 
             state = NewPlayerState.Running;
 
@@ -231,8 +250,6 @@ public class NewPlayerController : MonoBehaviour
             hit.gameObject.CompareTag("Arrow"))
         {
             onCollisionWithHazard.Invoke();
-
-            //gameManager.EndGame();
             gameManager.UpdateGameState(GameState.Dead);
         }
 
@@ -249,12 +266,13 @@ public class NewPlayerController : MonoBehaviour
             case "Coin":
                 Destroy(other.gameObject);
                 onCoinCollect.Invoke();
+                gameManager.AddCoin();
                 break;
 
             case "KillBox": case "KillZone":
                 m_IsAlive = false;
                 onFallOffLevel.Invoke();                
-                //gameManager.UpdateGameState(GameState.Dead);
+                gameManager.UpdateGameState(GameState.Dead);
                 break;
         }
 

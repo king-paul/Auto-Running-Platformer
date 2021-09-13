@@ -67,7 +67,7 @@ public class NewGameManager : MonoBehaviour
         m_LastCheckpointPos = transform.position;
 
         // Set ui values
-        gui.SetJumpMeter(0, playerController.maxJumpForce);
+        gui.SetJumpMeter(0, 0);
 
         // Set game state
         UpdateGameState(GameState.Idle);
