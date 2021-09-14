@@ -12,7 +12,7 @@ public class BackgroundSpawner : MonoBehaviour
     [Header("Background Parts")]
     [SerializeField] private Vector3 m_StartPos; // Starting level part
     [SerializeField] private List<string> m_ChunkList = null; // SCUFFED List of chunk names 
-    [SerializeField] private Material m_BackGroundMat;
+    [SerializeField] private Material m_BackGroundMat = null;
     private Vector3 m_LastEndPos;
     public Vector3 m_GroundScale;
     public float m_GroundHeight = -20;
