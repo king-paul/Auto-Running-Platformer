@@ -48,8 +48,14 @@ public class NewGameManager : MonoBehaviour
     // functions / methods
     public void StartGame() { UpdateGameState(GameState.Running); }
     public void EndGame() { UpdateGameState(GameState.Dead); }
-    
+    public void RestartScene() { SceneManager.LoadScene(0); }
+    public void QuitGame() {
+        Debug.Log("Quit Button Clicked");
+        Application.Quit(); }
+
     public void AddCoin() { m_coins++; } // Increases the number of coins collected by 1
+
+
 
     void Awake()
     {
@@ -78,18 +84,11 @@ public class NewGameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Play audio
-        //if (m_State != GameState.Running && m_MusicSource.isPlaying)
-        //    m_MusicSource.Stop();
-
         // Start running
         if (Input.anyKey && m_State == GameState.Idle)
         {
             Debug.Log("RUN");
             UpdateGameState(GameState.Running);
-
-            m_PlayerText.SetActive(false);
-            m_Arrows.GetComponent<ArrowSpawner>().m_Shooting = true;
         }
 
         // Running
@@ -99,17 +98,19 @@ public class NewGameManager : MonoBehaviour
             gui.coinText.text = m_coins.ToString();
         }
 
-        //if(!m_Player.GetComponent<NewPlayerController>().m_IsAlive)
-        //{
-        //    m_Player.transform.position = m_LastCheckpointPos;
-        //}
-
         // Dead
         if (m_State == GameState.Dead)
         {
             m_Arrows.GetComponentInChildren<ArrowSpawner>().m_Shooting = false;
 
-            m_State = GameState.Idle;
+            //m_State = GameState.Idle;
+        }
+
+        // Quit the game when ESC is pressed
+        if(Input.GetKeyDown(KeyCode.Escape))
+        {
+            Debug.Log("You chose to quit the application");
+            Application.Quit();
         }
        
     }
@@ -126,6 +127,9 @@ public class NewGameManager : MonoBehaviour
             case GameState.Running:
                 m_Player.transform.position = m_LastCheckpointPos;
                 m_Player.GetComponent<CharacterController>().enabled = true;
+
+                m_PlayerText.SetActive(false);
+                m_Arrows.GetComponent<ArrowSpawner>().m_Shooting = true;
 
                 gui.titleText.SetActive(false);
                 gui.gameOverUI.SetActive(false);
@@ -156,4 +160,5 @@ public class NewGameManager : MonoBehaviour
     {
         gui.SetJumpMeter(jumpForce, maxJumpForce);
     }
+
 }
