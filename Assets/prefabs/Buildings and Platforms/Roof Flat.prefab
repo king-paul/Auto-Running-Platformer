@@ -227,8 +227,8 @@ GameObject:
   m_Component:
   - component: {fileID: 7328268139214598073}
   m_Layer: 8
-  m_Name: Roof 1
-  m_TagString: Untagged
+  m_Name: Roof Flat
+  m_TagString: Platform
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

@@ -46,7 +46,6 @@ public class BackgroundSpawner : MonoBehaviour
         string chosenLevelPart = m_ChunkList[Random.Range(0, m_ChunkList.Count - 1)];
 
         GameObject backgroundChunk = m_PoolManager.SpawnFromPool(chosenLevelPart, m_LastEndPos, Quaternion.identity);
-        backgroundChunk.GetComponentInChildren<MeshRenderer>().material = m_BackGroundMat;
 
         if (backgroundChunk.transform.Find("EndPosition") != null)
         {
