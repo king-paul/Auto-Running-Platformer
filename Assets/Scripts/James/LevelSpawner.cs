@@ -91,9 +91,26 @@ public class LevelSpawner : MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        //Gizmos.color = Color.red;
-        //Gizmos.DrawLine(m_Player.transform.position, m_LastEndPos);
-        //
+        float height = 100;
+        float length = 1000;
+        float space = 10;
+        Vector2Int dimensions = new Vector2Int(20, 10);
+
+
+        Gizmos.color = Color.magenta;
+        for (int x = 0; x < dimensions.x; x++)
+        {
+            for (int y = 0; y < dimensions.y; y++)
+            {
+                Vector3 coordy = Vector3.zero + (Vector3.up * (y * space));
+                Gizmos.DrawLine(coordy, coordy + (Vector3.right * length));
+                
+            }
+            Vector3 coordx = Vector3.zero + (Vector3.right * (x * space));
+            Gizmos.DrawLine(coordx, coordx + (Vector3.up * height));
+        }
+        
+        
         //Gizmos.color = Color.blue;
         //Gizmos.DrawCube(m_LastEndPos, Vector3.one * 3);
     }

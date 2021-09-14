@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class ArrowSpawner : MonoBehaviour
 {
+
     [Header("Game Objects")]
     public GameObject m_Target;
     private Transform m_Transform = null;
@@ -15,30 +16,13 @@ public class ArrowSpawner : MonoBehaviour
     [Header("Launcher Settings")]
     public float m_ShotRadius = 5.0f;
     public float m_FireRate = 10.0f;
-    public float m_Accuracy = 0.0f;
     private float m_ShotTimer = 0.0f;
     public bool m_Shooting = false;
 
     [Space(10)]
     [Header("Projectile Settings")]
     public float m_LaunchSpeed = 20.0f;
-    public float m_DespawnTime = 2.0f;
 
-    /// <summary>
-    /// Subscribe the player to the GM state change event on awake
-    /// </summary>
-    public void OnAwake()
-    {
-        TestGameManager.OnGameStateChanged += GameManagerOnGameStateChanged;
-    }
-
-    /// <summary>
-    /// Unsubscribe when player is destroyed
-    /// </summary>
-    public void OnDestroy()
-    {
-        TestGameManager.OnGameStateChanged -= GameManagerOnGameStateChanged;
-    }
 
     /// <summary>
     /// Update the player's current state when it changes in the Game Manager
@@ -54,7 +38,6 @@ public class ArrowSpawner : MonoBehaviour
 
     void Start()
     {
-        
         m_ObjectPooler = PoolManager.m_Instance;
         m_Transform = GetComponent<Transform>();
         if(m_Target == null)
@@ -64,7 +47,6 @@ public class ArrowSpawner : MonoBehaviour
     
     void Update()
     {
-        m_Shooting = (NewGameManager.m_Instance.State == GameState.Running);
         // Store how long since last shot to regulate fire-rate
         m_ShotTimer += Time.deltaTime;
         if (m_Shooting && m_ShotTimer >= 1 / m_FireRate)
