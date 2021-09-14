@@ -96,11 +96,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3331167357157501137, guid: ef04bc27c7fcca84695a2f35ee77eaba, type: 3}
       propertyPath: m_BoundingSphereOverride.y
-      value: 43
+      value: 2.7208e-41
       objectReference: {fileID: 0}
     - target: {fileID: 3331167357157501137, guid: ef04bc27c7fcca84695a2f35ee77eaba, type: 3}
       propertyPath: m_BoundingSphereOverride.z
-      value: 12
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3837736626245135633, guid: ef04bc27c7fcca84695a2f35ee77eaba, type: 3}
       propertyPath: lengthInSec
@@ -112,7 +112,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3837736626245135633, guid: ef04bc27c7fcca84695a2f35ee77eaba, type: 3}
       propertyPath: InitialModule.startSize.scalar
-      value: 10
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 3837736626245135633, guid: ef04bc27c7fcca84695a2f35ee77eaba, type: 3}
       propertyPath: ShapeModule.type
@@ -178,6 +178,10 @@ PrefabInstance:
       propertyPath: LightsModule.light
       value: 
       objectReference: {fileID: 9214547666846787815}
+    - target: {fileID: 3837736626245135633, guid: ef04bc27c7fcca84695a2f35ee77eaba, type: 3}
+      propertyPath: InitialModule.startSpeed.scalar
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 4723708181961013752, guid: ef04bc27c7fcca84695a2f35ee77eaba, type: 3}
       propertyPath: m_Name
       value: GFX (1)
@@ -185,6 +189,18 @@ PrefabInstance:
     - target: {fileID: 4723708181961013752, guid: ef04bc27c7fcca84695a2f35ee77eaba, type: 3}
       propertyPath: m_IsActive
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4839039814665771209, guid: ef04bc27c7fcca84695a2f35ee77eaba, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -3.49
+      objectReference: {fileID: 0}
+    - target: {fileID: 4839039814665771209, guid: ef04bc27c7fcca84695a2f35ee77eaba, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0.45
+      objectReference: {fileID: 0}
+    - target: {fileID: 4839039814665771209, guid: ef04bc27c7fcca84695a2f35ee77eaba, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 4.72
       objectReference: {fileID: 0}
     - target: {fileID: 5064383728771010586, guid: ef04bc27c7fcca84695a2f35ee77eaba, type: 3}
       propertyPath: VelocityModule.enabled

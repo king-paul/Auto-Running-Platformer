@@ -80,7 +80,7 @@ public class LevelSpawner : MonoBehaviour
         killbox.tag = "KillBox";
 
         killbox.transform.position = ((levelPart.transform.position + m_LastEndPos) / 2) + (transform.position + (Vector3.up * m_KillboxHeight));
-        killbox.AddComponent<BoxCollider>().size = new Vector3(120, 20, 10);
+        killbox.AddComponent<BoxCollider>().size = new Vector3(150, 40, 30);
         killbox.GetComponent<BoxCollider>().isTrigger = true;
         killbox.transform.SetParent(levelPart.transform);
 
