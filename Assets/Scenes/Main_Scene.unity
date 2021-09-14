@@ -16,8 +16,8 @@ RenderSettings:
   serializedVersion: 9
   m_Fog: 1
   m_FogColor: {r: 0.5471698, g: 0.40521538, b: 0.41573048, a: 1}
-  m_FogMode: 3
-  m_FogDensity: 0.0015
+  m_FogMode: 1
+  m_FogDensity: 0.01
   m_LinearFogStart: 0
   m_LinearFogEnd: 500
   m_AmbientSkyColor: {r: 0.212, g: 0.227, b: 0.259, a: 1}
@@ -311,7 +311,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3940992067418907564, guid: 17a73ec52574d8b4c963b6fc17a4ddcf, type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3940992067418907566, guid: 17a73ec52574d8b4c963b6fc17a4ddcf, type: 3}
       propertyPath: m_LocalPosition.x
@@ -372,15 +372,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4445298842690430720, guid: 8e0a5047466dea240b1f471a80318098, type: 3}
       propertyPath: m_ChunkList.Array.data[0]
-      value: Chunk1
+      value: Background01
       objectReference: {fileID: 0}
     - target: {fileID: 4445298842690430720, guid: 8e0a5047466dea240b1f471a80318098, type: 3}
       propertyPath: m_ChunkList.Array.data[1]
-      value: Chunk2
+      value: Background02
       objectReference: {fileID: 0}
     - target: {fileID: 4445298842690430720, guid: 8e0a5047466dea240b1f471a80318098, type: 3}
       propertyPath: m_ChunkList.Array.data[2]
-      value: Chunk3
+      value: Background03
       objectReference: {fileID: 0}
     - target: {fileID: 4445298842690430720, guid: 8e0a5047466dea240b1f471a80318098, type: 3}
       propertyPath: m_GroundScale.x
@@ -412,7 +412,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4445298842690430723, guid: 8e0a5047466dea240b1f471a80318098, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -60
+      value: -106.8
       objectReference: {fileID: 0}
     - target: {fileID: 4445298842690430723, guid: 8e0a5047466dea240b1f471a80318098, type: 3}
       propertyPath: m_LocalPosition.y
@@ -420,7 +420,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4445298842690430723, guid: 8e0a5047466dea240b1f471a80318098, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 100
+      value: 98.1
       objectReference: {fileID: 0}
     - target: {fileID: 4445298842690430723, guid: 8e0a5047466dea240b1f471a80318098, type: 3}
       propertyPath: m_LocalRotation.x
@@ -667,15 +667,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4445298842690430720, guid: 8e0a5047466dea240b1f471a80318098, type: 3}
       propertyPath: m_ChunkList.Array.data[0]
-      value: Chunk1
+      value: Background01
       objectReference: {fileID: 0}
     - target: {fileID: 4445298842690430720, guid: 8e0a5047466dea240b1f471a80318098, type: 3}
       propertyPath: m_ChunkList.Array.data[1]
-      value: Chunk2
+      value: Background02
       objectReference: {fileID: 0}
     - target: {fileID: 4445298842690430720, guid: 8e0a5047466dea240b1f471a80318098, type: 3}
       propertyPath: m_ChunkList.Array.data[2]
-      value: Chunk3
+      value: Background03
       objectReference: {fileID: 0}
     - target: {fileID: 4445298842690430720, guid: 8e0a5047466dea240b1f471a80318098, type: 3}
       propertyPath: m_GroundScale.x
@@ -854,6 +854,15 @@ MonoBehaviour:
   - tag: Tower
     prefab: {fileID: 7894268845917939850, guid: 3771d8d4743fdc9438ab5b93edf631e8, type: 3}
     size: 20
+  - tag: Background01
+    prefab: {fileID: 2924830343231198435, guid: d148e9468b975e54baffd575decaf10c, type: 3}
+    size: 20
+  - tag: Background02
+    prefab: {fileID: 2310609494156842921, guid: 74b483aa8df024c478a0a152ca80d721, type: 3}
+    size: 20
+  - tag: Background03
+    prefab: {fileID: 4951567275813332855, guid: 4203d96fce13f6c428973594c6568362, type: 3}
+    size: 20
 --- !u!4 &961174825
 Transform:
   m_ObjectHideFlags: 0
@@ -973,15 +982,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4445298842690430720, guid: 8e0a5047466dea240b1f471a80318098, type: 3}
       propertyPath: m_ChunkList.Array.data[0]
-      value: Chunk1
+      value: Background01
       objectReference: {fileID: 0}
     - target: {fileID: 4445298842690430720, guid: 8e0a5047466dea240b1f471a80318098, type: 3}
       propertyPath: m_ChunkList.Array.data[1]
-      value: Chunk2
+      value: Background02
       objectReference: {fileID: 0}
     - target: {fileID: 4445298842690430720, guid: 8e0a5047466dea240b1f471a80318098, type: 3}
       propertyPath: m_ChunkList.Array.data[2]
-      value: Chunk3
+      value: Background03
       objectReference: {fileID: 0}
     - target: {fileID: 4445298842690430720, guid: 8e0a5047466dea240b1f471a80318098, type: 3}
       propertyPath: m_GroundScale.x
@@ -1013,7 +1022,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4445298842690430723, guid: 8e0a5047466dea240b1f471a80318098, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -60
+      value: -90.4
       objectReference: {fileID: 0}
     - target: {fileID: 4445298842690430723, guid: 8e0a5047466dea240b1f471a80318098, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1021,7 +1030,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4445298842690430723, guid: 8e0a5047466dea240b1f471a80318098, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 75
+      value: 69.4
       objectReference: {fileID: 0}
     - target: {fileID: 4445298842690430723, guid: 8e0a5047466dea240b1f471a80318098, type: 3}
       propertyPath: m_LocalRotation.x
@@ -1351,7 +1360,7 @@ PrefabInstance:
     - target: {fileID: 5782873736027710319, guid: c4cc1ff67930b3c4b8121c09c9f8ca1a, type: 3}
       propertyPath: m_MaterialTemplate
       value: 
-      objectReference: {fileID: 2100000, guid: ffb8d79db7f103b42bf9f129e74a32e3, type: 2}
+      objectReference: {fileID: 2100000, guid: 2849c12dc15da8a4e8ab64cfee353a71, type: 2}
     - target: {fileID: 7498897495069840088, guid: c4cc1ff67930b3c4b8121c09c9f8ca1a, type: 3}
       propertyPath: m_LocalPosition.x
       value: 101
@@ -1676,15 +1685,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4445298842690430720, guid: 8e0a5047466dea240b1f471a80318098, type: 3}
       propertyPath: m_ChunkList.Array.data[0]
-      value: Chunk1
+      value: Background01
       objectReference: {fileID: 0}
     - target: {fileID: 4445298842690430720, guid: 8e0a5047466dea240b1f471a80318098, type: 3}
       propertyPath: m_ChunkList.Array.data[1]
-      value: Chunk2
+      value: Background02
       objectReference: {fileID: 0}
     - target: {fileID: 4445298842690430720, guid: 8e0a5047466dea240b1f471a80318098, type: 3}
       propertyPath: m_ChunkList.Array.data[2]
-      value: Chunk3
+      value: Background03
       objectReference: {fileID: 0}
     - target: {fileID: 4445298842690430720, guid: 8e0a5047466dea240b1f471a80318098, type: 3}
       propertyPath: m_GroundScale.x
@@ -1716,7 +1725,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4445298842690430723, guid: 8e0a5047466dea240b1f471a80318098, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -60
+      value: -90
       objectReference: {fileID: 0}
     - target: {fileID: 4445298842690430723, guid: 8e0a5047466dea240b1f471a80318098, type: 3}
       propertyPath: m_LocalPosition.y
@@ -1724,7 +1733,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4445298842690430723, guid: 8e0a5047466dea240b1f471a80318098, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 50
+      value: 53.7
       objectReference: {fileID: 0}
     - target: {fileID: 4445298842690430723, guid: 8e0a5047466dea240b1f471a80318098, type: 3}
       propertyPath: m_LocalRotation.x
@@ -1779,6 +1788,14 @@ PrefabInstance:
       propertyPath: onCoinCollect.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
       objectReference: {fileID: 887540667}
+    - target: {fileID: 2330009158330669997, guid: 3489cae6fe0554d448a76ccf135ab2f7, type: 3}
+      propertyPath: runSpeed
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 2330009158330669997, guid: 3489cae6fe0554d448a76ccf135ab2f7, type: 3}
+      propertyPath: m_JumpMultiplier
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 4000509136128123351, guid: 3489cae6fe0554d448a76ccf135ab2f7, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1823,6 +1840,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4381854490860419939, guid: 3489cae6fe0554d448a76ccf135ab2f7, type: 3}
+      propertyPath: m_Volume
+      value: 0.4
+      objectReference: {fileID: 0}
     - target: {fileID: 4381854490860419949, guid: 3489cae6fe0554d448a76ccf135ab2f7, type: 3}
       propertyPath: m_Name
       value: Player
@@ -1830,6 +1851,10 @@ PrefabInstance:
     - target: {fileID: 4381854490860419949, guid: 3489cae6fe0554d448a76ccf135ab2f7, type: 3}
       propertyPath: m_TagString
       value: Player
+      objectReference: {fileID: 0}
+    - target: {fileID: 6324592905681397496, guid: 3489cae6fe0554d448a76ccf135ab2f7, type: 3}
+      propertyPath: m_Volume
+      value: 0.16
       objectReference: {fileID: 0}
     - target: {fileID: 6324592907006445406, guid: 3489cae6fe0554d448a76ccf135ab2f7, type: 3}
       propertyPath: m_Enabled
