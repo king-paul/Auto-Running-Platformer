@@ -6,6 +6,7 @@ using UnityEngine;
 
 public class ArrowSpawner : MonoBehaviour
 {
+    private NewGameManager m_GameManager;
 
     [Header("Game Objects")]
     public GameObject m_Target;
@@ -23,21 +24,9 @@ public class ArrowSpawner : MonoBehaviour
     [Header("Projectile Settings")]
     public float m_LaunchSpeed = 20.0f;
 
-
-    /// <summary>
-    /// Update the player's current state when it changes in the Game Manager
-    /// </summary>
-    /// <param name="_state"> The current game state </param>
-    private void GameManagerOnGameStateChanged(GameState _state)
-    {
-        m_Shooting = (_state == GameState.Running);
-
-        Debug.Log("Spawner Spawning");
-
-    }
-
     void Start()
     {
+        m_GameManager = NewGameManager.m_Instance;
         m_ObjectPooler = PoolManager.m_Instance;
         m_Transform = GetComponent<Transform>();
         if(m_Target == null)
@@ -47,11 +36,17 @@ public class ArrowSpawner : MonoBehaviour
     
     void Update()
     {
+        m_Shooting = (m_GameManager.State == GameState.Running);
+
         // Store how long since last shot to regulate fire-rate
         m_ShotTimer += Time.deltaTime;
         if (m_Shooting && m_ShotTimer >= 1 / m_FireRate)
         {
             Shoot();
+        }
+        if (m_GameManager.State == GameState.Dead)
+        {
+            m_Shooting = false;
         }
     }
 

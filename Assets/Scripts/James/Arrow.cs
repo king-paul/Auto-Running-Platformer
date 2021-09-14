@@ -57,10 +57,6 @@ public class Arrow : MonoBehaviour, IPooledObject
             m_rb.constraints = RigidbodyConstraints.FreezeAll;
             this.GetComponent<BoxCollider>().enabled = false;
             //transform.SetParent(collision.transform, false);
-
-            
         }
-
-        
     }
 }
