@@ -107,19 +107,9 @@ public class NewPlayerController : MonoBehaviour
             if (Physics.CheckSphere(groundCheck.position, 0.1f, m_GroundLayers, QueryTriggerInteraction.Ignore))
             {
                 m_IsGrounded = true;
-                break;
             }
         }
 
-        if (m_IsGrounded && moveVelocity.y < 0)
-        {
-            moveVelocity.y = 0f;
-        }
-        else if(m_IsAlive)
-        {
-            //Add Gravity
-            moveVelocity.y += gameManager.Gravity * Time.deltaTime;
-        }
         m_Blocked = false;
         foreach (var wallCheck in m_WallChecks)
         {
@@ -134,6 +124,16 @@ public class NewPlayerController : MonoBehaviour
         {
             // Horizontal movement
             controller.Move(new Vector3(m_HorizontalInput * runSpeed, 0, 0) * Time.deltaTime);
+        }
+
+        if (m_IsGrounded && moveVelocity.y < 0)
+        {
+            moveVelocity.y = 0f;
+        }
+        else if(m_IsAlive)
+        {
+            //Add Gravity
+            moveVelocity.y += gameManager.Gravity * Time.deltaTime;
         }
 
         //Jumping
