@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class ArrowSpawner : MonoBehaviour
 {
-    private NewGameManager m_GameManager;
+    private GameManager m_GameManager;
 
     [Header("Game Objects")]
     public GameObject m_Target;
@@ -26,7 +26,7 @@ public class ArrowSpawner : MonoBehaviour
 
     void Start()
     {
-        m_GameManager = NewGameManager.m_Instance;
+        m_GameManager = GameManager.m_Instance;
         m_ObjectPooler = PoolManager.m_Instance;
         m_Transform = GetComponent<Transform>();
         if(m_Target == null)

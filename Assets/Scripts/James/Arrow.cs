@@ -6,7 +6,7 @@ using UnityEngine;
 
 public class Arrow : MonoBehaviour, IPooledObject
 {
-    private NewGameManager m_GameManager;
+    private GameManager m_GameManager;
     private Rigidbody m_rb;
     private bool m_HasHit = false;
     public float m_DespawnTime = 2.0f;
@@ -14,7 +14,7 @@ public class Arrow : MonoBehaviour, IPooledObject
 
     public void OnObjectSpawn()
     {
-        m_GameManager = NewGameManager.m_Instance;
+        m_GameManager = GameManager.m_Instance;
         m_rb = GetComponent<Rigidbody>();
         m_rb.constraints = RigidbodyConstraints.None;
         this.GetComponent<BoxCollider>().enabled = true;

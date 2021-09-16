@@ -1,159 +1,164 @@
-﻿using System;
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
+using TMPro;
 using UnityEngine.SceneManagement;
-
 public class GameManager : MonoBehaviour
 {
-    [Header("GUI")]
-
-    public GameObject m_HUD;
-    public TextMeshProUGUI distanceText;
-    public TextMeshProUGUI gameOverDistanceText;
-    public TextMeshProUGUI coinText;
-    public RectTransform jumpMeter;
-    public GameObject m_TitleText;
-    public GameObject m_GameOverUI;
-
-    [Header("Game Objects")]    
-    public GameObject m_SpawnNode;
-    public GameObject m_Arrows;
-
-    [SerializeField]
-    private float m_Gravity = -9.8f;
-    private bool m_GameRunning;
-    private int m_coins;
-    private float maxBarHeight;
-    private Transform m_Player;
-    private PlayerController playerController;
-    Vector3 m_LastCheckpointPos;
-
+    public static GameManager m_Instance;
     private AudioSource m_MusicSource;
+
+    [Header("Game Objects")]
+    //public Canvas m_Canvas;
+    public GameObject m_PlayerText;
+    public GameObject m_Arrows;
+    [SerializeField] private float m_Gravity = -9.8f;
+    private GameObject m_Player;
+    private PlayerController playerController;
+    public Vector3 m_LastCheckpointPos;
+
+    private int m_coins;
+    private bool m_GameRunning;
     private GameState m_State;
 
+    private GuiController gui;
+
     // properties
+    public GameState State { get => m_State; }
+    /// <summary>
+    /// Returns the gravity being used in the scene (read only)
+    /// </summary>
+    public float Gravity { get => m_Gravity; }
+
     /// <summary>
     /// Returns the current game state to check whether or not the game is
     /// still running (read only)
     /// </summary>
     public bool GameRunning { get => m_GameRunning; }
+
     /// <summary>
-    /// Returns the gravity being used in the scene (read only)
+    /// Used to access the last checkpoint position variable
     /// </summary>
-    public float Gravity { get => m_Gravity; }
-    public GameState State { get => m_State; }
-    public Vector3 LastCheckpointPos { 
-        get => m_LastCheckpointPos; 
-        set => LastCheckpointPos = value; 
+    public Vector3 LastCheckpointPos
+    {
+        get => m_LastCheckpointPos;
+        set => LastCheckpointPos = value;
     }
 
     // functions / methods
-    public void EndGame() { UpdateGameState(GameState.Dead); }
     public void StartGame() { UpdateGameState(GameState.Running); }
+    public void EndGame() { UpdateGameState(GameState.Dead); }
+    public void RestartScene() { SceneManager.LoadScene(0); }
+    public void QuitGame() {
+        Debug.Log("Quit Button Clicked");
+        Application.Quit(); }
 
-    /// <summary>
-    /// Increases the number of coins collected by 1
-    /// </summary>
-    public void AddCoin() { m_coins++; }
+    public void AddCoin() { m_coins++; } // Increases the number of coins collected by 1
 
-    // Start is called before the first frame update
+
+
+    void Awake()
+    {
+        m_Instance = this;
+    }
+
     void Start()
     {
-        m_Player = GameObject.FindWithTag("Player").transform;
+        // Find gameobjects
+        m_Player = GameObject.FindWithTag("Player");
         playerController = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
         m_MusicSource = GameObject.FindWithTag("MainCamera").GetComponent<AudioSource>();
-        m_GameOverUI.SetActive(false);
+        gui = GameObject.FindWithTag("Canvas").GetComponent<GuiController>();
 
-        m_LastCheckpointPos = m_SpawnNode.transform.position;
+        m_LastCheckpointPos = transform.position;
+
+        // Set ui values
+        gui.SetJumpMeter(0, 0);
+
+        // Set game state
+        UpdateGameState(GameState.Idle);
         m_GameRunning = true;
         m_coins = 0;
-
-        maxBarHeight = jumpMeter.rect.height;
-        jumpMeter.sizeDelta = new Vector2(jumpMeter.rect.width, 0);
-
-        UpdateGameState(GameState.Idle);
-
-        m_Player.position = m_LastCheckpointPos;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (m_State != GameState.Running && m_MusicSource.isPlaying)
-            m_MusicSource.Stop();
+        // Start running
+        if (Input.anyKey && m_State == GameState.Idle)
+        {
+            Debug.Log("RUN");
+            UpdateGameState(GameState.Running);
+        }
 
+        // Running
         if (m_State == GameState.Running)
         {
-            distanceText.text = ((int)m_Player.position.x).ToString();
-            coinText.text = m_coins.ToString();
+            gui.distanceText.text = ((int)m_Player.transform.position.x).ToString();
+            gui.coinText.text = m_coins.ToString();
         }
 
+        // Dead
         if (m_State == GameState.Dead)
         {
-            m_Arrows.GetComponent<ArrowSpawner>().m_Shooting = false;
-            //m_Player.position = m_SpawnNode.transform.position;
+            m_Arrows.GetComponentInChildren<ArrowSpawner>().m_Shooting = false;
 
             //m_State = GameState.Idle;
-
-            // restart the scene when a key is pressed
-            //if(Input.anyKey)
-                //SceneManager.LoadScene(0);
-                
         }
 
-        if (m_State == GameState.Idle && Input.anyKey)
+        // Quit the game when ESC is pressed
+        if(Input.GetKeyDown(KeyCode.Escape))
         {
-            UpdateGameState(GameState.Running);
-            m_TitleText.SetActive(false);
-           
+            Debug.Log("You chose to quit the application");
+            Application.Quit();
         }
-
+       
     }
 
-    /// <summary>
-    /// Updates the vertical jump meter on the gui to match the player's jump force.
-    /// </summary>
-    /// <param name="jumpForce">Sets the current value to set the bar at</param>
-    /// <param name="maxJumpForce">Sets tge maximum value that the jump meter can be set at</param>
-    public void SetJumpMeter(float jumpForce, float maxJumpForce)
-    {
-        float newHeight = maxBarHeight / maxJumpForce * jumpForce;
-        jumpMeter.sizeDelta = new Vector2(jumpMeter.rect.width, newHeight);
-    }
-
-    /// <summary>
-    /// Sets the current state of the game. Can be Idls, Running, StageComplete or Dead
-    /// </summary>
-    /// <param name="_newState">Takes GameState enumerator as a parameter</param>
+    // Sets the current state of the game. Can be Idls, Running, StageComplete or Dead
+    // Takes GameState enumerator as a parameter
     public void UpdateGameState(GameState _newState)
     {
-        //Debug.Log(_newState);
+        Debug.Log("New game state: " + _newState);
         m_State = _newState;
 
         switch (_newState)
         {
             case GameState.Running:
-                m_GameOverUI.SetActive(false);
-                m_HUD.SetActive(true);
-                m_Player.position = m_LastCheckpointPos;
+                m_Player.transform.position = m_LastCheckpointPos;
+                m_Player.GetComponent<CharacterController>().enabled = true;
+
+                m_PlayerText.SetActive(false);
                 m_Arrows.GetComponent<ArrowSpawner>().m_Shooting = true;
+
+                gui.titleText.SetActive(false);
+                gui.gameOverUI.SetActive(false);
+                gui.HUD.SetActive(true);
+
                 m_MusicSource.Play();
                 playerController.onBegin.Invoke();
-                break;
+            break;
 
-            case GameState.Dead: 
+            case GameState.Dead:
+                Debug.Log("Last Checkpoint" + m_LastCheckpointPos);
+
                 m_MusicSource.Stop();
-                m_HUD.SetActive(false);
-                m_GameOverUI.SetActive(true);
-                gameOverDistanceText.text = distanceText.text;
-                break;
 
-            default: 
+                gui.HUD.SetActive(false);
+                gui.gameOverUI.SetActive(true);                
+
+                gui.gameOverDistanceText.text = gui.distanceText.text;
+           break;
+
+            default:                
                 break;
-        }        
-        
+        }
+
+    }
+    // Updates the vertical jump meter on the gui to match the player's jump force.
+    public void SetJumpMeter(float jumpForce, float maxJumpForce)
+    {
+        gui.SetJumpMeter(jumpForce, maxJumpForce);
     }
 
 }

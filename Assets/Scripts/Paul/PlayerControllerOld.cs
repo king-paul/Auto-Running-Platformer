@@ -4,58 +4,47 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
+enum PlayerState { Idle, Running, Jumping, Falling }
+
 [RequireComponent(typeof(CharacterController))]
-[RequireComponent(typeof(Animator))]
-[RequireComponent(typeof(AudioSource))]
 public class PlayerControllerOld : MonoBehaviour
 {
     // public variables
     [Header("Movement Variables")]
     public float runSpeed = 10.0f;
-    public bool moveCharacter = true;
     public float maxJumpForce = 10;
-    public float forceIncrement = 0.4f;    
+    public float forceIncrement = 0.4f;
 
     // private variabels
     private float jumpForce = 0;
     private Vector3 moveVelocity;
-    const float bottomBoundary = -20;    
+    const float bottomBoundary = -20;
+    PlayerState state;
 
     // Controllers/Managers
     CharacterController controller;
     GameManager gameManager;
     Touch touchInput;
 
-    // animation objects
-    private Animator playerAnim;
-    bool onGround;
+    //bool onGround;
 
-    // audio objects
-    [Header("Audio Clips")]
-    public AudioClip jumpSound;
-    public AudioClip highJumpSound;
-    public AudioClip landSound;
-    public AudioClip collideSound;
-    public AudioClip fallSound;    
-    private AudioSource playerAudio;
-    private AudioSource footsteps;
-    private bool alive;
+    [Header("Events")]
+    public UnityEvent onBegin;
+    public UnityEvent onJump, onHighJump, onFall, onLand, onCollisionWithWall, onCollisionWithHazard, 
+        onFallOffLevel, onCoinCollect;
+
+    // Properties
+    public bool Grounded { get => controller.isGrounded; }
+    public float Y_Velocity { get => moveVelocity.y; }
 
     // Start is called before the first frame update
     void Start()
     {
         controller = GetComponent<CharacterController>();
-        playerAnim = GetComponent<Animator>();
-
-        // get audio sources
-        var audioSources = GetComponents<AudioSource>();
-        footsteps = audioSources[0];
-        playerAudio = audioSources[1];   
-
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        //onGround = true;
 
-        footsteps.Play();
-        onGround = true;
+        state = PlayerState.Running;
     }
 
     // Update is called once per frame
@@ -63,142 +52,161 @@ public class PlayerControllerOld : MonoBehaviour
     {
         if (gameManager.State != GameState.Running)
         {
-            if (footsteps.isPlaying)
-                footsteps.Stop();
-
+            controller.enabled = false;
             return;
+        }
+        else if(!controller.enabled)
+        {
+            controller.enabled = true;
         }
 
         HandleInput();
         UpdatePosition();
+        UpdateState();
 
-        // check if the player is still on the ground
-        if (!controller.isGrounded)
-        {
-            if(onGround)
-                onGround = false;
-            if (footsteps.isPlaying)
-                footsteps.Stop();
-        }            
+        gameManager.SetJumpMeter(jumpForce, maxJumpForce);
 
-        // check if the character has fallen below the boundary
-        if (transform.position.y < bottomBoundary)
-        {
-            playerAnim.enabled = false;
-            playerAudio.PlayOneShot(fallSound);
-            gameManager.UpdateGameState(GameState.Dead);
-        }
-
-        // update animation parameters
-        playerAnim.SetFloat("Y_Velocity", moveVelocity.y + gameManager.Gravity);
-        playerAnim.SetBool("Grounded", controller.isGrounded);
-
-        gameManager.SetJumpMeter(jumpForce, maxJumpForce);       
+        //Debug.Log("On Ground: " + onGround);
     }
+
     private void UpdatePosition()
     {
         // make character fall when off ground
         if (!controller.isGrounded)
+        {
             moveVelocity.y += gameManager.Gravity * Time.deltaTime;
+            //onGround = false;
+        }
         // otherwise reset the y component of the velocity vector
-        else if(moveVelocity.y < 0f)
+        else if (moveVelocity.y < 0f)
             moveVelocity.y = 0f;
 
-        // if move character is turned onmove object to the right
-        if (moveCharacter)
-        {
-            //transform.position += Vector3.right * runSpeed * Time.deltaTime;
-            moveVelocity.x = Vector3.right.x * runSpeed;
-        }
+        //transform.position += Vector3.right * runSpeed * Time.deltaTime;
+        moveVelocity.x = Vector3.right.x * runSpeed;        
 
         // move the character
         controller.Move(moveVelocity * Time.deltaTime);
     }
-     
+
     private void HandleInput()
     {
-        if(Input.touchCount > 0)
+        // ensure the the player is running all standing
+        if (state != PlayerState.Running && state != PlayerState.Idle)
+            return;
+
+        if (Input.touchCount > 0)
             touchInput = Input.GetTouch(0);
 
         // build up jump force while jump is held down
-        if ((Input.GetKey(KeyCode.Space) || touchInput.phase == TouchPhase.Stationary) &&
-            onGround)
+        if (Input.GetKey(KeyCode.Space) || touchInput.phase == TouchPhase.Stationary)
         {
             if (jumpForce < maxJumpForce)
             {
                 jumpForce += forceIncrement;
             }
 
-             if (jumpForce > maxJumpForce)
-                jumpForce = maxJumpForce;   
+            if (jumpForce > maxJumpForce)
+                jumpForce = maxJumpForce;
         }
 
         // make the chatacter jump when jump is released
-        if ((Input.GetKeyUp(KeyCode.Space) || touchInput.phase == TouchPhase.Ended ||
-            jumpForce >= maxJumpForce) && onGround)
+        if (Input.GetKeyUp(KeyCode.Space) || touchInput.phase == TouchPhase.Ended || 
+            jumpForce >= maxJumpForce)
         {
             // move character up
             moveVelocity.y += Mathf.Sqrt(jumpForce * -3.0f * gameManager.Gravity);
 
-            // Update animation
-            playerAnim.SetFloat("JumpPower", jumpForce);
-            playerAnim.SetTrigger("Jump");
-            // Turn off wall collision
-            playerAnim.SetBool("WallCollision", false);
-
-            if (jumpForce > (maxJumpForce+1) / 2)
-                playerAudio.PlayOneShot(highJumpSound, 1.0f);
+            if (jumpForce > (maxJumpForce + 1) / 2)
+                onHighJump.Invoke();
             else
-                playerAudio.PlayOneShot(jumpSound, 1.0f);
+                onJump.Invoke();
 
-              onGround = false;
+            //onGround = false;
+
+            state = PlayerState.Jumping;
         }
 
     }
 
+    private void UpdateState()
+    {
+        // idle -> running
+        //if (state == PlayerState.Idle && moveVelocity.x > 0)
+            //state = PlayerState.Running;
+
+        // running -> Falling
+        if (state == PlayerState.Running && !controller.isGrounded && moveVelocity.y < 0)
+        {
+            state = PlayerState.Falling;
+            onFall.Invoke();
+        }
+
+        // jumping -> falling
+        if (state == PlayerState.Jumping && moveVelocity.y <= 0)
+        {
+            state = PlayerState.Falling;
+        }
+
+        // check if the character has fallen below the boundary
+        if (transform.position.y < bottomBoundary)        
+            onFallOffLevel.Invoke();   
+    }
+    
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
         if (gameManager.State != GameState.Running)
             return;
 
-        // check if there is a collision with the ground
-        if (!onGround && (hit.gameObject.CompareTag("Ground") || 
-            hit.gameObject.CompareTag("Platform")))
+        // player hits side a wall
+        if (state == PlayerState.Running && hit.gameObject.CompareTag("Wall"))
         {
-            // player lands on top of object
-            //if (transform.position.y > hit.transform.position.y)
-            //{
-                onGround = true;                
-                moveVelocity.y = 0;
-                jumpForce = 0;
+            //Debug.Log("Collision with wall");
 
-                if (landSound != null && !playerAudio.isPlaying)
-                    playerAudio.PlayOneShot(landSound, 1.5f);
-
-                footsteps.PlayScheduled(2);
-                playerAnim.SetBool("Grounded", true);
-            //}
+            state = PlayerState.Idle;
+            onCollisionWithWall.Invoke();
         }
 
-        // player hits side of object
-        if (hit.gameObject.CompareTag("Wall"))
+        // check if there is a collision with the ground
+        if (state == PlayerState.Falling || state == PlayerState.Jumping
+            && (hit.gameObject.CompareTag("Ground") ||
+            hit.gameObject.CompareTag("Platform")))
         {
-            playerAnim.SetBool("WallCollision", true);
+            //Debug.Log("Collision with ground");
+
+            //onGround = true;
+            moveVelocity.y = 0;
+            jumpForce = 0;
+
+            state = PlayerState.Running;
+
+            onLand.Invoke();
         }
 
         // check if there is a collision with an obstacle
         if (hit.gameObject.CompareTag("Obstacle") || hit.gameObject.CompareTag("Hazard") ||
             hit.gameObject.CompareTag("Arrow"))
         {
-            // play death animation once
-            playerAnim.SetBool("Death", true);
-            playerAnim.SetInteger("DeathType", 1);
-
-            playerAudio.PlayOneShot(collideSound, 1.0f);
-            Debug.Log("Game Over!");
+            onCollisionWithHazard.Invoke();
 
             //gameManager.EndGame();
             gameManager.UpdateGameState(GameState.Dead);
+        }
+
+    }
+
+    // Trigger collisions
+    private void OnTriggerEnter(Collider other)
+    {
+        switch(other.tag)
+        {
+            case "Coin":
+                Destroy(other.gameObject);
+                onCoinCollect.Invoke();
+                break;
+
+            case "KillBox": case "KillZone":
+                onFallOffLevel.Invoke();
+                break;
         }
 
     }

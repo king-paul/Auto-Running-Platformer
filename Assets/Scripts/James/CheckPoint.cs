@@ -6,13 +6,13 @@ using UnityEngine;
 
 public class CheckPoint : MonoBehaviour
 {
-    private NewGameManager m_GameManager;
+    private GameManager m_GameManager;
     private GameObject m_GFX;
     public float m_RespawnHeight = 5.0f;
 
     void Start()
     {
-        m_GameManager = NewGameManager.m_Instance;
+        m_GameManager = GameManager.m_Instance;
         m_GFX = gameObject.transform.GetChild(0).gameObject;
     }
 
