@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
-enum NewPlayerState { Idle, Running, Jumping, Falling }
+enum PlayerState { Idle, Running, Jumping, Falling, KnockBack }
 
 [RequireComponent(typeof(CharacterController))]
 public class PlayerController : MonoBehaviour
@@ -12,12 +12,11 @@ public class PlayerController : MonoBehaviour
     // public cariables
     [Header("Movement Variables")]
     public float runSpeed = 10.0f;
-    //public float maxJumpForce = 10;
-    //public float forceIncrement = 0.4f;
     public float m_JumpHeight = 5.0f;
     public float m_FallMultiplier = 2.5f;
     public float m_JumpMultiplier = 2f;
     public float m_AirJumpMultiplier = 4f;
+    public float m_KnockBackSpeed = 1f;
 
     // serialized private values
     [Header("Collision Checkers")]
@@ -38,7 +37,7 @@ public class PlayerController : MonoBehaviour
     private Vector3 m_CurrentVel;
     //private float jumpForce = 0;
     const float bottomBoundary = -20;
-    NewPlayerState state;
+    PlayerState state;
 
     // Controllers/Managers
     CharacterController controller;
@@ -64,7 +63,7 @@ public class PlayerController : MonoBehaviour
         //onGround = true;
         m_IsAlive = true;
 
-        state = NewPlayerState.Idle;
+        state = PlayerState.Idle;
         hasAirJumped = false;
     }
 
@@ -89,7 +88,9 @@ public class PlayerController : MonoBehaviour
 
     private void LateUpdate()
     {
-        if(transform.position.z != 0)
+        CheckColliders();
+
+        if (transform.position.z != 0)
         {
             controller.enabled = false;
             transform.position = new Vector3(transform.position.x, transform.position.y, 0);
@@ -97,33 +98,45 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    private void UpdatePosition()
+    // Checks if the colliders around the player are touching anything using the Physics sphere
+    private void CheckColliders()
     {
         m_HorizontalInput = 1;
 
+        // ground checks
         m_IsGrounded = false;
         foreach (var groundCheck in m_GroundChecks)
         {
-            if (Physics.CheckSphere(groundCheck.position, 0.1f, m_GroundLayers, QueryTriggerInteraction.Ignore))
+            if (Physics.CheckSphere(groundCheck.position, 0.1f, m_GroundLayers,
+                QueryTriggerInteraction.Ignore))
             {
                 m_IsGrounded = true;
             }
         }
 
+        // wall checks
         m_Blocked = false;
         foreach (var wallCheck in m_WallChecks)
         {
-            if (Physics.CheckSphere(wallCheck.position, 0.1f, m_GroundLayers, QueryTriggerInteraction.Ignore))
+            if (Physics.CheckSphere(wallCheck.position, 0.1f, m_GroundLayers,
+                QueryTriggerInteraction.Ignore))
             {
                 m_Blocked = true;
                 break;
             }
         }
+    }
 
-        if (!m_Blocked)
-        {
-            // Horizontal movement
+    private void UpdatePosition()
+    {
+        // Update Horizontal movement
+        if (!m_Blocked && state != PlayerState.Idle && state != PlayerState.KnockBack)
+        {            
             controller.Move(new Vector3(m_HorizontalInput * runSpeed, 0, 0) * Time.deltaTime);
+        }
+        else if(state == PlayerState.KnockBack)
+        {
+            controller.Move(Vector3.left * m_KnockBackSpeed * Time.deltaTime);
         }
 
         if (m_IsGrounded && moveVelocity.y < 0)
@@ -151,7 +164,7 @@ public class PlayerController : MonoBehaviour
             {
                 if (m_IsGrounded)
                 {
-                    state = NewPlayerState.Jumping;
+                    state = PlayerState.Jumping;
                     onJump.Invoke();
                 }
                 else
@@ -174,7 +187,7 @@ public class PlayerController : MonoBehaviour
         {
             // If falling
             moveVelocity += (Vector3.up * gameManager.Gravity * (m_FallMultiplier - 1) * Time.deltaTime);
-            Debug.Log("Falling");
+            //Debug.Log("Falling");
         }
         else if (m_CurrentVel.y > 0 && !Input.GetButton("Jump"))
         {
@@ -193,27 +206,41 @@ public class PlayerController : MonoBehaviour
         controller.Move(moveVelocity * Time.deltaTime);
     }
 
+    public void HandleJump()
+    {
+
+    }
+
+
     private void UpdateState()
     {
-        if(state == NewPlayerState.Idle && Input.anyKey)
+        // idle -> running
+        if(state == PlayerState.Idle && Input.anyKey)
         {
             Debug.Log("Start running");
-            state = NewPlayerState.Running;
+            state = PlayerState.Running;
         }
 
         // running -> Falling
-        if (state == NewPlayerState.Running && !m_IsGrounded && m_CurrentVel.y < 0)
+        if (state == PlayerState.Running && !m_IsGrounded && m_CurrentVel.y < 0)
         {
-            state = NewPlayerState.Falling;
+            state = PlayerState.Falling;
             onFall.Invoke();
         }
 
         // jumping -> falling
-        if (state == NewPlayerState.Jumping && m_CurrentVel.y <= 0)
+        if (state == PlayerState.Jumping && (m_CurrentVel.y <= 0))
         {
-            state = NewPlayerState.Falling;
+            state = PlayerState.Falling;
             onFall.Invoke();
         }
+
+        // any state -> knockback
+        if(m_Blocked && state != PlayerState.KnockBack)
+        {
+            state = PlayerState.KnockBack;
+        }
+
     }
     
     private void OnControllerColliderHit(ControllerColliderHit hit)
@@ -221,28 +248,28 @@ public class PlayerController : MonoBehaviour
         if (gameManager.State != GameState.Running)
             return;
 
-        // player hits side a wall
-        if (state == NewPlayerState.Running && hit.gameObject.CompareTag("Wall"))
+        // check if there is a collision with the ground
+        if (state != PlayerState.Running && state != PlayerState.Idle
+            && (hit.gameObject.CompareTag("Ground") ||
+            hit.gameObject.CompareTag("Platform")) || hit.gameObject.CompareTag("Floor"))
         {
-            //Debug.Log("Collision with wall");
-
-            state = NewPlayerState.Idle;
-            onCollisionWithWall.Invoke();
+            //moveVelocity.y = 0;
+            hasAirJumped = false;
+            state = PlayerState.Running;
+            onLand.Invoke();
         }
 
-        // check if there is a collision with the ground
-        if (state == NewPlayerState.Falling || state == NewPlayerState.Jumping
-            && (hit.gameObject.CompareTag("Ground") ||
-            hit.gameObject.CompareTag("Platform")))
+        // player hits side a wall
+        if (hit.gameObject.CompareTag("Wall"))
         {
-            //Debug.Log("Collision with ground");
+            Debug.Log("Collision with wall");
 
-            moveVelocity.y = 0;
-            hasAirJumped = false;
+            /*if (state == PlayerState.Running)
+                state = PlayerState.Idle;
+            else
+                state = PlayerState.Falling;*/
 
-            state = NewPlayerState.Running;
-
-            onLand.Invoke();
+            onCollisionWithWall.Invoke();
         }
 
         // check if there is a collision with an obstacle
