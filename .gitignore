@@ -75,9 +75,15 @@ Assets/Audio/AsiaTensionBGM.meta
 Assets/Models/Cartoon_Weapon_Pack
 Assets/Models/Scots Pines Set
 Assets/Models/mobile tree package
+Assets/models/mobile tree package.meta
+Assets/models/Scots Pines Set.meta
 
 # Materials
 Materials/HandPainted Ground Textures
+Assets/Materials/HandPainted Ground Textures/
+Assets/Materials/HandPainted Ground Textures.meta
+Assets/Materials/Stylized Grass Texture/
+Assets/Materials/Stone textures pack/
 
 # Images
 Assets/2d Art/
@@ -85,14 +91,3 @@ Assets/2d Art/Tiny Fantasy Icons
 Assets/2d Art/simple UI & icons
 Assets/2d Art/20 Logos PSD
 Assets/2d Art/Painted HQ 2D Forest Medieval Background
-
-Assets/models/mobile tree package.meta
-
-Assets/models/Scots Pines Set.meta
-
-Assets/Materials/HandPainted Ground Textures/
-Assets/Materials/HandPainted Ground Textures.meta
-Assets/Materials/Stylized Grass Texture/
-
-
-Assets/Materials/Stone textures pack/
