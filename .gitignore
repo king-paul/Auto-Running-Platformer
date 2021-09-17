@@ -77,8 +77,6 @@ Assets/Models/Scots Pines Set
 Assets/Models/mobile tree package
 
 # Materials
-Materials/Ground materials FD
-Materials/Ground materials FD/*
 Materials/HandPainted Ground Textures
 
 # Images
@@ -86,14 +84,15 @@ Assets/2d Art/
 Assets/2d Art/Tiny Fantasy Icons
 Assets/2d Art/simple UI & icons
 Assets/2d Art/20 Logos PSD
+Assets/2d Art/Painted HQ 2D Forest Medieval Background
+
 Assets/models/mobile tree package.meta
 
 Assets/models/Scots Pines Set.meta
 
-Assets/Materials/Ground materials FD/
-
 Assets/Materials/HandPainted Ground Textures/
-
-Assets/Materials/Ground materials FD.meta
-
 Assets/Materials/HandPainted Ground Textures.meta
+Assets/Materials/Stylized Grass Texture/
+
+
+Assets/Materials/Stone textures pack/

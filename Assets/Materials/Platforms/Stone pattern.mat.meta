@@ -1,0 +1,18 @@
+fileFormatVersion: 2
+guid: 6194a74fb69adad4b98e6db275aa9710
+labels:
+- Cliff
+- Frost
+- Ground
+- Ice
+- Rock
+- Snow
+- Stone
+- Terrain
+- Frozen
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

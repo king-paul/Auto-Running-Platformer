@@ -15,6 +15,7 @@ TagManager:
   - Hazard
   - Wall
   - Canvas
+  - Floor
   layers:
   - Default
   - TransparentFX
