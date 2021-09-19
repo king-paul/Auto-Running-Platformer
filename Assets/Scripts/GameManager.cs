@@ -87,7 +87,7 @@ public class GameManager : MonoBehaviour
         // Start running
         if (Input.anyKey && m_State == GameState.Idle)
         {
-            Debug.Log("RUN");
+            //Debug.Log("RUN");
             UpdateGameState(GameState.Running);
         }
 
@@ -99,7 +99,7 @@ public class GameManager : MonoBehaviour
         }
 
         // Dead
-        if (m_State == GameState.Dead)
+        if (m_State == GameState.Dead && m_Arrows != null)
         {
             m_Arrows.GetComponentInChildren<ArrowSpawner>().m_Shooting = false;
 
@@ -119,7 +119,7 @@ public class GameManager : MonoBehaviour
     // Takes GameState enumerator as a parameter
     public void UpdateGameState(GameState _newState)
     {
-        Debug.Log("New game state: " + _newState);
+        //Debug.Log("New game state: " + _newState);
         m_State = _newState;
 
         switch (_newState)
@@ -129,7 +129,9 @@ public class GameManager : MonoBehaviour
                 m_Player.GetComponent<CharacterController>().enabled = true;
 
                 m_PlayerText.SetActive(false);
-                m_Arrows.GetComponent<ArrowSpawner>().m_Shooting = true;
+
+                if(m_Arrows != null)
+                    m_Arrows.GetComponent<ArrowSpawner>().m_Shooting = true;
 
                 gui.titleText.SetActive(false);
                 gui.gameOverUI.SetActive(false);

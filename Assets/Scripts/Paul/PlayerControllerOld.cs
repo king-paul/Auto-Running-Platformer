@@ -4,8 +4,6 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
-enum PlayerState { Idle, Running, Jumping, Falling }
-
 [RequireComponent(typeof(CharacterController))]
 public class PlayerControllerOld : MonoBehaviour
 {
