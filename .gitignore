@@ -73,13 +73,14 @@ Assets/Audio/AsiaTensionBGM.meta
 
 # Models
 Assets/Models/Cartoon_Weapon_Pack
-Assets/Models/Scots Pines Set
 Assets/Models/mobile tree package
 Assets/models/mobile tree package.meta
 Assets/models/Scots Pines Set.meta
+Assets/models/laxer tree pkg/
+Assets/models/laxer tree pkg.meta
 
 # Materials
-Materials/HandPainted Ground Textures
+Assets/Materials/HandPainted Ground Textures
 Assets/Materials/HandPainted Ground Textures/
 Assets/Materials/HandPainted Ground Textures.meta
 Assets/Materials/Stylized Grass Texture/
