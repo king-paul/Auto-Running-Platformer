@@ -903,6 +903,7 @@ MonoBehaviour:
   m_hasFontAssetChanged: 0
   m_renderer: {fileID: 2330009159573384415}
   m_maskType: 0
+  _SortingLayer: 0
   _SortingLayerID: 0
   _SortingOrder: 0
 --- !u!1 &2330009159769957414
@@ -3319,7 +3320,19 @@ PrefabInstance:
     - target: {fileID: 2300000, guid: d22a51c3aa8f2c946ba5eabae5a6e2b7, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 2100000, guid: 6a44a988fb82da143b05f2fb965ac811, type: 2}
+    - target: {fileID: 2300000, guid: d22a51c3aa8f2c946ba5eabae5a6e2b7, type: 3}
+      propertyPath: m_Materials.Array.data[3]
+      value: 
+      objectReference: {fileID: 2100000, guid: 5e4548be59c363e4ead345494efc7193, type: 2}
+    - target: {fileID: 2300000, guid: d22a51c3aa8f2c946ba5eabae5a6e2b7, type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: 5e4548be59c363e4ead345494efc7193, type: 2}
+    - target: {fileID: 2300000, guid: d22a51c3aa8f2c946ba5eabae5a6e2b7, type: 3}
+      propertyPath: m_Materials.Array.data[2]
+      value: 
+      objectReference: {fileID: 2100000, guid: 3919e80486741e043a487058ed15db90, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d22a51c3aa8f2c946ba5eabae5a6e2b7, type: 3}
 --- !u!4 &2330009160070615206 stripped

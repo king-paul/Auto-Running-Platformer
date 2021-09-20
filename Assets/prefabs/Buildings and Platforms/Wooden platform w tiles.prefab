@@ -92,7 +92,6 @@ GameObject:
   m_Component:
   - component: {fileID: 9164103639559145561}
   - component: {fileID: 2041230791160312728}
-  - component: {fileID: 6405127978248335973}
   - component: {fileID: 2419012500939192456}
   m_Layer: 0
   m_Name: Plane
@@ -122,20 +121,6 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3277731202284936293}
-  m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
---- !u!64 &6405127978248335973
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3277731202284936293}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!23 &2419012500939192456
 MeshRenderer:
@@ -188,7 +173,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7823932350855778469}
   m_Layer: 0
-  m_Name: Strone tile platform
+  m_Name: Wooden platform w tiles
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
