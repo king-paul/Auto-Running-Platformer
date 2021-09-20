@@ -149,7 +149,7 @@ public class GameManager : MonoBehaviour
                 gui.HUD.SetActive(false);
                 gui.gameOverUI.SetActive(true);                
 
-                gui.gameOverDistanceText.text = gui.distanceText.text;
+                gui.gameOverDistanceText.text = (int)m_Player.transform.position.x + " feet";
            break;
 
             default:                
