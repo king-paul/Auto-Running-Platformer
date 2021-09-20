@@ -233,11 +233,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1248234299, guid: 17a73ec52574d8b4c963b6fc17a4ddcf, type: 3}
       propertyPath: m_AudioCooldown
-      value: 0.01
+      value: 0.04
+      objectReference: {fileID: 0}
+    - target: {fileID: 3940992066718682475, guid: 17a73ec52574d8b4c963b6fc17a4ddcf, type: 3}
+      propertyPath: m_Name
+      value: ArrowSpawner
+      objectReference: {fileID: 0}
+    - target: {fileID: 3940992066718682475, guid: 17a73ec52574d8b4c963b6fc17a4ddcf, type: 3}
+      propertyPath: m_TagString
+      value: ArrowSpawner
       objectReference: {fileID: 0}
     - target: {fileID: 3940992066718682477, guid: 17a73ec52574d8b4c963b6fc17a4ddcf, type: 3}
       propertyPath: m_FireRate
       value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 3940992066718682477, guid: 17a73ec52574d8b4c963b6fc17a4ddcf, type: 3}
+      propertyPath: m_LaunchSpeed
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 3940992067418907564, guid: 17a73ec52574d8b4c963b6fc17a4ddcf, type: 3}
       propertyPath: m_Name
@@ -2023,6 +2035,10 @@ PrefabInstance:
       propertyPath: m_JumpMultiplier
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 2330009158330669997, guid: 3489cae6fe0554d448a76ccf135ab2f7, type: 3}
+      propertyPath: m_WallLayers.m_Bits
+      value: 256
+      objectReference: {fileID: 0}
     - target: {fileID: 2330009160070615206, guid: 3489cae6fe0554d448a76ccf135ab2f7, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -2081,7 +2097,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4381854490860419939, guid: 3489cae6fe0554d448a76ccf135ab2f7, type: 3}
       propertyPath: m_Volume
-      value: 0.4
+      value: 0.237
       objectReference: {fileID: 0}
     - target: {fileID: 4381854490860419949, guid: 3489cae6fe0554d448a76ccf135ab2f7, type: 3}
       propertyPath: m_Name

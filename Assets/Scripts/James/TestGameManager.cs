@@ -6,7 +6,7 @@ using UnityEngine.UI;
 
 // Author: James Kemeny
 
-public enum GameState
+public enum TestGameState
 {
     Idle,
     Running,

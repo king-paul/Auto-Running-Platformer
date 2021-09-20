@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
-enum PlayerState { Idle, Running, Jumping, Falling, KnockBack }
+public enum PlayerState { Idle, Running, Jumping, Falling, KnockBack }
 
 [RequireComponent(typeof(CharacterController))]
 public class PlayerController : MonoBehaviour
@@ -21,6 +21,7 @@ public class PlayerController : MonoBehaviour
     // serialized private values
     [Header("Collision Checkers")]
     [SerializeField] private LayerMask m_GroundLayers = default;
+    [SerializeField] private LayerMask m_WallLayers = default;
     [SerializeField] private Transform[] m_GroundChecks = null;
     [SerializeField] private Transform[] m_WallChecks = null;
 
@@ -37,8 +38,10 @@ public class PlayerController : MonoBehaviour
     private Vector3 m_CurrentVel;
     //private float jumpForce = 0;
     const float bottomBoundary = -20;
-    PlayerState state;
+    private PlayerState state;
+    public PlayerState playerState { get => state; }
 
+    
     // Controllers/Managers
     CharacterController controller;
     GameManager gameManager;
@@ -62,7 +65,7 @@ public class PlayerController : MonoBehaviour
         gameManager = GameManager.m_Instance;
         //onGround = true;
         m_IsAlive = true;
-
+        
         state = PlayerState.Idle;
         hasAirJumped = false;
     }
@@ -70,6 +73,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         if (gameManager.State != GameState.Running)
         {
             if (controller.enabled)
@@ -118,7 +122,7 @@ public class PlayerController : MonoBehaviour
         m_Blocked = false;
         foreach (var wallCheck in m_WallChecks)
         {
-            if (Physics.CheckSphere(wallCheck.position, 0.1f, m_GroundLayers,
+            if (Physics.CheckSphere(wallCheck.position, 0.1f, m_WallLayers,
                 QueryTriggerInteraction.Ignore))
             {
                 m_Blocked = true;
@@ -138,6 +142,7 @@ public class PlayerController : MonoBehaviour
         {
             controller.Move(Vector3.left * m_KnockBackSpeed * Time.deltaTime);
         }
+
 
         if (m_IsGrounded && moveVelocity.y < 0)
         {
@@ -208,6 +213,7 @@ public class PlayerController : MonoBehaviour
             moveVelocity.y = 0f;
         }
 
+        
         // Vertical velocity
         controller.Move(moveVelocity * Time.deltaTime);
     }

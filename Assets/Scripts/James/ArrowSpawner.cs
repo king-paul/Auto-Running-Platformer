@@ -9,10 +9,11 @@ public class ArrowSpawner : MonoBehaviour
     private GameManager m_GameManager;
     private AudioPitch m_FireAudio; 
     private AudioPitch m_HitAudio;
-    private Transform m_HitTransform;
+    public Transform m_HitTransform;
 
     [Header("Game Objects")]
     public GameObject m_Target;
+    private Player m_Player;
     private Transform m_Transform = null;
     private PoolManager m_ObjectPooler;
 
@@ -23,6 +24,8 @@ public class ArrowSpawner : MonoBehaviour
     private float m_ShotTimer = 0.0f;
     public bool m_Shooting = false;
 
+    public float m_CeaseFireTime = 5.0f;
+
     [Space(10)]
     [Header("Projectile Settings")]
     public float m_LaunchSpeed = 20.0f;
@@ -31,17 +34,23 @@ public class ArrowSpawner : MonoBehaviour
     {
         m_GameManager = GameManager.m_Instance;
         m_ObjectPooler = PoolManager.m_Instance;
+        m_Player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
         m_Transform = GetComponent<Transform>();
         if(m_Target == null)
             m_Target = GameObject.FindGameObjectWithTag("Player");
         m_FireAudio = GetComponent<AudioPitch>();
         m_HitAudio = gameObject.GetComponentInChildren<AudioPitch>();
         m_HitTransform = m_Target.transform;
+
     }
     
     void Update()
     {
-        m_Shooting = (m_GameManager.State == GameState.Running);
+        if(m_GameManager.State == GameState.Running)
+        {
+            StartCoroutine(CeaseFire());
+
+        }
 
         // Store how long since last shot to regulate fire-rate
         m_ShotTimer += Time.deltaTime;
@@ -51,9 +60,19 @@ public class ArrowSpawner : MonoBehaviour
         }
         if (m_GameManager.State == GameState.Dead)
         {
-            m_Shooting = false;
+            Debug.Log("Dead");
+            gameObject.SetActive(false);
+           
         }
     }
+
+    IEnumerator CeaseFire()
+    {
+        yield return new WaitForSeconds(m_CeaseFireTime);
+        m_Shooting = true;
+
+    }
+
 
     void Shoot()
     {

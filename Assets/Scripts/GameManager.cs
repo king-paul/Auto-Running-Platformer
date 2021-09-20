@@ -3,6 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
+
+public enum GameState
+{
+    Idle,
+    Running,
+    StageComplete,
+    Dead
+}
+
 public class GameManager : MonoBehaviour
 {
     public static GameManager m_Instance;
@@ -16,6 +25,7 @@ public class GameManager : MonoBehaviour
     private GameObject m_Player;
     private PlayerController playerController;
     public Vector3 m_LastCheckpointPos;
+
 
     private int m_coins;
     private bool m_GameRunning;
@@ -89,7 +99,9 @@ public class GameManager : MonoBehaviour
         {
             //Debug.Log("RUN");
             UpdateGameState(GameState.Running);
+            
         }
+
 
         // Running
         if (m_State == GameState.Running)
@@ -101,8 +113,7 @@ public class GameManager : MonoBehaviour
         // Dead
         if (m_State == GameState.Dead && m_Arrows != null)
         {
-            m_Arrows.GetComponentInChildren<ArrowSpawner>().m_Shooting = false;
-
+            //m_Arrows.GetComponentInChildren<ArrowSpawner>().m_Shooting = false;
             //m_State = GameState.Idle;
         }
 
@@ -131,7 +142,7 @@ public class GameManager : MonoBehaviour
                 m_PlayerText.SetActive(false);
 
                 if(m_Arrows != null)
-                    m_Arrows.GetComponent<ArrowSpawner>().m_Shooting = true;
+                    //m_Arrows.GetComponent<ArrowSpawner>().m_Shooting = true;
 
                 gui.titleText.SetActive(false);
                 gui.gameOverUI.SetActive(false);
