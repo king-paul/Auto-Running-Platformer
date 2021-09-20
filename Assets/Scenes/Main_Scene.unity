@@ -1713,14 +1713,6 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 679186365, guid: 85cccd1a95c462943acbcd3710dfc088, type: 3}
-      propertyPath: m_Name
-      value: You Traveled
-      objectReference: {fileID: 0}
-    - target: {fileID: 679186367, guid: 85cccd1a95c462943acbcd3710dfc088, type: 3}
-      propertyPath: m_text
-      value: You Traveled
-      objectReference: {fileID: 0}
     - target: {fileID: 735596630, guid: 85cccd1a95c462943acbcd3710dfc088, type: 3}
       propertyPath: m_AnchorMin.y
       value: 1
@@ -1761,10 +1753,10 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 887540667}
-    - target: {fileID: 4118724435673780140, guid: 85cccd1a95c462943acbcd3710dfc088, type: 3}
-      propertyPath: m_Sprite
-      value: 
-      objectReference: {fileID: 21300000, guid: 2eabc30241f2cd141a169a70c2d7d274, type: 3}
+    - target: {fileID: 2939363295894656995, guid: 85cccd1a95c462943acbcd3710dfc088, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5104193468280717339, guid: 85cccd1a95c462943acbcd3710dfc088, type: 3}
       propertyPath: m_Name
       value: GUI
@@ -1857,14 +1849,14 @@ PrefabInstance:
       propertyPath: m_Pivot.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5104193469019500691, guid: 85cccd1a95c462943acbcd3710dfc088, type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 6340129478564385135, guid: 85cccd1a95c462943acbcd3710dfc088, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 887540667}
+    - target: {fileID: 6627311474931765997, guid: 85cccd1a95c462943acbcd3710dfc088, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7826944525774529811, guid: 85cccd1a95c462943acbcd3710dfc088, type: 3}
       propertyPath: m_AnchorMin.y
       value: 1

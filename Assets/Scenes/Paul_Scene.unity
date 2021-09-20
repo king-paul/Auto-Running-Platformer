@@ -208,22 +208,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Mountain Sunset
       objectReference: {fileID: 0}
-    - target: {fileID: 8809431346344743900, guid: f6a71be69b556544d838b2c956f39c52, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -64
-      objectReference: {fileID: 0}
-    - target: {fileID: 8809431346855336811, guid: f6a71be69b556544d838b2c956f39c52, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -62.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 8809431346855336811, guid: f6a71be69b556544d838b2c956f39c52, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -164.3
-      objectReference: {fileID: 0}
-    - target: {fileID: 8809431347933035966, guid: f6a71be69b556544d838b2c956f39c52, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: -41.9
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: f6a71be69b556544d838b2c956f39c52, type: 3}
 --- !u!1 &93293354
@@ -415,7 +399,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4445298842690430721, guid: 8e0a5047466dea240b1f471a80318098, type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4445298842690430723, guid: 8e0a5047466dea240b1f471a80318098, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1697,6 +1681,22 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 21300000, guid: 2eabc30241f2cd141a169a70c2d7d274, type: 3}
+    - target: {fileID: 4239276296870074440, guid: 85cccd1a95c462943acbcd3710dfc088, type: 3}
+      propertyPath: m_fontColor.g
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4239276296870074440, guid: 85cccd1a95c462943acbcd3710dfc088, type: 3}
+      propertyPath: m_fontColor32.rgba
+      value: 4278255378
+      objectReference: {fileID: 0}
+    - target: {fileID: 4239276296870074440, guid: 85cccd1a95c462943acbcd3710dfc088, type: 3}
+      propertyPath: m_fontColor.r
+      value: 0.07098794
+      objectReference: {fileID: 0}
+    - target: {fileID: 4239276296870074440, guid: 85cccd1a95c462943acbcd3710dfc088, type: 3}
+      propertyPath: m_fontColor.b
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5104193468280717339, guid: 85cccd1a95c462943acbcd3710dfc088, type: 3}
       propertyPath: m_Name
       value: GUI

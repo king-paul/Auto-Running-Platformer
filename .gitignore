@@ -61,6 +61,7 @@ crashlytics-build.properties
 # Asset folders to ignore
 
 # Audio
+Assets.Audio/AsiaTensionBGM
 Assets/Audio/Library/FBX
 Assets/Audio/8BitSounds
 Assets/Audio/Free Pack
@@ -68,8 +69,6 @@ Assets/Audio/CasualGameSounds
 Assets/Audio/8BitSounds.meta
 Assets/Audio/CasualGameSounds.meta
 Assets/Audio/Free Pack.meta
-Assets/Audio/AsiaTensionBGM
-Assets/Audio/AsiaTensionBGM.meta
 
 # Models
 Assets/Models/Cartoon_Weapon_Pack
@@ -89,3 +88,7 @@ Assets/Materials/Stone textures pack/
 Assets/2d Art/Tiny Fantasy Icons
 Assets/2d Art/simple UI & icons
 Assets/2d Art/20 Logos PSD
+
+Assets/Audio/AsiaTensionBGM/
+
+Assets/Audio/AsiaTensionBGM.meta
