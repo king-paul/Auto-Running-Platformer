@@ -19,7 +19,6 @@ public class GameManager : MonoBehaviour
 
     [Header("Game Objects")]
     //public Canvas m_Canvas;
-    public GameObject m_PlayerText;
     public GameObject m_Arrows;
     public Transform m_StartingPoint;
 
@@ -106,15 +105,6 @@ public class GameManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Start running
-        if (Input.anyKey && m_State == GameState.Idle)
-        {
-            //Debug.Log("RUN");
-            UpdateGameState(GameState.Running);
-            
-        }
-
-
         // Running
         if (m_State == GameState.Running)
         {
@@ -148,7 +138,7 @@ public class GameManager : MonoBehaviour
         switch (_newState)
         {
             case GameState.Idle:
-                gui.titleText.SetActive(true);
+                gui.titleScreen.SetActive(true);
                 m_Player.transform.position = m_LastCheckpointPos;
                 gui.gameOverUI.SetActive(false);
                 m_MusicSource.Stop();                
@@ -159,12 +149,12 @@ public class GameManager : MonoBehaviour
                 m_Player.GetComponent<CharacterController>().enabled = true;
                 m_coins = Globals.coins;
 
-                m_PlayerText.SetActive(false);
+                gui.titleScreen.SetActive(false);
 
                 if(m_Arrows != null)
-                    //m_Arrows.GetComponent<ArrowSpawner>().m_Shooting = true;
+                    m_Arrows.GetComponent<ArrowSpawner>().m_Shooting = true;
 
-                gui.titleText.SetActive(false);
+                gui.titleScreen.SetActive(false);
                 gui.gameOverUI.SetActive(false);
                 gui.HUD.SetActive(true);
 

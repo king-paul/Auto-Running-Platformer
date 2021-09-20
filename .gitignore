@@ -61,7 +61,8 @@ crashlytics-build.properties
 # Asset folders to ignore
 
 # Audio
-Assets.Audio/AsiaTensionBGM
+Assets/Audio/AsiaTensionBGM/
+Assets/Audio/AsiaTensionBGM.meta
 Assets/Audio/Library/FBX
 Assets/Audio/8BitSounds
 Assets/Audio/Free Pack
@@ -85,10 +86,16 @@ Assets/Materials/Stylized Grass Texture/
 Assets/Materials/Stone textures pack/
 
 # Images
+Assets/2d Art/Easy emerald UI
 Assets/2d Art/Tiny Fantasy Icons
 Assets/2d Art/simple UI & icons
 Assets/2d Art/20 Logos PSD
+Assets/easy UI emerald - default.psd
 
-Assets/Audio/AsiaTensionBGM/
+Assets/easy UI emerald - default.psd.meta
 
-Assets/Audio/AsiaTensionBGM.meta
+Assets/easy UI emerald - default.unity
+
+Assets/easy UI emerald - default.unity.meta
+
+Assets/2d Art/Easy Emerald UI.meta

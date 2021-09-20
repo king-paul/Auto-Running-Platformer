@@ -11,7 +11,7 @@ public class GuiController : MonoBehaviour
     public TextMeshProUGUI gameOverDistanceText;
     public TextMeshProUGUI coinText;
     public RectTransform jumpMeter;
-    public GameObject titleText;
+    public GameObject titleScreen;
     public GameObject gameOverUI;
     public Button continueButton;
 
@@ -22,7 +22,7 @@ public class GuiController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        titleText.SetActive(true);
+        titleScreen.SetActive(true);
         HUD.SetActive(false);
         gameOverUI.SetActive(false);
     }
