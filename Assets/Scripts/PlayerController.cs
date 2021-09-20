@@ -202,6 +202,12 @@ public class PlayerController : MonoBehaviour
             //Debug.Log("LowJump");
         }
 
+        // Detect collision above the player
+        if (controller.collisionFlags == CollisionFlags.Above)
+        {
+            moveVelocity.y = 0f;
+        }
+
         // Vertical velocity
         controller.Move(moveVelocity * Time.deltaTime);
     }
