@@ -6,6 +6,7 @@ public class FollowNode : MonoBehaviour
 {
     [Header("Game Objects")]
     private GameObject m_Player;
+    
 
     [Space(10)]
     [Header("Settings")]

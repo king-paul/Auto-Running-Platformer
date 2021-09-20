@@ -7,6 +7,7 @@ using UnityEngine;
 public class Arrow : MonoBehaviour, IPooledObject
 {
     private GameManager m_GameManager;
+    private ArrowSpawner m_Spawner;
     private Rigidbody m_rb;
     private bool m_HasHit = false;
     public float m_DespawnTime = 2.0f;
@@ -17,7 +18,7 @@ public class Arrow : MonoBehaviour, IPooledObject
         m_GameManager = GameManager.m_Instance;
         m_rb = GetComponent<Rigidbody>();
         m_rb.constraints = RigidbodyConstraints.None;
-        this.GetComponent<BoxCollider>().enabled = true;
+        GetComponent<BoxCollider>().enabled = true;
         m_HasHit = false;
     }
 
@@ -52,6 +53,7 @@ public class Arrow : MonoBehaviour, IPooledObject
 
         if (collision.collider.tag != "Arrow")
         {
+            m_Spawner.OnArrowHit();
             // freeze rigidbody constraints and set the new parent
             m_HasHit = true;
             m_rb.constraints = RigidbodyConstraints.FreezeAll;

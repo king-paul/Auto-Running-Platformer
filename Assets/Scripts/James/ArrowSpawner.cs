@@ -7,6 +7,9 @@ using UnityEngine;
 public class ArrowSpawner : MonoBehaviour
 {
     private GameManager m_GameManager;
+    private AudioPitch m_FireAudio; 
+    private AudioPitch m_HitAudio;
+    private Transform m_HitTransform;
 
     [Header("Game Objects")]
     public GameObject m_Target;
@@ -31,7 +34,9 @@ public class ArrowSpawner : MonoBehaviour
         m_Transform = GetComponent<Transform>();
         if(m_Target == null)
             m_Target = GameObject.FindGameObjectWithTag("Player");
-
+        m_FireAudio = GetComponent<AudioPitch>();
+        m_HitAudio = gameObject.GetComponentInChildren<AudioPitch>();
+        m_HitTransform = m_Target.transform;
     }
     
     void Update()
@@ -64,8 +69,15 @@ public class ArrowSpawner : MonoBehaviour
         Rigidbody rb = pooledObj.GetComponent<Rigidbody>();
         rb.velocity = direction * m_LaunchSpeed;
 
+        m_FireAudio.Play();
+
         // Reset shot timer 
         m_ShotTimer = 0.0f;
+    }
+
+    public void OnArrowHit()
+    {
+        m_HitAudio.Play();
     }
 
     private void OnDrawGizmos()
