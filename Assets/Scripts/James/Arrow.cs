@@ -13,9 +13,15 @@ public class Arrow : MonoBehaviour, IPooledObject
     public float m_DespawnTime = 2.0f;
     private float timer = 0f;
 
+    public void Start()
+    {
+        m_Spawner = GameObject.FindGameObjectWithTag("ArrowSpawner").GetComponent<ArrowSpawner>();
+    }
+
     public void OnObjectSpawn()
     {
         m_GameManager = GameManager.m_Instance;
+
         m_rb = GetComponent<Rigidbody>();
         m_rb.constraints = RigidbodyConstraints.None;
         GetComponent<BoxCollider>().enabled = true;
@@ -53,7 +59,11 @@ public class Arrow : MonoBehaviour, IPooledObject
 
         if (collision.collider.tag != "Arrow")
         {
-            m_Spawner.OnArrowHit();
+            if(m_Spawner)
+            {
+                m_Spawner.OnArrowHit();
+                //m_Spawner.m_HitTransform.position = transform.position;
+            }
             // freeze rigidbody constraints and set the new parent
             m_HasHit = true;
             m_rb.constraints = RigidbodyConstraints.FreezeAll;
