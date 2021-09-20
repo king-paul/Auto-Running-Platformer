@@ -12,6 +12,9 @@ public class GameManager : MonoBehaviour
     //public Canvas m_Canvas;
     public GameObject m_PlayerText;
     public GameObject m_Arrows;
+    public Transform m_StartingPoint;
+
+    [Header("Variables")]
     [SerializeField] private float m_Gravity = -9.8f;
     private GameObject m_Player;
     private PlayerController playerController;
@@ -22,6 +25,8 @@ public class GameManager : MonoBehaviour
     private GameState m_State;
 
     private GuiController gui;
+
+    const int CONTINUE_COST = 5;
 
     // properties
     public GameState State { get => m_State; }
@@ -48,14 +53,21 @@ public class GameManager : MonoBehaviour
     // functions / methods
     public void StartGame() { UpdateGameState(GameState.Running); }
     public void EndGame() { UpdateGameState(GameState.Dead); }
+    public void RestartGame()
+    {
+        // set the last checkpoint to the start of the level
+        m_LastCheckpointPos = new Vector3(m_StartingPoint.position.x,
+            m_StartingPoint.position.y, 0);
+
+        UpdateGameState(GameState.Idle);
+    }
+
     public void RestartScene() { SceneManager.LoadScene(0); }
     public void QuitGame() {
         Debug.Log("Quit Button Clicked");
         Application.Quit(); }
 
     public void AddCoin() { m_coins++; } // Increases the number of coins collected by 1
-
-
 
     void Awake()
     {
@@ -124,9 +136,17 @@ public class GameManager : MonoBehaviour
 
         switch (_newState)
         {
+            case GameState.Idle:
+                gui.titleText.SetActive(true);
+                m_Player.transform.position = m_LastCheckpointPos;
+                gui.gameOverUI.SetActive(false);
+                m_MusicSource.Stop();                
+            break;
+
             case GameState.Running:
                 m_Player.transform.position = m_LastCheckpointPos;
                 m_Player.GetComponent<CharacterController>().enabled = true;
+                m_coins = Globals.coins;
 
                 m_PlayerText.SetActive(false);
 
@@ -147,10 +167,14 @@ public class GameManager : MonoBehaviour
                 m_MusicSource.Stop();
 
                 gui.HUD.SetActive(false);
-                gui.gameOverUI.SetActive(true);                
+                gui.ShowGameOverScreen(m_coins, CONTINUE_COST);
 
                 gui.gameOverDistanceText.text = (int)m_Player.transform.position.x + " feet";
-           break;
+
+                Globals.coins = m_coins;
+                //PlayerPrefs.SetInt("coins", m_coins);
+
+            break;
 
             default:                
                 break;
@@ -161,6 +185,16 @@ public class GameManager : MonoBehaviour
     public void SetJumpMeter(float jumpForce, float maxJumpForce)
     {
         gui.SetJumpMeter(jumpForce, maxJumpForce);
+    }
+
+    public void ContinueFromCheckpoint()
+    {
+        if(m_coins >= CONTINUE_COST)
+        {
+            m_coins -= CONTINUE_COST;
+            Globals.coins = m_coins;
+            UpdateGameState(GameState.Running);
+        }
     }
 
 }

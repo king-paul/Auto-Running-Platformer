@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class GuiController : MonoBehaviour
 {
@@ -12,6 +13,10 @@ public class GuiController : MonoBehaviour
     public RectTransform jumpMeter;
     public GameObject titleText;
     public GameObject gameOverUI;
+    public Button continueButton;
+
+    private TextMeshProUGUI[] continueText;
+
     private float maxBarHeight = 0;
 
     // Start is called before the first frame update
@@ -31,6 +36,38 @@ public class GuiController : MonoBehaviour
     {
         float newHeight = maxBarHeight / maxJumpForce * jumpForce;
         jumpMeter.sizeDelta = new Vector2(jumpMeter.rect.width, newHeight);
+    }
+
+    /// <summary>
+    /// Displays the Game over Menu on the screen with 3 buttons
+    /// </summary>
+    /// <param name="currentCoins">The coins that the player currently has</param>
+    /// <param name="coinsNeeded">The number of coins needed to click the continue button</param>
+    public void ShowGameOverScreen(int currentCoins, int coinsNeeded)
+    {
+        gameOverUI.SetActive(true);
+        continueText = continueButton.GetComponentsInChildren<TextMeshProUGUI>();
+        continueText[1].text = coinsNeeded.ToString();
+
+        if (currentCoins >= coinsNeeded)
+        {
+            continueButton.interactable = true;            
+
+            foreach(TextMeshProUGUI text in continueText)
+            {
+                text.color = Color.yellow;
+            }            
+        }
+        else
+        {
+            continueButton.interactable = false;
+
+            foreach (TextMeshProUGUI text in continueText)
+            {
+                text.color = new Color(127, 127, 0);
+            }
+        }
+
     }
 
 }
