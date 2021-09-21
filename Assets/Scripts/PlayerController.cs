@@ -82,17 +82,16 @@ public class PlayerController : MonoBehaviour
         }
 
         // check for touch screen input
-        if (Input.touchCount > 0)
-            touchInput = Input.GetTouch(0);
+        //if (Input.touchCount > 0)
+            //touchInput = Input.GetTouch(0);
 
-         UpdatePosition();
+        UpdatePosition();
         UpdateState();
 
         gameManager.SetJumpMeter(m_JumpTimer, m_JumpTimer + m_JumpGracePeriod);
 
         //Debug.Log("On Ground: " + onGround);
     }
-
 
     private void LateUpdate()
     {
@@ -159,7 +158,7 @@ public class PlayerController : MonoBehaviour
         }
 
         //Jumping
-        m_JumpPressed = (Input.GetButtonDown("Jump") || touchInput.phase == TouchPhase.Stationary);
+        m_JumpPressed = (Input.GetButtonDown("Jump") || Input.touchCount > 0);
 
         if (m_JumpPressed)
         {
@@ -223,7 +222,7 @@ public class PlayerController : MonoBehaviour
 
     private void UpdateState()
     {
-        if (state == PlayerState.Running)
+        if (state == PlayerState.Running && !m_IsAlive)
         {
             SetAlive(true);
         }
@@ -254,7 +253,6 @@ public class PlayerController : MonoBehaviour
         {
             state = PlayerState.KnockBack;
         }
-
         
     }
     

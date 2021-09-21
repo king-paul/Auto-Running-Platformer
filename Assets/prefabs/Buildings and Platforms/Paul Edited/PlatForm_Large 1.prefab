@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 2800193818790777690}
   - component: {fileID: 4687612975111393792}
   - component: {fileID: 8562894235949486451}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Floor
-  m_TagString: Untagged
+  m_TagString: Ground
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -121,13 +121,13 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6115405509828381711}
-  m_LocalRotation: {x: 0.5, y: 0.5, z: -0.5, w: 0.5}
-  m_LocalPosition: {x: 0.5006, y: -0.02, z: 0}
+  m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
+  m_LocalPosition: {x: -0.4991, y: -0.02, z: 0}
   m_LocalScale: {x: 0.099967, y: 0.099967, z: 0.099967}
   m_Children: []
   m_Father: {fileID: 3322563139623462348}
   m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 90, y: 90, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
 --- !u!33 &3770514923150955561
 MeshFilter:
   m_ObjectHideFlags: 0

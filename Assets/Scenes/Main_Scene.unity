@@ -855,7 +855,7 @@ MonoBehaviour:
     prefab: {fileID: 4951567275813332855, guid: 350a1d297bae35d498d103e4db9f1c98, type: 3}
     size: 20
   - tag: Chunk4
-    prefab: {fileID: 8822709638290448454, guid: cbec65f23124fb94399accf328da1af4, type: 3}
+    prefab: {fileID: 2917446794954380998, guid: 89281bbc766b9614aaab52c1fbb035b8, type: 3}
     size: 20
   - tag: Checkpoint
     prefab: {fileID: 4216733503204277878, guid: 2279699391b36674d970d41b3a371ede, type: 3}
