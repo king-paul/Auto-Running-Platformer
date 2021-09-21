@@ -92,7 +92,7 @@ public class GameManagerOld : MonoBehaviour
 
         if (m_State == GameState.Dead)
         {
-            m_Arrows.GetComponent<ArrowSpawner>().m_Shooting = false;
+            //m_Arrows.GetComponent<ArrowSpawner>().m_Shooting = false;
             //m_Player.position = m_SpawnNode.transform.position;
 
             //m_State = GameState.Idle;
@@ -138,7 +138,7 @@ public class GameManagerOld : MonoBehaviour
                 m_GameOverUI.SetActive(false);
                 m_HUD.SetActive(true);
                 m_Player.position = m_LastCheckpointPos;
-                m_Arrows.GetComponent<ArrowSpawner>().m_Shooting = true;
+                //m_Arrows.GetComponent<ArrowSpawner>().m_Shooting = true;
                 m_MusicSource.Play();
                 playerController.onBegin.Invoke();
                 break;

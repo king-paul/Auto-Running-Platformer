@@ -50,20 +50,21 @@ public class ArrowSpawner : MonoBehaviour
         {
             StartCoroutine(CeaseFire());
 
+            // Store how long since last shot to regulate fire-rate
+            m_ShotTimer += Time.deltaTime;
+
+            if (m_Shooting && m_ShotTimer >= 1 / m_FireRate)
+            {
+                Shoot();
+            }
+            if (m_GameManager.State == GameState.Dead)
+            {
+                Debug.Log("Dead");
+                m_Shooting = false;
+
+            }
         }
 
-        // Store how long since last shot to regulate fire-rate
-        m_ShotTimer += Time.deltaTime;
-        if (m_Shooting && m_ShotTimer >= 1 / m_FireRate)
-        {
-            Shoot();
-        }
-        if (m_GameManager.State == GameState.Dead)
-        {
-            Debug.Log("Dead");
-            gameObject.SetActive(false);
-           
-        }
     }
 
     IEnumerator CeaseFire()
