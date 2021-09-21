@@ -41,7 +41,6 @@ public class PlayerController : MonoBehaviour
     const float bottomBoundary = -20;
     private PlayerState state;
     public PlayerState playerState { get => state; }
-
     
     // Controllers/Managers
     CharacterController controller;
@@ -74,7 +73,6 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-
         if (gameManager.State != GameState.Running)
         {
             if (controller.enabled)
@@ -83,7 +81,11 @@ public class PlayerController : MonoBehaviour
             return;
         }
 
-        UpdatePosition();
+        // check for touch screen input
+        if (Input.touchCount > 0)
+            touchInput = Input.GetTouch(0);
+
+         UpdatePosition();
         UpdateState();
 
         gameManager.SetJumpMeter(m_JumpTimer, m_JumpTimer + m_JumpGracePeriod);
@@ -91,10 +93,12 @@ public class PlayerController : MonoBehaviour
         //Debug.Log("On Ground: " + onGround);
     }
 
+
     private void LateUpdate()
     {
         CheckColliders();
 
+        // check if the player has moved off the z axis and if it has, move it back
         if (transform.position.z != 0)
         {
             controller.enabled = false;
@@ -144,7 +148,6 @@ public class PlayerController : MonoBehaviour
             controller.Move(Vector3.left * m_KnockBackSpeed * Time.deltaTime);
         }
 
-
         if (m_IsGrounded && moveVelocity.y < 0)
         {
             moveVelocity.y = 0f;
@@ -156,7 +159,7 @@ public class PlayerController : MonoBehaviour
         }
 
         //Jumping
-        m_JumpPressed = Input.GetButtonDown("Jump");
+        m_JumpPressed = (Input.GetButtonDown("Jump") || touchInput.phase == TouchPhase.Stationary);
 
         if (m_JumpPressed)
         {
@@ -217,12 +220,6 @@ public class PlayerController : MonoBehaviour
         // Vertical velocity
         controller.Move(moveVelocity * Time.deltaTime);
     }
-
-    public void HandleJump()
-    {
-
-    }
-
 
     private void UpdateState()
     {
