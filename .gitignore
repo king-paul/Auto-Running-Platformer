@@ -72,18 +72,18 @@ Assets/Audio/CasualGameSounds.meta
 Assets/Audio/Free Pack.meta
 
 # Models
-Assets/Models/Cartoon_Weapon_Pack
-Assets/Models/mobile tree package
+Assets/models/Cartoon_Weapon_Pack
+Assets/models/mobile tree package
 Assets/models/mobile tree package.meta
 Assets/models/laxer tree pkg/
 Assets/models/laxer tree pkg.meta
 
 # Materials
-Assets/Materials/HandPainted Ground Textures
-Assets/Materials/HandPainted Ground Textures/
-Assets/Materials/HandPainted Ground Textures.meta
-Assets/Materials/Stylized Grass Texture/
-Assets/Materials/Stone textures pack/
+Assets/models/Materials/HandPainted Ground Textures
+Assets/models/Materials/HandPainted Ground Textures/
+Assets/models/Materials/HandPainted Ground Textures.meta
+Assets/models/Materials/Stylized Grass Texture/
+Assets/models/Materials/Stone textures pack/
 
 # Images
 Assets/2d Art/Easy emerald UI
