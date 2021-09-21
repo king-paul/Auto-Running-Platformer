@@ -27,6 +27,7 @@ public class PoolManager : MonoBehaviour
     #endregion
 
     public List<Pool> m_Pools;
+    private List<GameObject> m_Parents = new List<GameObject>();
     public Dictionary<string, Queue<GameObject>> m_PoolDictionary;
 
     private void Start()
@@ -36,6 +37,10 @@ public class PoolManager : MonoBehaviour
 
         foreach (Pool pool in m_Pools)
         {
+            //Create an empty new gameobject to parent queue to
+            GameObject parent = new GameObject(pool.tag);
+            m_Parents.Add(parent);
+
             // For each queue we want to make, we create a new queue of objects
             Queue<GameObject> objectPool = new Queue<GameObject>();
 
@@ -45,6 +50,7 @@ public class PoolManager : MonoBehaviour
                 GameObject obj = Instantiate(pool.prefab);
                 obj.SetActive(false);
                 objectPool.Enqueue(obj);
+                obj.gameObject.transform.SetParent(parent.transform);
             }
 
             m_PoolDictionary.Add(pool.tag, objectPool);
@@ -78,4 +84,16 @@ public class PoolManager : MonoBehaviour
         m_PoolDictionary[_tag].Enqueue(objectToSpawn);
         return objectToSpawn;
     }
+
+    //public void SetPoolParentActive(string _tag, bool _active)
+    //{
+    //    foreach(GameObject p in m_Parents)
+    //    {
+    //        if(p.name == _tag)
+    //        {
+    //            p.SetActive(_active);
+    //        }
+    //    }
+
+    //}
 }

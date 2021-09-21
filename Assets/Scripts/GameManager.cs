@@ -58,6 +58,7 @@ public class GameManager : MonoBehaviour
         get => m_LastCheckpointPos;
         set => LastCheckpointPos = value;
     }
+    
 
     // functions / methods
     public void StartGame() { UpdateGameState(GameState.Running); }
@@ -152,7 +153,7 @@ public class GameManager : MonoBehaviour
                 gui.titleScreen.SetActive(false);
 
                 if(m_Arrows != null)
-                    //m_Arrows.GetComponent<ArrowSpawner>().m_Shooting = true;
+                    m_Arrows.GetComponent<ArrowSpawner>().CeaseFire();
 
                 gui.titleScreen.SetActive(false);
                 gui.gameOverUI.SetActive(false);

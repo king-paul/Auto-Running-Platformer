@@ -32,7 +32,8 @@ public class PlayerController : MonoBehaviour
     private float m_HorizontalInput;
     public bool m_IsGrounded;
     public bool m_Blocked;
-    public bool m_IsAlive;
+    [SerializeField] private bool m_IsAlive;
+    public void SetAlive(bool _state) { m_IsAlive = _state; }
     private Vector3 moveVelocity;
     private Vector3 m_PrevPos;
     private Vector3 m_CurrentVel;
@@ -64,7 +65,7 @@ public class PlayerController : MonoBehaviour
         controller = GetComponent<CharacterController>();
         gameManager = GameManager.m_Instance;
         //onGround = true;
-        m_IsAlive = true;
+        SetAlive(true);
         
         state = PlayerState.Idle;
         hasAirJumped = false;
@@ -213,7 +214,6 @@ public class PlayerController : MonoBehaviour
             moveVelocity.y = 0f;
         }
 
-        
         // Vertical velocity
         controller.Move(moveVelocity * Time.deltaTime);
     }
@@ -226,8 +226,13 @@ public class PlayerController : MonoBehaviour
 
     private void UpdateState()
     {
+        if (state == PlayerState.Running)
+        {
+            SetAlive(true);
+        }
+
         // idle -> running
-        if(state == PlayerState.Idle && Input.anyKey)
+        if (state == PlayerState.Idle && Input.anyKey)
         {
             Debug.Log("Start running");
             state = PlayerState.Running;
@@ -253,6 +258,7 @@ public class PlayerController : MonoBehaviour
             state = PlayerState.KnockBack;
         }
 
+        
     }
     
     private void OnControllerColliderHit(ControllerColliderHit hit)
@@ -288,6 +294,7 @@ public class PlayerController : MonoBehaviour
         if (hit.gameObject.CompareTag("Obstacle") || hit.gameObject.CompareTag("Hazard") ||
             hit.gameObject.CompareTag("Arrow"))
         {
+            SetAlive(false);
             onCollisionWithHazard.Invoke();
             gameManager.UpdateGameState(GameState.Dead);
         }
@@ -309,9 +316,9 @@ public class PlayerController : MonoBehaviour
                 break;
 
             case "KillBox": case "KillZone":
-                m_IsAlive = false;
-                onFallOffLevel.Invoke();                
                 gameManager.UpdateGameState(GameState.Dead);
+                SetAlive(false);
+                onFallOffLevel.Invoke();                
                 break;
         }
 

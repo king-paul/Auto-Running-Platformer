@@ -48,7 +48,7 @@ public class ArrowSpawner : MonoBehaviour
     {
         if(m_GameManager.State == GameState.Running)
         {
-            StartCoroutine(CeaseFire());
+            CeaseFire();
 
             // Store how long since last shot to regulate fire-rate
             m_ShotTimer += Time.deltaTime;
@@ -57,17 +57,23 @@ public class ArrowSpawner : MonoBehaviour
             {
                 Shoot();
             }
-            if (m_GameManager.State == GameState.Dead)
-            {
-                Debug.Log("Dead");
-                m_Shooting = false;
-
-            }
         }
 
+        if (m_GameManager.State == GameState.Dead)
+        {
+            //m_ObjectPooler.SetPoolParentActive("Arrows", false);
+            Debug.Log("Dead");
+            m_Shooting = false;
+
+        }
     }
 
-    IEnumerator CeaseFire()
+    public void CeaseFire()
+    {
+        StartCoroutine(CeaseFireCoroutine()); 
+    }
+
+    IEnumerator CeaseFireCoroutine()
     {
         yield return new WaitForSeconds(m_CeaseFireTime);
         m_Shooting = true;
