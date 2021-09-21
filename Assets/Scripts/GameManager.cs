@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
@@ -28,6 +28,9 @@ public class GameManager : MonoBehaviour
     private PlayerController playerController;
     public Vector3 m_LastCheckpointPos;
 
+    [Header("Music")]
+    public AudioClip m_TitleMusic;
+    public AudioClip m_RunningMusic;
 
     private int m_coins;
     private bool m_GameRunning;
@@ -100,6 +103,10 @@ public class GameManager : MonoBehaviour
         UpdateGameState(GameState.Idle);
         m_GameRunning = true;
         m_coins = 0;
+
+        // Set music to title music
+        m_MusicSource.clip = m_TitleMusic;
+        m_MusicSource.Play();
     }
 
     // Update is called once per frame
@@ -113,11 +120,11 @@ public class GameManager : MonoBehaviour
         }
 
         // Dead
-        if (m_State == GameState.Dead && m_Arrows != null)
+        /*if (m_State == GameState.Dead && m_Arrows != null)
         {
-            //m_Arrows.GetComponentInChildren<ArrowSpawner>().m_Shooting = false;
-            //m_State = GameState.Idle;
-        }
+            m_Arrows.GetComponentInChildren<ArrowSpawner>().m_Shooting = false;
+            m_State = GameState.Idle;
+        }*/
 
         // Quit the game when ESC is pressed
         if(Input.GetKeyDown(KeyCode.Escape))
@@ -137,11 +144,10 @@ public class GameManager : MonoBehaviour
 
         switch (_newState)
         {
-            case GameState.Idle:
+            case GameState.Idle:                
                 gui.titleScreen.SetActive(true);
                 m_Player.transform.position = m_LastCheckpointPos;
-                gui.gameOverUI.SetActive(false);
-                m_MusicSource.Stop();                
+                gui.gameOverUI.SetActive(false);                
             break;
 
             case GameState.Running:
@@ -158,14 +164,16 @@ public class GameManager : MonoBehaviour
                 gui.gameOverUI.SetActive(false);
                 gui.HUD.SetActive(true);
 
+                m_MusicSource.clip = m_RunningMusic;
                 m_MusicSource.Play();
+
                 playerController.onBegin.Invoke();
             break;
 
             case GameState.Dead:
                 Debug.Log("Last Checkpoint" + m_LastCheckpointPos);
 
-                m_MusicSource.Stop();
+                //m_MusicSource.Stop();
 
                 gui.HUD.SetActive(false);
                 gui.ShowGameOverScreen(m_coins, CONTINUE_COST);
@@ -174,7 +182,6 @@ public class GameManager : MonoBehaviour
 
                 Globals.coins = m_coins;
                 //PlayerPrefs.SetInt("coins", m_coins);
-
             break;
 
             default:                

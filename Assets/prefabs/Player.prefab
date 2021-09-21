@@ -1717,7 +1717,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 0.4
+  m_Volume: 0.237
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -1873,7 +1873,7 @@ MonoBehaviour:
     m_Bits: 256
   m_WallLayers:
     serializedVersion: 2
-    m_Bits: 0
+    m_Bits: 256
   m_GroundChecks:
   - {fileID: 8158168829799869253}
   - {fileID: 3475145444557712558}
@@ -2087,7 +2087,7 @@ MonoBehaviour:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
-          m_FloatArgument: 0.3
+          m_FloatArgument: 0.6
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
