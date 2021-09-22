@@ -77,6 +77,7 @@ Assets/models/mobile tree package
 Assets/models/mobile tree package.meta
 Assets/models/laxer tree pkg/
 Assets/models/laxer tree pkg.meta
+Assets/models/Crates And Barrels Pack
 
 # Materials
 Assets/models/Materials/HandPainted Ground Textures
@@ -87,15 +88,13 @@ Assets/models/Materials/Stone textures pack/
 
 # Images
 Assets/2d Art/Easy emerald UI
+Assets/2d Art/Easy Emerald UI.meta
 Assets/2d Art/Tiny Fantasy Icons
 Assets/2d Art/simple UI & icons
 Assets/2d Art/20 Logos PSD
-Assets/easy UI emerald - default.psd
 
-Assets/easy UI emerald - default.psd.meta
+#Other
+Assets/CrashCrate
+Assets/models/Crates And Barrels Pack.meta
 
-Assets/easy UI emerald - default.unity
-
-Assets/easy UI emerald - default.unity.meta
-
-Assets/2d Art/Easy Emerald UI.meta
+Assets/CrashCrate.meta
