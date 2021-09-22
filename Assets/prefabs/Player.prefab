@@ -2039,13 +2039,13 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 6324592906338197059}
         m_TargetAssemblyTypeName: PlayerSound, Assembly-CSharp
-        m_MethodName: PlayLandSound
+        m_MethodName: PlayCollideSound
         m_Mode: 4
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
           m_IntArgument: 0
-          m_FloatArgument: 1
+          m_FloatArgument: 4
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
@@ -2352,7 +2352,7 @@ Transform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5349561558963269357}
-  m_LocalRotation: {x: -0, y: -1, z: -0, w: 0}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
   m_LocalPosition: {x: 0, y: 1.15, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children:
@@ -2361,7 +2361,7 @@ Transform:
   - {fileID: 5346981223466075501}
   m_Father: {fileID: 5453269398885276451}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!1 &5595100005996137569
 GameObject:
   m_ObjectHideFlags: 0
@@ -3152,7 +3152,7 @@ PrefabInstance:
     - target: {fileID: 2300000, guid: d22a51c3aa8f2c946ba5eabae5a6e2b7, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
-      objectReference: {fileID: 2100000, guid: 6a44a988fb82da143b05f2fb965ac811, type: 2}
+      objectReference: {fileID: 0}
     - target: {fileID: 2300000, guid: d22a51c3aa8f2c946ba5eabae5a6e2b7, type: 3}
       propertyPath: m_Materials.Array.data[3]
       value: 

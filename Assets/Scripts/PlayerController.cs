@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 
-public enum PlayerState { Idle, Running, Jumping, Falling, KnockBack }
+public enum PlayerState { Idle, Running, Jumping, Falling, KnockBack, IdleJump }
 
 [RequireComponent(typeof(CharacterController))]
 public class PlayerController : MonoBehaviour
@@ -17,6 +17,7 @@ public class PlayerController : MonoBehaviour
     public float m_JumpMultiplier = 2f;
     public float m_AirJumpMultiplier = 4f;
     public float m_KnockBackSpeed = 1f;
+    public bool m_airJump = false;
 
     // serialized private values
     [Header("Collision Checkers")]
@@ -30,18 +31,15 @@ public class PlayerController : MonoBehaviour
     private float m_JumpTimer;
     private float m_JumpGracePeriod = 0.2f;
     private float m_HorizontalInput;
-    public bool m_IsGrounded;
-    public bool m_Blocked;
-    [SerializeField] private bool m_IsAlive;
-    public void SetAlive(bool _state) { m_IsAlive = _state; }
+    private bool m_IsGrounded;
+    private bool m_Blocked;
+    private bool m_IsAlive;
+    
     private Vector3 moveVelocity;
     private Vector3 m_PrevPos;
     private Vector3 m_CurrentVel;
-    //private float jumpForce = 0;
-    const float bottomBoundary = -20;
     private PlayerState state;
-    public PlayerState playerState { get => state; }
-    
+
     // Controllers/Managers
     CharacterController controller;
     GameManager gameManager;
@@ -57,6 +55,8 @@ public class PlayerController : MonoBehaviour
     // Properties
     public bool Grounded { get => controller.isGrounded; }
     public float Y_Velocity { get => m_CurrentVel.y; }
+    public PlayerState playerState { get => state; }
+    public void SetAlive(bool _state) { m_IsAlive = _state; }
 
     // Start is called before the first frame update
     void Start()
@@ -66,7 +66,7 @@ public class PlayerController : MonoBehaviour
         //onGround = true;
         SetAlive(true);
         
-        state = PlayerState.Idle;
+        state = PlayerState.Running;
         hasAirJumped = false;
     }
 
@@ -80,10 +80,6 @@ public class PlayerController : MonoBehaviour
 
             return;
         }
-
-        // check for touch screen input
-        //if (Input.touchCount > 0)
-            //touchInput = Input.GetTouch(0);
 
         UpdatePosition();
         UpdateState();
@@ -122,23 +118,27 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        // wall checks
-        m_Blocked = false;
-        foreach (var wallCheck in m_WallChecks)
+        if (state != PlayerState.Idle)
         {
-            if (Physics.CheckSphere(wallCheck.position, 0.1f, m_WallLayers,
-                QueryTriggerInteraction.Ignore))
+            // wall checks        
+            foreach (var wallCheck in m_WallChecks)
             {
-                m_Blocked = true;
-                break;
+                if (Physics.CheckSphere(wallCheck.position, 0.1f, m_WallLayers,
+                    QueryTriggerInteraction.Ignore))
+                {
+                    m_Blocked = true;
+                    return;
+                }
             }
+            m_Blocked = false;
         }
+
     }
 
     private void UpdatePosition()
     {
         // Update Horizontal movement
-        if (!m_Blocked && state != PlayerState.Idle && state != PlayerState.KnockBack)
+        if (!m_Blocked && state != PlayerState.KnockBack)
         {            
             controller.Move(new Vector3(m_HorizontalInput * runSpeed, 0, 0) * Time.deltaTime);
         }
@@ -168,14 +168,18 @@ public class PlayerController : MonoBehaviour
         if (m_JumpPressed || (m_JumpTimer > 0 && Time.time < m_JumpTimer + m_JumpGracePeriod))
         {
             // ground jump
-            if (m_IsGrounded || !hasAirJumped)
+            if (m_IsGrounded || (m_airJump && !hasAirJumped))
             {
                 if (m_IsGrounded)
                 {
-                    state = PlayerState.Jumping;
+                    if (state == PlayerState.Idle)
+                        state = PlayerState.IdleJump;
+                    else
+                        state = PlayerState.Jumping;
+
                     onJump.Invoke();
                 }
-                else
+                else if(m_airJump)
                 {
                     onAirJump.Invoke();
                     hasAirJumped = true;
@@ -227,13 +231,6 @@ public class PlayerController : MonoBehaviour
             SetAlive(true);
         }
 
-        // idle -> running
-        if (state == PlayerState.Idle && Input.anyKey)
-        {
-            Debug.Log("Start running");
-            state = PlayerState.Running;
-        }
-
         // running -> Falling
         if (state == PlayerState.Running && !m_IsGrounded && m_CurrentVel.y < 0)
         {
@@ -247,11 +244,20 @@ public class PlayerController : MonoBehaviour
             state = PlayerState.Falling;
             onFall.Invoke();
         }
-
-        // any state -> knockback
-        if(m_Blocked && state != PlayerState.KnockBack)
+        
+        if(m_Blocked && state != PlayerState.Idle && state != PlayerState.KnockBack)
         {
-            state = PlayerState.KnockBack;
+            // running -> idle
+            if (state == PlayerState.Running)
+            {
+                state = PlayerState.Idle;
+                onCollisionWithWall.Invoke();
+            }
+            // jumpinging or falling -> knockback
+            else if (state != PlayerState.IdleJump)
+            {
+                state = PlayerState.KnockBack;
+            }
         }
         
     }
@@ -270,19 +276,6 @@ public class PlayerController : MonoBehaviour
             hasAirJumped = false;
             state = PlayerState.Running;
             onLand.Invoke();
-        }
-
-        // player hits side a wall
-        if (hit.gameObject.CompareTag("Wall"))
-        {
-            Debug.Log("Collision with wall");
-
-            /*if (state == PlayerState.Running)
-                state = PlayerState.Idle;
-            else
-                state = PlayerState.Falling;*/
-
-            onCollisionWithWall.Invoke();
         }
 
         // check if there is a collision with an obstacle
