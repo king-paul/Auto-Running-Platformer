@@ -1690,25 +1690,9 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 887540667}
     - target: {fileID: 8937498603940262833, guid: 85cccd1a95c462943acbcd3710dfc088, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 8937498603940262833, guid: 85cccd1a95c462943acbcd3710dfc088, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 887540667}
-    - target: {fileID: 8937498603940262833, guid: 85cccd1a95c462943acbcd3710dfc088, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
-      value: GameManager, Assembly-CSharp
-      objectReference: {fileID: 0}
-    - target: {fileID: 8937498603940262833, guid: 85cccd1a95c462943acbcd3710dfc088, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 8937498603940262833, guid: 85cccd1a95c462943acbcd3710dfc088, type: 3}
-      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 8937498603940262833, guid: 85cccd1a95c462943acbcd3710dfc088, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
       value: 
