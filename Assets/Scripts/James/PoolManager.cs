@@ -57,6 +57,13 @@ public class PoolManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Dequeue objects from the dictionary and run its interfaced OnObjectSpawn method
+    /// </summary>
+    /// <param name="_tag"> tag given to pool </param>
+    /// <param name="_position"> Postion of spawned object </param>
+    /// <param name="_rotation"> Rotation of spawned object </param>
+    /// <returns> Spawned Gameobject </returns>
     public GameObject SpawnFromPool(string _tag, Vector3 _position, Quaternion _rotation)
     {
         // Check the pool tag is valid
@@ -94,6 +101,5 @@ public class PoolManager : MonoBehaviour
     //            p.SetActive(_active);
     //        }
     //    }
-
     //}
 }

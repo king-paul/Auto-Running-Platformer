@@ -4,19 +4,16 @@ using UnityEngine;
 
 // Author: James Kemeny
 
-public class LevelSpawner : MonoBehaviour
-{
+// Level Spawner Requirements:
+// - Spawned chunks need an end position node with the name EndPosition
+// - This is updated each time one is spawned, so that every chunk is sure to follow on from the last.
 
+public class LevelSpawner : MonoBehaviour
+{ 
     private const float PLAYER_DIST_SPAWN_LEVEL_CHUNK = 70f; // How far away level parts spawn from the player
 
     private PoolManager m_ObjectPooler; // Pool manager instance
     private GameObject m_Player; // Player
-
-    //
-    // Level Spawner Requirements:
-    // - Spawned chunks need an end position node with the name EndPosition
-    // - This is updated each time one is spawned, so that every chunk is sure to follow on from the last.
-    //
 
     [Header("Level Parts")]
     [SerializeField] private Transform m_Start_Chunk = null; // Starting level part
@@ -26,8 +23,7 @@ public class LevelSpawner : MonoBehaviour
     [Space(10)]
     [Header("Level Settings")]
     [SerializeField] private float m_KillboxHeight = -30;
-    
-
+   
     void Start()
     {
         // Get the pool instance and find the player
@@ -62,7 +58,7 @@ public class LevelSpawner : MonoBehaviour
     /// Randomly spawns a chunk object from a pool using the names of the objects you'd like to spawn
     /// Chunks must have an end position node, and lastLevelPos stores the last one and is updated each time one is spawned
     /// </summary>
-    /// <returns></returns>
+    /// <returns> transfrom of the spawned chunk </returns>
     private Transform SpawnChunk()
     {
         string chosenLevelPart = m_ChunkList[Random.Range(0, m_ChunkList.Count - 1)];
@@ -87,8 +83,6 @@ public class LevelSpawner : MonoBehaviour
         return levelPart.transform;
     }
 
-    
-
     private void OnDrawGizmos()
     {
         float height = 100;
@@ -110,8 +104,5 @@ public class LevelSpawner : MonoBehaviour
             Gizmos.DrawLine(coordx, coordx + (Vector3.up * height));
         }
         
-        
-        //Gizmos.color = Color.blue;
-        //Gizmos.DrawCube(m_LastEndPos, Vector3.one * 3);
     }
 }

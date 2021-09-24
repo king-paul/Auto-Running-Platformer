@@ -13,21 +13,34 @@ public class Arrow : MonoBehaviour, IPooledObject
     public float m_DespawnTime = 2.0f;
     private float timer = 0f;
 
+    /// <summary>
+    /// Once spawned, get the game manager, 
+    /// Find the arrow spawner object in the scene
+    /// </summary>
     public void Start()
     {
+        m_GameManager = GameManager.m_Instance;
         m_Spawner = GameObject.FindGameObjectWithTag("ArrowSpawner").GetComponent<ArrowSpawner>();
+        
     }
 
+    /// <summary>
+    /// Get the rigidbody component and set constraints and 
+    /// enable the box collider
+    /// </summary>
     public void OnObjectSpawn()
     {
-        m_GameManager = GameManager.m_Instance;
-
+        
         m_rb = GetComponent<Rigidbody>();
         m_rb.constraints = RigidbodyConstraints.None;
         GetComponent<BoxCollider>().enabled = true;
         m_HasHit = false;
     }
 
+    /// <summary>
+    /// If the arrow hasn't collided with anything, rotate it to the rb's velocity direction
+    /// otherwise, start the despawn timer, which diables the object when it expires
+    /// </summary>
     void Update()
     {
         if (!m_HasHit)
@@ -53,6 +66,10 @@ public class Arrow : MonoBehaviour, IPooledObject
         }
     }
 
+    /// <summary>
+    /// Checks other obj tag and sets collider and rigidbody according to whether it has hit
+    /// </summary>
+    /// <param name="collision"> collision data from collision event </param>
     private void OnCollisionEnter(Collision collision)
     {
         timer = m_DespawnTime;

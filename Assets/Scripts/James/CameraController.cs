@@ -20,9 +20,11 @@ public class CameraController : MonoBehaviour
         m_CamOffset = transform.position;
     }
 
+    /// <summary>
+    /// Smoothdamp cam position to a target position near the player
+    /// </summary>
     void Update()
     {
-        
         Vector3 targetPos = m_Player.transform.position + m_CamOffset;
         transform.position = Vector3.SmoothDamp(transform.position, targetPos, ref m_Velocity, m_SmoothTime);
     }

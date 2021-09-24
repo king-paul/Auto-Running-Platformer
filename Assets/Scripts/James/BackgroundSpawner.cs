@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Author: James Kemeny
+
 public class BackgroundSpawner : MonoBehaviour
 {
     private const float DISTANCE = 200f; // How far away level parts spawn from the player
@@ -30,17 +32,22 @@ public class BackgroundSpawner : MonoBehaviour
         m_LastEndPos = m_StartPos;
     }
 
-    // Update is called once per frame
+    /// <summary>
+    /// Check distance to player and spawn element if within range
+    /// </summary>
     void Update()
     {
         if (Vector3.Distance(m_Player.transform.position, m_LastEndPos) < DISTANCE)
         {
             SpawnBackgroundElement();
-            // TODO Spawn a tower after 'spawn rate' number of chunks have been spawned
-  
         }
     }
 
+    /// <summary>
+    /// Spawn an object from the object pool set it's position
+    /// Generate cubes underneath background chunks to fill out landscape
+    /// </summary>
+    /// <returns> transform of the spawned object </returns>
     private Transform SpawnBackgroundElement()
     {
         string chosenLevelPart = m_ChunkList[Random.Range(0, m_ChunkList.Count - 1)];

@@ -20,6 +20,9 @@ public class FollowNode : MonoBehaviour
         m_Position = transform.position;
     }
 
+    /// <summary>
+    /// Same as camera with a different offset
+    /// </summary>
     void Update()
     {
         Vector3 targetPos = m_Player.transform.TransformPoint(m_Position);

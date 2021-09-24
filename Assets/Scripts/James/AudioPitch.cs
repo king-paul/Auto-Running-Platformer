@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+// Author: James Kemeny
+
 public class AudioPitch : MonoBehaviour
 {
     private AudioSource m_Source;
@@ -19,6 +21,9 @@ public class AudioPitch : MonoBehaviour
         m_Source.clip = m_Clip;
     }
 
+    /// <summary>
+    /// Randomize the pitch of the audio source and play clip at a set rate
+    /// </summary>
     public void Play()
     {
         m_Source.pitch = Random.Range(m_Min, m_Max);

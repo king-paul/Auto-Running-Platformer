@@ -43,7 +43,10 @@ public class ArrowSpawner : MonoBehaviour
         m_HitTransform = m_Target.transform;
 
     }
-    
+
+    /// <summary>
+    /// Check gamestate and fire at a set firerate, stop when dead
+    /// </summary>
     void Update()
     {
         if(m_GameManager.State == GameState.Running)
@@ -68,6 +71,9 @@ public class ArrowSpawner : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Runs a waiting coroutine before firing
+    /// </summary>
     public void CeaseFire()
     {
         StartCoroutine(CeaseFireCoroutine()); 
@@ -80,7 +86,9 @@ public class ArrowSpawner : MonoBehaviour
 
     }
 
-
+    /// <summary>
+    /// Set position and direction of spawned object, and draw a GO from a specified pool of objects
+    /// </summary>
     void Shoot()
     {
         // Store a new start position for each arrow within a sphere at the emitter's position

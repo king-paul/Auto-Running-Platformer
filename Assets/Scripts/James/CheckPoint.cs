@@ -16,6 +16,10 @@ public class CheckPoint : MonoBehaviour
         m_GFX = gameObject.transform.GetChild(0).gameObject;
     }
 
+    /// <summary>
+    /// If other is a player, set the last checkpoint position and set the fire gfx to active
+    /// </summary>
+    /// <param name="other"> Collider of the other object </param>
     void OnTriggerEnter(Collider other)
     {
         if(other.CompareTag("Player"))
