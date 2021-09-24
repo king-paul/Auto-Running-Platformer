@@ -1865,9 +1865,10 @@ MonoBehaviour:
   runSpeed: 10
   m_JumpHeight: 20
   m_FallMultiplier: 2.5
-  m_JumpMultiplier: 2
+  m_JumpMultiplier: 20
   m_AirJumpMultiplier: 40
   m_KnockBackSpeed: 1
+  m_airJump: 0
   m_GroundLayers:
     serializedVersion: 2
     m_Bits: 256
@@ -1884,9 +1885,6 @@ MonoBehaviour:
   - {fileID: 1882993386241829000}
   - {fileID: 2330009159285068810}
   - {fileID: 2330009159062262353}
-  m_IsGrounded: 0
-  m_Blocked: 0
-  m_IsAlive: 0
   onBegin:
     m_PersistentCalls:
       m_Calls:

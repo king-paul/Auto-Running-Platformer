@@ -857,16 +857,34 @@ MonoBehaviour:
   m_Pools:
   - tag: Chunk1
     prefab: {fileID: 2924830343231198435, guid: e0afb96da2e1960408a0817c8d2f33cc, type: 3}
-    size: 20
+    size: 10
   - tag: Chunk2
-    prefab: {fileID: 2924830343231198435, guid: e0afb96da2e1960408a0817c8d2f33cc, type: 3}
-    size: 20
+    prefab: {fileID: 2310609494156842921, guid: 5fc62ae8a8c7326479b068613c9198e6, type: 3}
+    size: 10
   - tag: Chunk3
     prefab: {fileID: 4951567275813332855, guid: b9a29ce47c599b547921ae2ac3f68061, type: 3}
-    size: 20
+    size: 10
+  - tag: Chunk4
+    prefab: {fileID: 8967019481876573684, guid: ca2ffab1146ebcf4b97a5c498fee636c, type: 3}
+    size: 10
+  - tag: Chunk5
+    prefab: {fileID: 4597138227421828846, guid: 971c013c39d186040afe07f4189c67f5, type: 3}
+    size: 10
+  - tag: Chunk6
+    prefab: {fileID: 3674581515564222777, guid: fa89e66734d9ad046ad0c1bd24905f79, type: 3}
+    size: 10
+  - tag: Chunk7
+    prefab: {fileID: 2917446794954380998, guid: 89281bbc766b9614aaab52c1fbb035b8, type: 3}
+    size: 10
+  - tag: Chunk8
+    prefab: {fileID: 1594508906349126781, guid: 356aa2342301ae14c86bf2129837db8e, type: 3}
+    size: 10
+  - tag: Chunk9
+    prefab: {fileID: 906315239087803591, guid: d7cca6023df4c2545b92df4f6b3d5c4c, type: 3}
+    size: 10
   - tag: Checkpoint
     prefab: {fileID: 4216733503204277878, guid: 2279699391b36674d970d41b3a371ede, type: 3}
-    size: 150
+    size: 50
   - tag: Arrow
     prefab: {fileID: 8946850497821744481, guid: 7f8f5cd0cc98e494eb0e227737e1f6d6, type: 3}
     size: 150
@@ -1194,8 +1212,11 @@ MonoBehaviour:
   - Chunk1
   - Chunk2
   - Chunk3
-  - Checkpoint
-  - Arrow
+  - Chunk4
+  - Chunk5
+  - Chunk6
+  - Chunk7
+  - Chunk8
   m_KillboxHeight: -60
 --- !u!4 &1345079595
 Transform:
@@ -1865,7 +1886,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 2330009158330669997, guid: 3489cae6fe0554d448a76ccf135ab2f7, type: 3}
       propertyPath: m_airJump
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4000509136128123351, guid: 3489cae6fe0554d448a76ccf135ab2f7, type: 3}
       propertyPath: m_LocalPosition.x
