@@ -281,6 +281,17 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &370226652 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 2330009158330669997, guid: 3489cae6fe0554d448a76ccf135ab2f7, type: 3}
+  m_PrefabInstance: {fileID: 2330009159720024035}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 469a13f844f110d4a8848573898958d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &395938484
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -703,6 +714,7 @@ MonoBehaviour:
   m_Arrows: {fileID: 0}
   m_StartingPoint: {fileID: 0}
   m_Gravity: -9.8
+  continueCost: 10
   m_LastCheckpointPos: {x: 0, y: 0, z: 0}
   m_TitleMusic: {fileID: 8300000, guid: e9abe47d261281243a0fc2027933280c, type: 3}
   m_RunningMusic: {fileID: 8300000, guid: c35e0431588bfa343b5ba8689270cfb3, type: 3}
@@ -957,7 +969,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2428292087231243336, guid: 3ebce963df1b3ee4ebd80bc5bbce06f7, type: 3}
       propertyPath: m_RootOrder
-      value: 6
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 2428292087231243336, guid: 3ebce963df1b3ee4ebd80bc5bbce06f7, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -1153,7 +1165,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 5
+  m_RootOrder: 6
   m_LocalEulerAnglesHint: {x: 32.338, y: 48.787, z: 101.902}
 --- !u!1001 &1996430234
 PrefabInstance:
@@ -1339,12 +1351,40 @@ PrefabInstance:
       value: EndGame
       objectReference: {fileID: 0}
     - target: {fileID: 8937498603940262833, guid: 85cccd1a95c462943acbcd3710dfc088, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8937498603940262833, guid: 85cccd1a95c462943acbcd3710dfc088, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 887540667}
     - target: {fileID: 8937498603940262833, guid: 85cccd1a95c462943acbcd3710dfc088, type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
       value: StartGame
+      objectReference: {fileID: 0}
+    - target: {fileID: 8937498603940262833, guid: 85cccd1a95c462943acbcd3710dfc088, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: PlayerController, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 8937498603940262833, guid: 85cccd1a95c462943acbcd3710dfc088, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8937498603940262833, guid: 85cccd1a95c462943acbcd3710dfc088, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8937498603940262833, guid: 85cccd1a95c462943acbcd3710dfc088, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 370226652}
+    - target: {fileID: 8937498603940262833, guid: 85cccd1a95c462943acbcd3710dfc088, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: StartRunning
+      objectReference: {fileID: 0}
+    - target: {fileID: 8937498603940262833, guid: 85cccd1a95c462943acbcd3710dfc088, type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 85cccd1a95c462943acbcd3710dfc088, type: 3}
@@ -1355,10 +1395,6 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 2330009158330669997, guid: 3489cae6fe0554d448a76ccf135ab2f7, type: 3}
-      propertyPath: m_KnockBackSpeed
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 2330009160068846150, guid: 3489cae6fe0554d448a76ccf135ab2f7, type: 3}
       propertyPath: m_Materials.Array.data[0]
       value: 
