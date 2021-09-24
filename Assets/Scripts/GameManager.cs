@@ -1,3 +1,5 @@
+// Author: Paul King
+
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -24,9 +26,8 @@ public class GameManager : MonoBehaviour
 
     [Header("Variables")]
     [SerializeField] private float m_Gravity = -9.8f;
-    private GameObject m_Player;
-    private PlayerController playerController;
-    public Vector3 m_LastCheckpointPos;
+    [SerializeField] int continueCost = 10;
+    public Vector3 m_LastCheckpointPos;    
 
     [Header("Music")]
     public AudioClip m_TitleMusic;
@@ -35,10 +36,9 @@ public class GameManager : MonoBehaviour
     private int m_coins;
     private bool m_GameRunning;
     private GameState m_State;
-
+    private GameObject m_Player;
+    private PlayerController playerController;
     private GuiController gui;
-
-    const int CONTINUE_COST = 5;
 
     // properties
     public GameState State { get => m_State; }
@@ -147,7 +147,7 @@ public class GameManager : MonoBehaviour
         {
             case GameState.Idle:                
                 gui.titleScreen.SetActive(true);
-                m_Player.transform.position = m_LastCheckpointPos;
+                //m_Player.transform.position = m_LastCheckpointPos;
                 gui.gameOverUI.SetActive(false);                
             break;
 
@@ -177,7 +177,7 @@ public class GameManager : MonoBehaviour
                 //m_MusicSource.Stop();
 
                 gui.HUD.SetActive(false);
-                gui.ShowGameOverScreen(m_coins, CONTINUE_COST);
+                gui.ShowGameOverScreen(m_coins, continueCost);
 
                 gui.gameOverDistanceText.text = (int)m_Player.transform.position.x + " feet";
 
@@ -198,9 +198,9 @@ public class GameManager : MonoBehaviour
 
     public void ContinueFromCheckpoint()
     {
-        if(m_coins >= CONTINUE_COST)
+        if(m_coins >= continueCost)
         {
-            m_coins -= CONTINUE_COST;
+            m_coins -= continueCost;
             Globals.coins = m_coins;
             UpdateGameState(GameState.Running);
         }

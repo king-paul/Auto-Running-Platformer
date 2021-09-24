@@ -1,4 +1,8 @@
-﻿using System.Collections;
+﻿/*
+ * Authors: Paul King, James Kennedy
+ */
+
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
@@ -57,6 +61,7 @@ public class PlayerController : MonoBehaviour
     public float Y_Velocity { get => m_CurrentVel.y; }
     public PlayerState playerState { get => state; }
     public void SetAlive(bool _state) { m_IsAlive = _state; }
+    public void StartRunning() { state = PlayerState.Running; }
 
     // Start is called before the first frame update
     void Start()
@@ -66,7 +71,7 @@ public class PlayerController : MonoBehaviour
         //onGround = true;
         SetAlive(true);
         
-        state = PlayerState.Running;
+        state = PlayerState.Idle;
         hasAirJumped = false;
     }
 
@@ -253,7 +258,7 @@ public class PlayerController : MonoBehaviour
                 state = PlayerState.Idle;
                 onCollisionWithWall.Invoke();
             }
-            // jumpinging or falling -> knockback
+            // jumping or falling -> knockback
             else if (state != PlayerState.IdleJump)
             {
                 state = PlayerState.KnockBack;

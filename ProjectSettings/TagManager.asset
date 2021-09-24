@@ -17,6 +17,7 @@ TagManager:
   - Canvas
   - Floor
   - ArrowSpawner
+  - Endpoint
   layers:
   - Default
   - TransparentFX
