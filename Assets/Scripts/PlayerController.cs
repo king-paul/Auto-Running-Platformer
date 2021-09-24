@@ -56,10 +56,25 @@ public class PlayerController : MonoBehaviour
     public UnityEvent onJump, onAirJump, onFall, onLand, onCollisionWithWall, onCollisionWithHazard, 
         onFallOffLevel, onCoinCollect;
 
-    // Properties
+    // Properties //
+
+    /// <summary>
+    /// Returns true or false depending on whether or not the player is on the ground
+    /// </summary>
     public bool Grounded { get => controller.isGrounded; }
+
+    /// <summary>
+    /// Returns the current velocity of the player along the y axis
+    /// </summary>
     public float Y_Velocity { get => m_CurrentVel.y; }
+
+    /// <summary>
+    /// Returns the current state the player is in
+    /// Can be Idle, Running, Jumping, Falling, KnockBack or IdleJump
+    /// </summary>
     public PlayerState playerState { get => state; }
+
+    // Functions //
     public void SetAlive(bool _state) { m_IsAlive = _state; }
     public void StartRunning() { state = PlayerState.Running; }
 
@@ -107,7 +122,9 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    // Checks if the colliders around the player are touching anything using the Physics sphere
+    /// <summary>
+    /// Checks if the colliders around the player are touching anything using the Physics sphere
+    /// </summary>
     private void CheckColliders()
     {
         m_HorizontalInput = 1;
@@ -140,6 +157,9 @@ public class PlayerController : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// Sets the position of the player game object each frame
+    /// </summary>
     private void UpdatePosition()
     {
         // Update Horizontal movement
@@ -229,6 +249,9 @@ public class PlayerController : MonoBehaviour
         controller.Move(moveVelocity * Time.deltaTime);
     }
 
+    /// <summary>
+    /// Updates the state of the player by checking a series of conditions each frame
+    /// </summary>
     private void UpdateState()
     {
         if (state == PlayerState.Running && !m_IsAlive)
@@ -267,6 +290,7 @@ public class PlayerController : MonoBehaviour
         
     }
     
+    // Collision Detection
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
         if (gameManager.State != GameState.Running)

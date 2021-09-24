@@ -5,12 +5,12 @@ using UnityEngine;
 [RequireComponent(typeof(Animator))]
 public class AnimationController : MonoBehaviour
 {
+    // member variables
     private Animator animator;
     private PlayerController player;
     private GameManager gameManager;
-    bool falling;
+    private bool falling;
 
-    // Start is called before the first frame update
     void Start()
     {
         animator = GetComponent<Animator>();
@@ -27,11 +27,18 @@ public class AnimationController : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Changes the animation state uses in the player's animator component
+    /// </summary>
+    /// <param name="trigger">The trigger used to transition to another animation</param>
     public void SetAnimation(string trigger)
     {
         animator.SetTrigger(trigger);
     }
 
+    /// <summary>
+    /// Sets all the parameters needed to transition to the running animation
+    /// </summary>
     public void PlayRunningAnimation()
     {
         animator.SetBool("GameRunning", true);
@@ -41,6 +48,9 @@ public class AnimationController : MonoBehaviour
         falling = false;
     }
 
+    /// <summary>
+    /// Sets all the parameters needed to transition to the dead animation
+    /// </summary>
     public void PlayDeadAnimation()
     {
         // play death animation once
@@ -50,6 +60,9 @@ public class AnimationController : MonoBehaviour
         falling = false;
     }
 
+    /// <summary>
+    /// Sets all the parameters needed to begin the jump animations
+    /// </summary>
     public void PlayJumpSequence()
     {
         animator.SetTrigger("Jump");
@@ -57,6 +70,9 @@ public class AnimationController : MonoBehaviour
         falling = true;
     }
 
+    /// <summary>
+    /// Sets all the parameters needed to begin the air jump animation 
+    /// </summary>
     public void PlayHighJumpSequence()
     {
         animator.SetTrigger("Jump");
@@ -64,12 +80,18 @@ public class AnimationController : MonoBehaviour
         falling = true;
     }
 
+    /// <summary>
+    /// Sets all the parameters needed to transition to the idle animation
+    /// </summary>
     public void PlayIdleState()
     {
         animator.SetBool("WallCollision", true);
         falling = false;
     }
 
+    /// <summary>
+    /// Sets all the parameters needed to transition to the falling animtion
+    /// </summary>
     public void PlayFallAnimation()
     {
         falling = true;

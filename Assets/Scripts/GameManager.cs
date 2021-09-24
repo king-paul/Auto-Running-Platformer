@@ -60,12 +60,23 @@ public class GameManager : MonoBehaviour
     {
         get => m_LastCheckpointPos;
         set => LastCheckpointPos = value;
-    }
-    
+    }    
 
-    // functions / methods
+    /***********************
+     * functions / methods *
+     ***********************/     
+    /// <summary>
+    /// Changes the game state to the running state
+    /// </summary>
     public void StartGame() { UpdateGameState(GameState.Running); }
+    /// <summary>
+    /// Changes the game state to the dead state
+    /// </summary>
     public void EndGame() { UpdateGameState(GameState.Dead); }
+    /// <summary>
+    /// Moves the player gamer object back to the start position
+    /// and changes the game state to idel
+    /// </summary>
     public void RestartGame()
     {
         // set the last checkpoint to the start of the level
@@ -75,12 +86,18 @@ public class GameManager : MonoBehaviour
         UpdateGameState(GameState.Idle);
     }
 
+    /// <summary>
+    /// Reloads the unity scene by loading the first one in the project build
+    /// </summary>
     public void RestartScene() { SceneManager.LoadScene(0); }
     public void QuitGame() {
         Debug.Log("Quit Button Clicked");
         Application.Quit(); }
 
-    public void AddCoin() { m_coins++; } // Increases the number of coins collected by 1
+    /// <summary>
+    /// Increases the number of coins collected by 1
+    /// </summary>
+    public void AddCoin() { m_coins++; }
 
     void Awake()
     {
@@ -136,8 +153,10 @@ public class GameManager : MonoBehaviour
        
     }
 
-    // Sets the current state of the game. Can be Idls, Running, StageComplete or Dead
-    // Takes GameState enumerator as a parameter
+    /// <summary>
+    /// Sets the current state of the game. Can be Idle, Running, StageComplete or Dead
+    /// </summary>
+    /// <param name="_newState">Takes GameState enumerator as a parameter</param>
     public void UpdateGameState(GameState _newState)
     {
         //Debug.Log("New game state: " + _newState);
@@ -145,12 +164,14 @@ public class GameManager : MonoBehaviour
 
         switch (_newState)
         {
+            // Idle State
             case GameState.Idle:                
                 gui.titleScreen.SetActive(true);
                 //m_Player.transform.position = m_LastCheckpointPos;
                 gui.gameOverUI.SetActive(false);                
             break;
 
+            // Running State
             case GameState.Running:
                 m_Player.transform.position = m_LastCheckpointPos;
                 m_Player.GetComponent<CharacterController>().enabled = true;
@@ -171,6 +192,7 @@ public class GameManager : MonoBehaviour
                 playerController.onBegin.Invoke();
             break;
 
+            // Dead state
             case GameState.Dead:
                 Debug.Log("Last Checkpoint" + m_LastCheckpointPos);
 
@@ -190,12 +212,21 @@ public class GameManager : MonoBehaviour
         }
 
     }
-    // Updates the vertical jump meter on the gui to match the player's jump force.
+
+    /// <summary>
+    /// Updates the vertical jump meter on the gui to match the player's jump force
+    /// </summary>
+    /// <param name="jumpForce">the jump force applied</param>
+    /// <param name="maxJumpForce">the maximim jump force that the player can apply</param>
     public void SetJumpMeter(float jumpForce, float maxJumpForce)
     {
         gui.SetJumpMeter(jumpForce, maxJumpForce);
     }
 
+    /// <summary>
+    /// Teleports the player back to the last checkpoint passed and
+    /// changes the game state to Running
+    /// </summary>
     public void ContinueFromCheckpoint()
     {
         if(m_coins >= continueCost)
