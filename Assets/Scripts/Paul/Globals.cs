@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿// Author: Paul King
+
+using System.Collections;
 using System.Collections.Generic;
 
 public static class Globals

@@ -13,7 +13,7 @@ public class ArrowSpawner : MonoBehaviour
 
     [Header("Game Objects")]
     public GameObject m_Target;
-    private Player m_Player;
+    private PlayerController m_Player;
     private Transform m_Transform = null;
     private PoolManager m_ObjectPooler;
 
@@ -34,7 +34,7 @@ public class ArrowSpawner : MonoBehaviour
     {
         m_GameManager = GameManager.m_Instance;
         m_ObjectPooler = PoolManager.m_Instance;
-        m_Player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
+        m_Player = GameObject.FindGameObjectWithTag("Player").GetComponent<PlayerController>();
         m_Transform = GetComponent<Transform>();
         if(m_Target == null)
             m_Target = GameObject.FindGameObjectWithTag("Player");
