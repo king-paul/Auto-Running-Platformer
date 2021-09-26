@@ -2,6 +2,7 @@
  * Authors: Paul King, James Kennedy
  */
 
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -81,13 +82,21 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        controller = GetComponent<CharacterController>();
-        gameManager = GameManager.m_Instance;
-        //onGround = true;
-        SetAlive(true);
-        
-        state = PlayerState.Idle;
-        hasAirJumped = false;
+        // try/catch block
+        try
+        {
+            controller = GetComponent<CharacterController>();
+            gameManager = GameManager.m_Instance;
+            //onGround = true;
+            SetAlive(true);
+
+            state = PlayerState.Idle;
+            hasAirJumped = false;
+        }
+        catch (Exception e)
+        {
+            Debug.LogError("Exception in PlayerController: " + e.Message);
+        }
     }
 
     // Update is called once per frame

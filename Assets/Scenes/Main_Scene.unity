@@ -1593,6 +1593,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GUI
       objectReference: {fileID: 0}
+    - target: {fileID: 5104193468280717339, guid: 85cccd1a95c462943acbcd3710dfc088, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 5104193468280717342, guid: 85cccd1a95c462943acbcd3710dfc088, type: 3}
       propertyPath: m_Camera
       value: 

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
+using System;
 
 public enum GameState
 {
@@ -107,24 +108,32 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         // Find gameobjects
-        m_Player = GameObject.FindWithTag("Player");
-        playerController = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
-        m_MusicSource = GameObject.FindWithTag("MainCamera").GetComponent<AudioSource>();
-        gui = GameObject.FindWithTag("Canvas").GetComponent<GuiController>();
+        try
+        {
+            m_Player = GameObject.FindWithTag("Player");
+            playerController = GameObject.FindWithTag("Player").GetComponent<PlayerController>();
+            m_MusicSource = GameObject.FindWithTag("MainCamera").GetComponent<AudioSource>();
+            gui = GameObject.FindWithTag("Canvas").GetComponent<GuiController>();
 
-        m_LastCheckpointPos = transform.position;
+            m_LastCheckpointPos = transform.position;
 
-        // Set ui values
-        gui.SetJumpMeter(0, 0);
+            // Set ui values
+            gui.SetJumpMeter(0, 0);
 
-        // Set game state
-        UpdateGameState(GameState.Idle);
-        m_GameRunning = true;
-        m_coins = 0;
+            // Set game state
+            UpdateGameState(GameState.Idle);
+            m_GameRunning = true;
+            m_coins = 0;
 
-        // Set music to title music
-        m_MusicSource.clip = m_TitleMusic;
-        m_MusicSource.Play();
+            // Set music to title music
+            m_MusicSource.clip = m_TitleMusic;
+            m_MusicSource.Play();
+
+        }
+        catch (NullReferenceException e)
+        {
+            Debug.LogError("Exception on GameManager: " + e.Message);
+        }
     }
 
     // Update is called once per frame
@@ -136,13 +145,6 @@ public class GameManager : MonoBehaviour
             gui.distanceText.text = ((int)m_Player.transform.position.x).ToString();
             gui.coinText.text = m_coins.ToString();
         }
-
-        // Dead
-        /*if (m_State == GameState.Dead && m_Arrows != null)
-        {
-            m_Arrows.GetComponentInChildren<ArrowSpawner>().m_Shooting = false;
-            m_State = GameState.Idle;
-        }*/
 
         // Quit the game when ESC is pressed
         if(Input.GetKeyDown(KeyCode.Escape))
